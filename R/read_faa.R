@@ -1,6 +1,7 @@
 # function to read fasta AA file as a dataframe
+# This function was originally written by Jinlong Zhang (jinlongzhang01@gmail.com) for the phylotools package (http://github.com/helixcn/phylotools).
 
-read.faa <- function (file = NULL) {
+read_faa <- function (file = NULL) {
   faa.lines <- readLines(file)
 
   ### get sequence names
