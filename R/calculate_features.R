@@ -1,11 +1,14 @@
 calculate_features <- function(seq) {
-  mol_weight        <- calc_mw(seq)
   aa_count          <- calc_length(seq)
-  isoelectric_point <- calc_pI(seq)
-  net_charge        <- calc_net_charge(seq)
   amphiphilicity    <- calc_amphiphilicity(seq)
+  hydrophobicity    <- calc_hydrophobicity(seq)
+  isoelectric_point <- calc_pI(seq)
+  mol_weight        <- calc_mw(seq)
+  net_charge        <- calc_net_charge(seq)
 
-  cbind(mol_weight, aa_count, isoelectric_point, net_charge, amphiphilicity)
+  composition       <- calc_composition(seq)
+
+  cbind(aa_count, amphiphilicity, hydrophobicity, isoelectric_point, mol_weight, net_charge, composition)
 }
 
 

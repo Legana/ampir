@@ -7,54 +7,88 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r cars}
-pee <- calc_length(little_test$seq.aa[5])
+```{r}
+#library(magrittr) (magrittr included with tidyverse?)
+library(Peptides)
+library(tidyverse)
+library(protr) 
 
-poop <- calc_mw(little_test$seq.aa[5])
+source("calc_amphiphilicity.R")
+source("calc_composition.R")
+source("calc_hydrophobicity.R")
+source("calc_length.R")
+source("calc_mw.R")
+source("calc_net_charge.R")
+source("calc_pI.R")
+source("read_faa.R")
 
-calc_length(little_test$seq.aa[5])
+source("calculate_features.R")
 
+```
 
-calculate_features(little_test$seq.aa[5])
-
-poops <- calculate_features(little_test$seq.aa[5])
-
-
-
-maybe <- calculate_features(little_test$seq.aa)
-
-compo_test <- calc_composition(little_test$seq.aa[5])
-
-calc_net_charge(little_test$seq.aa[5])
-
-calc_amphiphilicity(little_test$seq.aa[5])
-
-clean_seq <- remove_nonstandard_aa(little_test, little_test$seq.aa[5])
-
-
-aacomptest <- aaComp(little_test$seq.aa[5])
-
-aacomptest_df <- as.data.frame(aacomptest)
-
-t(aacomptest_df)
-
-#trying to get calculate composotion to work with data tidying and the remove nonstandard aa function. Neither work and don't understand why. how to transform code you use in Rmd files to edit data into a function???
-
-
-calc_composition(little_test$seq.aa[5])
+```{r}
+little_test <- read_faa("little_test.fasta")
 ```
 
 
-#calculate amino acid composition
-aacomp <- aaComp(seq = ampep$Sequence) %>% as.data.frame()
+```{r}
 
-# remove any column with 'Number' in the name
-aacomp <- aacomp[,-grep('Number',names(aacomp))]
 
-#swap rows and columns
-aacomp <- t(aacomp) %>% as.data.frame()
-#change rownames
-rownames(aacomp) <- ampep$Entry.name
-#change column names
-names(aacomp) <- c("TinyAA", "SmallAA", "AliphaticAA", "AromaticAA", "NonPolarAA", "PolarAA", "ChargedAA","BasicAA", "AcidicAA")
+calculate_features(little_test$seq.aa)
+
+yay <- calculate_features(little_test$seq.aa)
+
+
+
+```
+
+
+```{r}
+pseudo_test <- calc_pseudo_comp(little_test$sequence[5])
+```
+
+
+```{r_stuffing_around}
+Sequence <- little_test$seq.aa
+
+
+anything <- function(Sequence) {
+  little_test %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', Sequence))
+  
+  return(little_test)
+}
+
+
+#little_test %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', Sequence))
+for f in sequence_files {
+  # read file into dataframe
+  df <- readfile(f)
+  # process datframe through our function
+  result <- aynything(df.sequence)
+  # do something with this result
+  savefile(df) # for example save the result
+}
+  
+
+x <- anything(little_test$seq.aa)
+
+
+little_test %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq.aa))
+
+
+
+#colnames(little_test)[2] <- "sequence"
+
+
+
+
+remove_nonstandard_aa(little_test$seq.aa)
+
+# remove_nonstandard_aa <- function(seq) {
+#   df %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq))
+# }
+
+```
+
+
 

@@ -4,6 +4,8 @@
 calc_amphiphilicity <- function(seq) {
   amphiphilicity <- hmoment(seq)
 
-  amphiphilicity
+  as.data.frame(amphiphilicity)
 }
+
+
 

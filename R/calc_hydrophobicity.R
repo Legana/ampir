@@ -3,6 +3,7 @@
 
 calc_hydrophobicity <- function(seq) {
   hydrophobicity <- hydrophobicity(seq)
-  hydrophobicity
+
+  as.data.frame(hydrophobicity)
 }
 
