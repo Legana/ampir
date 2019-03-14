@@ -1,0 +1,53 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+#add row to df with made up sequence to test
+df <- data.frame("not_a_real_sequence", "MKVTHEUSYRGXMBI")
+names(df) <- c("seq.name", "sequence")
+new_test_df <- rbind(little_test, df)
+```
+
+
+```{r}
+library(tidyverse)
+
+#what it should do
+new_test_df %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', sequence))
+
+
+
+
+
+#function to remove non standard aa 
+remove_nonstandardaa <- function(seq) {
+  #find which sequences contain non standard aa (FALSE is a non standard one, TRUE is standard sequence)
+  #I want to us this to count the number of sequences it dropped
+  logical_vector_for_aa <- grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)
+  #print the number of sequences removed
+  print(sum(!logical_vector_for_aa))
+  
+  #return standard sequences (for which logical is TRUE)
+  standard_sequences <- seq[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)]
+  
+  ## how do I return the original dataframe with rows removed as what dplyrs filter does? the NAMES are missing now. only returns sequence column.
+ # sequence_names <- seq[1]  
+  as.data.frame(standard_sequences)
+
+  
+}
+
+
+remove_nonstandardaa(new_test_df$sequence)
+
+
+
+
+```
+
