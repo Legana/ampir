@@ -1,9 +1,10 @@
 #remove non standard amino acids
 
-remove_nonstandard_aa <- function(df) {
+remove_nonstandard_aa <- function(seq) {
   ## DO: make the seq.aa a generic column
-  seq <- df$seq.aa
-  df %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq))
+  #seq <- df$seq.aa
+  seq[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)]
+  #df %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq))
 }
 
 #df %>% rename(colname, seqaa)

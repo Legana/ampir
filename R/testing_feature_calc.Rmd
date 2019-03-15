@@ -44,6 +44,64 @@ yay <- calculate_features(little_test$seq.aa)
 
 
 ```{r}
+
+for (i in seq_along(empty_df)) {
+  print(median(empty_df[[i]]))
+}
+
+
+
+```
+
+```{r}
+  
+get_pseaac <- function(seq) {
+  #browser()
+  seq <- as.character(seq) 
+  if (length(seq) < 30) {  
+    paac <- extractPAAC(seq,lambda=4)
+  } else {
+    paac <- extractPAAC(seq)  
+  }
+  
+  #return(paac)
+  
+   pseaac <- as.data.frame(t(sapply(seq, get_pseaac)))
+
+ 
+}
+
+ #use sapply to apply get_psaac function to each row in bg_tg$sequence
+ # paac <- as.data.frame(t(sapply(seq, get_pseaac)))
+  
+```
+
+```{r}
+out = NULL 
+
+for (i in 1:length(bg_tg$Sequence)){
+  
+  tseq = as.character(bg_tg$Sequence[i])
+
+  if(length(tseq)<30) {
+    pseaac = extractPAAC(tseq,lambda=4)
+  } else {
+    pseaac = extractPAAC(tseq)
+  } 
+  
+  out = rbind(out,pseaac)
+}
+```
+
+
+```{r}
+pcompy <- get_pseaac(little_test$seq.aa[5])
+
+pcompy <- as.data.frame(pcompy)
+```
+
+
+```{r}
 pseudo_test <- calc_pseudo_comp(little_test$sequence[5])
 ```
 

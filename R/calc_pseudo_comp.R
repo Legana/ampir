@@ -9,5 +9,7 @@ calc_pseudo_comp <- function(seq) {
 
 
   #loop to reiterate function for each sequence as extractPAAC function only takes 1 sequence at a time
+
+
 }
 

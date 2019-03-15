@@ -22,32 +22,45 @@ library(tidyverse)
 new_test_df %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', sequence))
 
 
-
+.
 
 
 #function to remove non standard aa 
 remove_nonstandardaa <- function(seq) {
   #find which sequences contain non standard aa (FALSE is a non standard one, TRUE is standard sequence)
   #I want to us this to count the number of sequences it dropped
-  logical_vector_for_aa <- grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)
+  #logical_vector_for_aa <- grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)
   #print the number of sequences removed
-  print(sum(!logical_vector_for_aa))
+  #print(sum(!logical_vector_for_aa))
   
   #return standard sequences (for which logical is TRUE)
-  standard_sequences <- seq[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)]
+  #standard_sequences <- df[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)]
+  df[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq),]
   
   ## how do I return the original dataframe with rows removed as what dplyrs filter does? the NAMES are missing now. only returns sequence column.
  # sequence_names <- seq[1]  
-  as.data.frame(standard_sequences)
+  #as.data.frame(standard_sequences)
 
   
 }
 
-
-remove_nonstandardaa(new_test_df$sequence)
-
+now (with df[ instead of seq[) the stupid thing gives a df with the bad sequence and heaps of na
 
 
+whatsthis <- remove_nonstandardaa(new_test_df$sequence)
+
+
+
+
+thisworks <- new_test_df[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', new_test_df$sequence),]
+
+#this only gives the Sequece column
+little_test$sequence[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', little_test$sequence)]
+
+#this breaks
+> little_test$sequence[grepl('^[ARNDCEQGHILKMFPSTWYV]+$', little_test$sequence),]
+Error in `[.default`(little_test$sequence, grepl("^[ARNDCEQGHILKMFPSTWYV]+$",  : 
+  incorrect number of dimensions
 
 ```
 

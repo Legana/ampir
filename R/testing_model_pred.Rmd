@@ -1,0 +1,15 @@
+---
+title: "testing_model_pred"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+readRDS("svm_Radial90.rds")
+
+
+```
+
