@@ -1,5 +1,5 @@
 calc_net_charge <- function(seq) {
-  net_charge <- charge(seq)
+Charge <- charge(seq)
 
-  as.data.frame(net_charge)
+as.data.frame(Charge)
 }

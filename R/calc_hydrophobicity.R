@@ -2,8 +2,8 @@
 # Reference: Osorio, D., Rondon-Villarreal, P. & Torres, R. Peptides: A package for data mining of antimicrobial peptides. The R Journal. 7(1), 4–14 (2015).
 
 calc_hydrophobicity <- function(seq) {
-  hydrophobicity <- hydrophobicity(seq)
+  Hydrophobicity <- hydrophobicity(seq)
 
-  as.data.frame(hydrophobicity)
+  as.data.frame(Hydrophobicity)
 }
 

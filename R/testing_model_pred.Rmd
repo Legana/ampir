@@ -8,8 +8,62 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-readRDS("svm_Radial90.rds")
+#make a calculated features dataset from the test set, mirroring how the original model was trained (it had to be the same, otherwise it cannot compare it)
+Length <- calc_length(little_test$seq.aa)
+Mw <- calc_mw(little_test$seq.aa)
+pI <- calc_pI(little_test$seq.aa)
+Charge <- calc_net_charge(little_test$seq.aa)
+Hydrophobicity <- calc_hydrophobicity(little_test$seq.aa)
+AACOMP <- calc_composition(little_test$seq.aa)
+
+ pseudo_comp = NULL 
+
+for (i in 1:length(little_test$seq.aa)){
+  
+  tseq = as.character(little_test$seq.aa[i])
+
+  if(length(tseq)<30) {
+    pseaac = extractPAAC(tseq,lambda=4)
+  } else {
+    pseaac = extractPAAC(tseq)
+  } 
+  
+  pseudo_comp <- rbind(pseudo_comp,pseaac)
+  rownames(pseudo_comp) <- NULL
+  pseudo_comp <- as.data.frame(pseudo_comp)
+}
+
+little_features <- cbind(Length, Mw, pI, Charge, Hydrophobicity, AACOMP, pseudo_comp)
+```
 
 
+```{r}
+library(e1071)
+library(caret)
+
+svmRadial <- readRDS("svm_Radial90.rds")
+
+load("svm_radial_model90p.Rdata")
+
+
+#I do not quite get why these commands (without the "get", see below) do not work. It gives me an error:
+#Error in UseMethod("predict") : 
+ # no applicable method for 'predict' applied to an object of class "character"
+
+predict("svm_Radialwithprob", little_features, type = "prob")
+
+#interesting if I use the e1071, it does predict but as "bg or tg". How do I get it to show in probability? do I need to show it as a probability ??? also the model I used here got 1  wrong (the first one, as that is an AMP, but it got the other ones correct :))
+#https://stats.stackexchange.com/questions/142255/svm-in-r-package-e1071-predicting-class-using-predict
+
+predicted_by_e1071 <- predict(svmRadial, little_features, probability = TRUE)
+
+#second model, interesting , now it does classify the first one correctly as "tg", low probability but.
+predict(svm_Radialwithprob, little_features, probability = TRUE)
+
+#using the second model to predict probabilities and class (bg or tg)
+class_little_features <- predict(get("svm_Radialwithprob"), little_features)
+class_little_features <- as.data.frame(class_little_features)
+
+prob_little_features <- predict(get("svm_Radialwithprob"), little_features, type = "prob")
 ```
 

@@ -8,9 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-#library(magrittr) (magrittr included with tidyverse?)
 library(Peptides)
-library(tidyverse)
 library(protr) 
 
 source("calc_amphiphilicity.R")
@@ -43,45 +41,63 @@ yay <- calculate_features(little_test$seq.aa)
 ```
 
 
-```{r}
-
-for (i in seq_along(empty_df)) {
-  print(median(empty_df[[i]]))
-}
-
-
-
+```{r loop example from wickham tute}
+#from https://r4ds.had.co.nz/iteration.html#for-loops
+# output <- vector("double", ncol(df))  # 1. output
+# for (i in seq_along(df)) {            # 2. sequence
+#   output[[i]] <- median(df[[i]])      # 3. body
+# }
+# output
 ```
 
+
+Fix this code so I can use the pseudo amino acid composition function on all sequences at once:
+
 ```{r}
+
+##### function to calculate pseudo amino acids. I  cannot get the sapply function to work inside this function. sapply(little_test$seq.aa, get_pseaac) outside the function works, however.
   
 get_pseaac <- function(seq) {
   #browser()
   seq <- as.character(seq) 
   if (length(seq) < 30) {  
-    paac <- extractPAAC(seq,lambda=4)
+   pseudo_comp <- extractPAAC(seq,lambda=4)
   } else {
-    paac <- extractPAAC(seq)  
+   pseudo_comp <- extractPAAC(seq)  
   }
   
-  #return(paac)
+  as.data.frame(pseudo_comp)
   
-   pseaac <- as.data.frame(t(sapply(seq, get_pseaac)))
-
- 
+  #sapply(pseudo_comp, get_pseaac)
+  
 }
+ # sapply(seq, get_pseaac)
+  
 
- #use sapply to apply get_psaac function to each row in bg_tg$sequence
- # paac <- as.data.frame(t(sapply(seq, get_pseaac)))
+  # pseaac <- as.data.frame(t(sapply(seq, get_pseaac)))
+
+
+#works for  1 sequence
+one_sequence <- get_pseaac(little_test$seq.aa[4])
+
+#this works for all sequences. how to put this in the function?
+#it messes up the names though :( why?
+all_sequences <- sapply(little_test$seq.aa, get_pseaac)
+all_sequences <-as.data.frame(all_sequences)
   
 ```
 
 ```{r}
-out = NULL 
+##### for loop to use original pseudo AA function. it works when I use it with little_test$seq.aa but not when I put it in a function and try to make it generic (seq) (see next r block)
 
-for (i in 1:length(bg_tg$Sequence)){
+#also how does this function automatically transforms the data?
+
+
+ pseudo_comp = NULL 
+
+for (i in 1:length(little_test$seq.aa)){
   
-  tseq = as.character(bg_tg$Sequence[i])
+  tseq = as.character(little_test$seq.aa[i])
 
   if(length(tseq)<30) {
     pseaac = extractPAAC(tseq,lambda=4)
@@ -89,64 +105,43 @@ for (i in 1:length(bg_tg$Sequence)){
     pseaac = extractPAAC(tseq)
   } 
   
-  out = rbind(out,pseaac)
+  pseudo_comp <- rbind(pseudo_comp,pseaac)
+  rownames(pseudo_comp) <- NULL
+  pseudo_comp <- as.data.frame(pseudo_comp)
 }
 ```
 
 
 ```{r}
-pcompy <- get_pseaac(little_test$seq.aa[5])
+#this results in a NULL output. why???
 
-pcompy <- as.data.frame(pcompy)
+pseudo_test <- function(seq) {
+  pseudo_comp = NULL 
+
+for (i in 1:length(seq)){
+  
+  tseq <- as.character(seq[i])
+
+  if(length(tseq)<30) {
+    pseaac <- extractPAAC(tseq,lambda=4)
+  } else {
+    pseaac <- extractPAAC(tseq)
+  } 
+  
+  pseudo_comp <- rbind(pseudo_comp,pseaac)
+  rownames(pseudo_comp) <- NULL
+  pseudo_comp <- as.data.frame(pseudo_comp)
+}
+}
+
 ```
-
 
 ```{r}
-pseudo_test <- calc_pseudo_comp(little_test$sequence[5])
+theemptyone <- pseudo_test(little_test$seq.aa[6])
 ```
 
 
-```{r_stuffing_around}
-Sequence <- little_test$seq.aa
 
-
-anything <- function(Sequence) {
-  little_test %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', Sequence))
-  
-  return(little_test)
-}
-
-
-#little_test %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', Sequence))
-for f in sequence_files {
-  # read file into dataframe
-  df <- readfile(f)
-  # process datframe through our function
-  result <- aynything(df.sequence)
-  # do something with this result
-  savefile(df) # for example save the result
-}
-  
-
-x <- anything(little_test$seq.aa)
-
-
-little_test %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq.aa))
-
-
-
-#colnames(little_test)[2] <- "sequence"
-
-
-
-
-remove_nonstandard_aa(little_test$seq.aa)
-
-# remove_nonstandard_aa <- function(seq) {
-#   df %>% filter(grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq))
-# }
-
-```
 
 
 

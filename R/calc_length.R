@@ -2,9 +2,9 @@
 # Reference: Osorio, D., Rondon-Villarreal, P. & Torres, R. Peptides: A package for data mining of antimicrobial peptides. The R Journal. 7(1), 4–14 (2015).
 
 calc_length <- function(seq) {
-  aa_count <- lengthpep(seq)
+  Length <- lengthpep(seq)
 
-  aa_count <- as.numeric(aa_count)
-  as.data.frame(aa_count)
+  Length <- as.numeric(Length)
+  as.data.frame(Length)
 }
 
