@@ -8,8 +8,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+source("read_faa.R")
+source("R/remove_nonstandard_aa.R")
+```
 
-little_test <- read_faa("little_test.fasta")
+```{r}
+little_test <- read_faa("R/little_test.fasta")
 
 #add row to test df with made up sequence to test remove_standardaa function
 new_test_df <- data.frame("not_a_real_sequence", "MKVTHEUSYRGXMBI")
@@ -17,9 +21,7 @@ names(new_test_df) <- c("seq.name", "seq.aa")
 new_test_df <- rbind(little_test, new_test_df)
 ```
 
-```{r}
-source("R/remove_nonstandard_aa.R")
-```
+
 
 ```{r}
 
