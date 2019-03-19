@@ -93,7 +93,7 @@ all_sequences <-as.data.frame(all_sequences)
 #also how does this function automatically transforms the data?
 
 
- pseudo_comp = NULL 
+pseudo_comp = NULL 
 
 for (i in 1:length(little_test$seq.aa)){
   
@@ -118,26 +118,27 @@ for (i in 1:length(little_test$seq.aa)){
 pseudo_test <- function(seq) {
   pseudo_comp = NULL 
 
-for (i in 1:length(seq)){
+  for (i in 1:length(seq)){
   
-  tseq <- as.character(seq[i])
+    tseq <- as.character(seq[i])
 
-  if(length(tseq)<30) {
-    pseaac <- extractPAAC(tseq,lambda=4)
-  } else {
-    pseaac <- extractPAAC(tseq)
-  } 
+    if(length(tseq)<30) {
+      pseaac <- extractPAAC(tseq,lambda=4)
+    } else {
+      pseaac <- extractPAAC(tseq)
+    } 
   
-  pseudo_comp <- rbind(pseudo_comp,pseaac)
-  rownames(pseudo_comp) <- NULL
-  pseudo_comp <- as.data.frame(pseudo_comp)
-}
+    pseudo_comp <- rbind(pseudo_comp,pseaac)
+    rownames(pseudo_comp) <- NULL
+    pseudo_comp <- as.data.frame(pseudo_comp)
+  }
+  pseudo_comp
 }
 
 ```
 
 ```{r}
-theemptyone <- pseudo_test(little_test$seq.aa[6])
+theemptyone <- pseudo_test(little_test$seq.aa)
 ```
 
 
