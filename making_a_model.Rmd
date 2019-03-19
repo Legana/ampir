@@ -1,0 +1,48 @@
+---
+title: "Training_svm"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+load("R/uniprot_features.Rdata")
+```
+
+```{r}
+library(caret)
+#using caret package to train/test the model 
+
+#split the data 80/20 and create train and test set from features
+#the model is fit on the training set, and the fitted model is used to predict dependent variable (response or Y variable)
+trainIndex <-createDataPartition(y=prot_features$Label, p=.8, list = FALSE)
+featuresTrain <-prot_features[trainIndex,]
+featuresTest <-prot_features[-trainIndex,]
+
+#resample method using repeated cross validation and adding in and adding in a probability calculation to use later when predicting
+trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
+
+#training the model
+svmRadialwithprob2 <- train(Label~., data = featuresTrain, method="svmRadial",
+                    trControl = trctrl_prob, preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+save(svmRadialwithprob2, file = "R/svmRadialwithprob2.Rdata")
+```
+
+
+```{r}
+#a test prediction of the model with leftover uniprot
+test_pred <- predict(svmRadialwithprob2, featuresTest)
+as.data.frame(test_pred)
+
+#predict on the test set with probability values
+test_pred_prob <- predict(svmRadialwithprob2, featuresTest, type = "prob")
+
+#confusion matrix to test accuracy of the model on the test dataset
+confusionMatrix(test_pred, featuresTest$Label)
+
+```
+

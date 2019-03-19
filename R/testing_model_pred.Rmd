@@ -52,6 +52,10 @@ load("svm_radial_model90p.Rdata")
 
 predict("svm_Radialwithprob", little_features, type = "prob")
 
+#It still doesnt work, even though I made this model inside this workspace, it gives me the same error.
+#there's no rownames and the column names are the same ("label") excluded - so why doesn't it work?)
+predict("svmRadialwithprob2", little_features, type = "prob")
+
 #interesting if I use the e1071, it does predict but as "bg or tg". How do I get it to show in probability? do I need to show it as a probability ??? also the model I used here got 1  wrong (the first one, as that is an AMP, but it got the other ones correct :))
 #https://stats.stackexchange.com/questions/142255/svm-in-r-package-e1071-predicting-class-using-predict
 
@@ -65,5 +69,7 @@ class_little_features <- predict(get("svm_Radialwithprob"), little_features)
 class_little_features <- as.data.frame(class_little_features)
 
 prob_little_features <- predict(get("svm_Radialwithprob"), little_features, type = "prob")
+
+predict(get("svmRadialwithprob2"), little_features, type = "prob")
 ```
 
