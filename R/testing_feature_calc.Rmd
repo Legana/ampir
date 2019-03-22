@@ -19,6 +19,7 @@ source("calc_mw.R")
 source("calc_net_charge.R")
 source("calc_pI.R")
 source("read_faa.R")
+source("calc_pseudo_comp.R")
 
 source("calculate_features.R")
 
@@ -31,114 +32,8 @@ little_test <- read_faa("little_test.fasta")
 
 ```{r}
 
+little_features <- calculate_features(little_test$seq.aa)
 
-calculate_features(little_test$seq.aa)
-
-yay <- calculate_features(little_test$seq.aa)
-
-
-
-```
-
-
-```{r loop example from wickham tute}
-#from https://r4ds.had.co.nz/iteration.html#for-loops
-# output <- vector("double", ncol(df))  # 1. output
-# for (i in seq_along(df)) {            # 2. sequence
-#   output[[i]] <- median(df[[i]])      # 3. body
-# }
-# output
-```
-
-
-Fix this code so I can use the pseudo amino acid composition function on all sequences at once:
-
-```{r}
-
-##### function to calculate pseudo amino acids. I  cannot get the sapply function to work inside this function. sapply(little_test$seq.aa, get_pseaac) outside the function works, however.
-  
-get_pseaac <- function(seq) {
-  #browser()
-  seq <- as.character(seq) 
-  if (length(seq) < 30) {  
-   pseudo_comp <- extractPAAC(seq,lambda=4)
-  } else {
-   pseudo_comp <- extractPAAC(seq)  
-  }
-  
-  as.data.frame(pseudo_comp)
-  
-  #sapply(pseudo_comp, get_pseaac)
-  
-}
- # sapply(seq, get_pseaac)
-  
-
-  # pseaac <- as.data.frame(t(sapply(seq, get_pseaac)))
-
-
-#works for  1 sequence
-one_sequence <- get_pseaac(little_test$seq.aa[4])
-
-#this works for all sequences. how to put this in the function?
-#it messes up the names though :( why?
-all_sequences <- sapply(little_test$seq.aa, get_pseaac)
-all_sequences <-as.data.frame(all_sequences)
-  
-```
-
-```{r}
-##### for loop to use original pseudo AA function. it works when I use it with little_test$seq.aa but not when I put it in a function and try to make it generic (seq) (see next r block)
-
-#also how does this function automatically transforms the data?
-
-
-pseudo_comp = NULL 
-
-for (i in 1:length(little_test$seq.aa)){
-  
-  tseq = as.character(little_test$seq.aa[i])
-
-  if(length(tseq)<30) {
-    pseaac = extractPAAC(tseq,lambda=4)
-  } else {
-    pseaac = extractPAAC(tseq)
-  } 
-  
-  pseudo_comp <- rbind(pseudo_comp,pseaac)
-  rownames(pseudo_comp) <- NULL
-  pseudo_comp <- as.data.frame(pseudo_comp)
-}
-```
-
-
-```{r}
-#this results in a NULL output. why???
-
-pseudo_test <- function(seq) {
-  pseudo_comp = NULL 
-
-  for (i in 1:length(seq)){
-  
-    tseq <- as.character(seq[i])
-
-    if(length(tseq)<30) {
-      pseaac <- extractPAAC(tseq,lambda=4)
-    } else {
-      pseaac <- extractPAAC(tseq)
-    } 
-  
-    pseudo_comp <- rbind(pseudo_comp,pseaac)
-    rownames(pseudo_comp) <- NULL
-    pseudo_comp <- as.data.frame(pseudo_comp)
-  }
-  pseudo_comp
-}
-
-```
-
-```{r}
-theemptyone <- pseudo_test(little_test$seq.aa)
 ```
 
 

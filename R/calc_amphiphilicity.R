@@ -2,9 +2,9 @@
 # Reference: Osorio, D., Rondon-Villarreal, P. & Torres, R. Peptides: A package for data mining of antimicrobial peptides. The R Journal. 7(1), 4–14 (2015).
 
 calc_amphiphilicity <- function(seq) {
-  amphiphilicity <- hmoment(seq)
+  Amphiphilicity <- hmoment(seq)
 
-  as.data.frame(amphiphilicity)
+  as.data.frame(Amphiphilicity)
 }
 
 

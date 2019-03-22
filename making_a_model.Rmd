@@ -11,38 +11,72 @@ knitr::opts_chunk$set(echo = TRUE)
 load("R/uniprot_features.Rdata")
 ```
 
+
 ```{r}
 library(caret)
 #using caret package to train/test the model 
 
 #split the data 80/20 and create train and test set from features
 #the model is fit on the training set, and the fitted model is used to predict dependent variable (response or Y variable)
-trainIndex <-createDataPartition(y=prot_features$Label, p=.8, list = FALSE)
-featuresTrain <-prot_features[trainIndex,]
-featuresTest <-prot_features[-trainIndex,]
+trainIndex <-createDataPartition(y=uniprot_features$Label, p=.8, list = FALSE)
+featuresTrain <-uniprot_features[trainIndex,]
+featuresTest <-uniprot_features[-trainIndex,]
 
 #resample method using repeated cross validation and adding in and adding in a probability calculation to use later when predicting
 trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
 
 #training the model
-svmRadialwithprob2 <- train(Label~., data = featuresTrain, method="svmRadial",
+svmRadialwithprob_amph <- train(Label~., data = featuresTrain, method="svmRadial",
                     trControl = trctrl_prob, preProcess = c("center", "scale"),
                     tuneLength = 10)
+```
 
-save(svmRadialwithprob2, file = "R/svmRadialwithprob2.Rdata")
+```{r}
+
+save(svmRadialwithprob_amph, file = "R/svmRadialwithprobamph.Rdata")
 ```
 
 
 ```{r}
 #a test prediction of the model with leftover uniprot
-test_pred <- predict(svmRadialwithprob2, featuresTest)
-as.data.frame(test_pred)
+test_pred_amph <- predict(svmRadialwithprob_amph, featuresTest)
+as.data.frame(test_pred_amph)
 
 #predict on the test set with probability values
-test_pred_prob <- predict(svmRadialwithprob2, featuresTest, type = "prob")
+test_pred_amph_prob <- predict(svmRadialwithprob_amph, featuresTest, type = "prob")
 
 #confusion matrix to test accuracy of the model on the test dataset
-confusionMatrix(test_pred, featuresTest$Label)
+confusionMatrix(test_pred_amph, featuresTest$Label)
 
+```
+
+#for model that includes amphiphillicity with 80/20 data split
+same model but different run was 0.9058 accuracy and  Sensitivity : 0.9095 Specificity : 0.9021   (this is the current one)
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction  Bg  Tg
+        Bg 607  59
+        Tg  56 605
+                                          
+               Accuracy : 0.9133          
+                 95% CI : (0.8969, 0.9279)
+    No Information Rate : 0.5004          
+    P-Value [Acc > NIR] : <2e-16          
+                                          
+                  Kappa : 0.8267          
+ Mcnemar's Test P-Value : 0.8521          
+                                          
+            Sensitivity : 0.9155          
+            Specificity : 0.9111          
+         Pos Pred Value : 0.9114          
+         Neg Pred Value : 0.9153          
+             Prevalence : 0.4996          
+         Detection Rate : 0.4574          
+   Detection Prevalence : 0.5019          
+      Balanced Accuracy : 0.9133          
+                                          
+       'Positive' Class : Bg    
 ```
 

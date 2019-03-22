@@ -16,14 +16,14 @@ source("R/remove_nonstandard_aa.R")
 little_test <- read_faa("R/little_test.fasta")
 
 #add row to test df with made up sequence to test remove_standardaa function
-new_test_df <- data.frame("not_a_real_sequence", "MKVTHEUSYRGXMBI")
-names(new_test_df) <- c("seq.name", "seq.aa")
-new_test_df <- rbind(little_test, new_test_df)
+bad_seq_df <- data.frame("not_a_real_sequence", "MKVTHEUSYRGXMBI")
+names(bad_seq_df) <- c("seq.name", "seq.aa")
+bad_seq_test_df <- rbind(little_test, bad_seq_df)
 ```
 
 
 
 ```{r}
 
-cleaned_protein_df <- remove_nonstandard_aa(new_test_df, new_test_df$seq.aa)
+good_seqs_df <- remove_nonstandard_aa(bad_seq_test_df , bad_seq_test_df $seq.aa)
 ```

@@ -15,7 +15,7 @@ read_faa <- function (file = NULL) {
   seq.aa <- rep(NA, length(seq.name.index))
 
   ### replace NA content with actual sequence content, and concatenate the lines
-  for(i in 1:length(seq.name.index)){
+  for(i in seq_along(seq.name.index)){
     seq.aa.start <- seq.aa.start.index[i]
     seq.aa.end   <- seq.aa.end.index[i]
     seq.aa[i] <- gsub("[[:space:]]", "",

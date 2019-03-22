@@ -3,7 +3,9 @@
 
 predict_AMPs <- function(df) {
   #load model
-  load("svm_radial_model90p.Rdata")
+  load("svmRadialwithprobamph.Rdata")
+
+  p_AMP <- predict(svmRadialwithprob_amph, df, type = "prob")
 
 
 }

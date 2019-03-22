@@ -2,14 +2,22 @@
 # Reference: Nan Xiao, Dong-Sheng Cao, Min-Feng Zhu, and Qing-Song Xu. (2015). protr/ProtrWeb: R package and web server for generating various numerical representation schemes of protein sequences. Bioinformatics 31 (11), 1857-1859.
 
 calc_pseudo_comp <- function(seq) {
-  seq <- as.character(seq)
-  pseudo_comp <- extractPAAC(seq)
 
-  as.data.frame(pseudo_comp)
+    pseudo_comp = NULL
 
+    for (i in 1:length(seq)){
 
-  #loop to reiterate function for each sequence as extractPAAC function only takes 1 sequence at a time
+      tseq <- as.character(seq[i])
 
+      if(length(tseq)<30) {
+        pseaac <- extractPAAC(tseq,lambda=4)
+      } else {
+        pseaac <- extractPAAC(tseq)
+      }
 
-}
-
+      pseudo_comp <- rbind(pseudo_comp,pseaac)
+      rownames(pseudo_comp) <- NULL
+      pseudo_comp <- as.data.frame(pseudo_comp)
+    }
+    pseudo_comp
+  }
