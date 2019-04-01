@@ -8,7 +8,15 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+library(Peptides)
+library(protr)
+library(caret)
+```
+
+```{r}
 little_features <- calculate_features(little_test$seq.aa)
+
+randoms_features <- calculate_features(randoms$seq.aa)
 ```
 
 
@@ -29,6 +37,7 @@ prob_little_features <- predict(svmRadialwithprob_amph, little_features, type = 
 
 predict(svmRadialwithprob_amph, little_features, type = "prob")
 
+cbind(class_little_features,prob_little_features[2])
 ```
 
 
@@ -40,22 +49,41 @@ names(prob_little_features)[names(prob_little_features) == "Tg"] <- "prob_AMP"
 
 
 ```{r}
-predict_AMP_prob <- function(df) {
+predict_AMP_prob <- function(df, class = FALSE) {
   #load model
   load("svmRadialwithprobamph.Rdata")
+  
+  #default is to show probability
 
   p_AMP <- predict(svmRadialwithprob_amph, df, type = "prob")
   
   names(p_AMP)[names(p_AMP) == "Tg"] <- "prob_AMP"
+
+  as.data.frame(p_AMP)[2]
   
-  #only show the TG/prob_AMP column
-  #maybe 1 column as class, second column probability? 
+    #something like if class is TRUE if (class) return class, if class is FALSE (!class) do prob+class, else do PROB
+  c_AMP <- predict(svmRadialwithprob_amph, df)
+  as.data.frame(c_AMP)
+  class <- c_AMP
   
-  #as.data.frame(p_AMP$prob_AMP)
+  #second option: show both class and probability 
+  p_c_AMP <- cbind(c_AMP,p_AMP[2])
+  
+  #final option = DEFAULT  is probability only
+ 
 
 }
 
 
-predict_AMP_prob(little_features)
+predict_AMP_prob(little_features, class = TRUE)
+```
+
+```{r}
+#predicting RANDOMS
+
+predict(svmRadialwithprob_amph, randoms_features, type = "prob")
+predict(svmRadialwithprob_amph, little_features)
+
+#moo. 6 out of 10 of my nonsense proteins are classified as AMPs :( 
 ```
 

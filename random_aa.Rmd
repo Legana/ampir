@@ -1,0 +1,60 @@
+---
+title: "random_aa"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+#tst <- replicate(3, sample(aa, 4,replace = TRUE))
+```
+
+```{r}
+random_aa <- function(x) {
+  
+  #x is the length of the sequence
+  aa <- c('A', 'R', 'N', 'D', 'C', 'E', 'Q', 'G', 'H', 'I','L', 'K', 'M', 'F', 'P', 'S', 'T',             'W', 'Y','V')
+  aa_r <- sample(aa, x, replace = TRUE)
+  aa_r <- paste(aa_r, collapse ="") 
+
+  #tried to add something in so the function takes two arguments (length of sequence and number of sequences. how to do the latter?) #I do not understand the output of the below commented out code or how to make it into separate sequences - is it possible?
+#  aa_r <- replicate(x, sample(aa, y,replace = TRUE), simplify = TRUE)
+  aa_r
+}
+```
+
+```{r}
+
+random_aa(70)
+
+#get # sequences at ## length.
+replicate(7, random_aa(60))
+
+#this doesnt give me 3 random sequences between 5 and 50 aa long, it just gives me 3 sequences 5 aa long.
+replicate(3, random_aa(5:50))
+```
+
+```{r}
+seq1 <- random_aa(30)
+seq2 <- random_aa(40)
+seq3 <- random_aa(60)
+seq4 <- random_aa(80)
+seq5 <- random_aa(90)
+seq6 <- random_aa(95)
+seq7 <- random_aa(100)
+seq8 <- random_aa(120)
+seq9 <- random_aa(130)
+seq10 <- random_aa(140)
+
+randoms <- rbind(seq1, seq2, seq3, seq4, seq5, seq6, seq7, seq8, seq9, seq10)
+randoms <- as.data.frame(randoms)
+rownames(randoms) <- NULL
+names(randoms)[1] <- "seq.aa"
+
+
+```
+
+
