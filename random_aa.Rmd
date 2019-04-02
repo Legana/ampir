@@ -8,8 +8,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-
-#tst <- replicate(3, sample(aa, 4,replace = TRUE))
+# aa <- c('A', 'R', 'N', 'D', 'C', 'E', 'Q', 'G', 'H', 'I','L', 'K', 'M', 'F', 'P', 'S', 'T',             'W', 'Y','V')
+# tst <- replicate(3, sample(aa, 4,replace = TRUE))
 ```
 
 ```{r}
@@ -24,6 +24,12 @@ random_aa <- function(x) {
 #  aa_r <- replicate(x, sample(aa, y,replace = TRUE), simplify = TRUE)
   aa_r
 }
+
+random_aas <- function(n, min_length = 10, max_length = 2000){
+  lengths <- round(runif(n,min=min_length,max=max_length))
+  sapply(lengths, random_aa)
+}
+
 ```
 
 ```{r}
