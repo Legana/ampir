@@ -49,7 +49,7 @@ names(prob_little_features)[names(prob_little_features) == "Tg"] <- "prob_AMP"
 
 
 ```{r}
-predict_AMP_prob <- function(df, class = FALSE) {
+predict_AMP_prob <- function(df, classify = FALSE) {
   #load model
   load("svmRadialwithprobamph.Rdata")
   
@@ -63,19 +63,23 @@ predict_AMP_prob <- function(df, class = FALSE) {
   
     #something like if class is TRUE if (class) return class, if class is FALSE (!class) do prob+class, else do PROB
   c_AMP <- predict(svmRadialwithprob_amph, df)
-  as.data.frame(c_AMP)
-  class <- c_AMP
+  #as.data.frame(c_AMP)
+  if ( classify){
+    class <- c_AMP
   
-  #second option: show both class and probability 
-  p_c_AMP <- cbind(c_AMP,p_AMP[2])
   
+    #second option: show both class and probability 
+    return(cbind(c_AMP,p_AMP[2]))
+  } else {
+    return(p_AMP)
+  }
   #final option = DEFAULT  is probability only
  
 
 }
 
 
-predict_AMP_prob(little_features, class = TRUE)
+predict_AMP_prob(little_features, classify = TRUE)
 ```
 
 ```{r}
