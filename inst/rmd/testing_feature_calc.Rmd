@@ -34,10 +34,15 @@ little_test <- read_faa("little_test.fasta")
 
 little_features <- calculate_features(little_test$seq.aa)
 
+#Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
+
+predict_AMP_prob(batamp)
+
+calculate_features(seq = "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
+
+extractPAAC()
+
 ```
-
-
-
 
 
 

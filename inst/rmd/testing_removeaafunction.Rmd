@@ -16,9 +16,15 @@ source("R/remove_nonstandard_aa.R")
 little_test <- read_faa("R/little_test.fasta")
 
 #add row to test df with made up sequence to test remove_standardaa function
-bad_seq_df <- data.frame("not_a_real_sequence", "MKVTHEUSYRGXMBI")
+bad_seq_df <- data.frame("fake_nonstandard_sequence", "MKVTHEUSYR$GXMBIJIDGM80-%")
 names(bad_seq_df) <- c("seq.name", "seq.aa")
 bad_seq_test_df <- rbind(little_test, bad_seq_df)
+
+batamp_df <- data.frame('G1P6H5_MYOLU', "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
+names(batamp_df) <- c("seq.name", "seq.aa")
+
+
+df <- rbind(batamp_df, bad_seq_df)
 ```
 
 
@@ -26,4 +32,8 @@ bad_seq_test_df <- rbind(little_test, bad_seq_df)
 ```{r}
 
 good_seqs_df <- remove_nonstandard_aa(bad_seq_test_df , bad_seq_test_df $seq.aa)
+
+remove_nonstandard_aa(df, df$seq.aa)
+
+grepl('^[ARNDCEQGHILKMFPSTWYV]+$', df$seq.aa)
 ```

@@ -3,10 +3,16 @@ Type: Package
 Title: Predict Antimicrobial Peptides
 Version: 0.1.0
 Author: Legana Fingerhut
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-    URL: https://github.com/Legana/ampir
-License: What license is it under?
+Maintainer: Legana Fingerhut <legana.fingerhut@my.jcu.edu.au>
+Description: A toolkit to predict antimicrobial peptides from protein sequences 
+    by including functions to read and prepare protein sequences to be analysed by a 
+    predictive model, which ultimately provides a probability of a protein to be an
+    antimicrobial peptide.
+URL: https://github.com/Legana/ampir
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.5.0)
+Imports: protr,
+         Peptides
+RoxygenNote: 6.1.1
