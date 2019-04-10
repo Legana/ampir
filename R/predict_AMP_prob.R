@@ -19,10 +19,9 @@
 
 predict_AMP_prob <- function(df) {
 
-  load("svmRadialwithprob_amph.Rdata")
-  usethis::use_data("svmRadialwithprob_amph.Rdata")
 
-  p_AMP <- predict(svmRadialwithprob_amph, df, type = "prob")
+
+  p_AMP <- predict(ampir_package_data['svmRadialwithprob_amph'], df, type = "prob")
 
 
   names(p_AMP)[names(p_AMP) == "Tg"] <- "prob_AMP"

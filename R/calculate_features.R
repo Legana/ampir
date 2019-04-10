@@ -11,8 +11,8 @@
 #'
 #' @return A dataframe containing numerical values related to the protein features
 #'
-#' @examples Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
-#'
+#' @examples
+#' # Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
 #' calculate_features(seq =
 #'    "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
 #'
