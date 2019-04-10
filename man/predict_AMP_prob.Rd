@@ -20,7 +20,9 @@ This model was created via the caret package (https://github.com/topepo/caret/)
 }
 \examples{
 
+bat_features <- readRDS(system.file("extdata/bat_features.rds", package = "ampir"))
+
 predict_AMP_prob(bat_features)
- # prob_AMP
-[1] 0.9672241
+#      prob_AMP
+# [1] 0.9672241
 }

@@ -10,16 +10,20 @@
 #' @return a dataframe like the input dataframe but with removed proteins that contained non standard amino acids
 #'
 #' @examples
-#' ## Example dataframe (param df input)
-#' # seq.name        seq.aa
-#' # G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
-#' # fake_sequence   MKVTHEUSYR$GXMBIJIDGM80-%
 #'
-#' remove_nonstandard_aa(df, df$seq.aa)
+#' non_standard_df <- readRDS(system.file("extdata/non_standard_df.rds", package = "ampir"))
+#'
+#' ## Example dataframe (non_standard_df)
+#' non_standard_df
+#' #       seq.name            seq.aa
+#' # [1] G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
+#' # [2] fake_sequence   MKVTHEUSYR$GXMBIJIDGM80-%
+#'
+#' remove_nonstandard_aa(non_standard_df, non_standard_df$seq.aa)
 #'
 #' ## Output
-#' # seq.name        seq.aa
-#' # G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
+#' #       seq.name        seq.aa
+#' # [1] G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
 
 remove_nonstandard_aa <- function(df, seq) {
 

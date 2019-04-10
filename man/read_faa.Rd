@@ -18,3 +18,9 @@ This function reads a FASTA amino acids file into a dataframe
 \note{
 This function was originally written by Jinlong Zhang (jinlongzhang01@gmail.com) for the phylotools package (http://github.com/helixcn/phylotools)
 }
+\examples{
+
+read_faa(system.file("extdata/bat_features.rds", package = "ampir"))
+#         seq.name              seq.aa
+# [1] G1P6H5_MYOLU  MALTVRIQAACLLLLLLASLTSYSL....
+}

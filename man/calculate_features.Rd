@@ -19,14 +19,13 @@ This function calculates set physicochemical and compositional features from pro
 This function depends on the Peptides package
 }
 \examples{
-Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
-
+# Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
 calculate_features(seq =
    "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
 
 ## Output (showing the first five output columns)
-# Length  Amphiphilicity  Hydrophobicity   pI          Mw         ....
-[1] 83      0.4145847       0.4373494       8.501312    9013.757   ....
+# Length  Amphiphilicity  Hydrophobicity     pI          Mw         ....
+# [1] 83      0.4145847       0.4373494     8.501312     9013.757   ....
 }
 \references{
 Osorio, D., Rondon-Villarreal, P. & Torres, R. Peptides: A package for data mining of antimicrobial peptides. The R Journal. 7(1), 4–14 (2015).

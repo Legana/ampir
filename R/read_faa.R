@@ -9,6 +9,12 @@
 #' @param file file path to the FASTA format file containing the protein sequences
 #'
 #' @return Dataframe containing the sequence name (seq.name) and sequence (seq.aa) columns
+#'
+#' @examples
+#'
+#' read_faa(system.file("extdata/bat_features.rds", package = "ampir"))
+#' #         seq.name              seq.aa
+#' # [1] G1P6H5_MYOLU  MALTVRIQAACLLLLLLASLTSYSL....
 
 read_faa <- function (file = NULL) {
   faa.lines <- readLines(file)

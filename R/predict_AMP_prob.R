@@ -3,7 +3,8 @@
 #' This function predicts the probability of a protein to be an antimicrobial peptide based on feature calculations (as obtained from \code{calculate_features})
 #'
 #' @export predict_AMP_prob
-#' @importFrom stats predict
+#'
+#' @importFrom caret predict.train
 #'
 #' @note This model was created via the caret package (https://github.com/topepo/caret/)
 #'
@@ -13,16 +14,17 @@
 #'
 #' @examples
 #'
+#' bat_features <- readRDS(system.file("extdata/bat_features.rds", package = "ampir"))
+#'
 #' predict_AMP_prob(bat_features)
-#'  # prob_AMP
-#' [1] 0.9672241
+#' #      prob_AMP
+#' # [1] 0.9672241
 
 predict_AMP_prob <- function(df) {
 
+  svmRadialwithprob_amph <- ampir_package_data[['svmRadialwithprob_amph']]
 
-
-  p_AMP <- predict(ampir_package_data['svmRadialwithprob_amph'], df, type = "prob")
-
+  p_AMP <- predict.train(svmRadialwithprob_amph, df, type = "prob")
 
   names(p_AMP)[names(p_AMP) == "Tg"] <- "prob_AMP"
 

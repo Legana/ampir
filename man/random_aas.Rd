@@ -7,13 +7,13 @@
 random_aas(n, min_length = 10, max_length = 2000)
 }
 \arguments{
-\item{n}{The number of sequences for random_aas}
+\item{n}{The number of sequences}
 
-\item{min_length, max_length}{The minimum and maximum length of the sequence (default is 10 and 2000, respectively) for random_aas
-
-random_aas(n = 3, min_length = 5, max_length = 20)
-[1] "IGPRWSFRLW"   "NEAHNW"  "LDNCQRTLWKFPHHFHL"}
+\item{min_length, max_length}{The minimum and maximum length of the sequence (default is 10 and 2000, respectively)}
+}
+\value{
+A character vector of given number and length range
 }
 \description{
-Create multiple random amino acid sequences of given length
+This function uses a helper function (see \code{random_aa}) and creates random amino acid sequences of a given number and length range
 }
