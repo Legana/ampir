@@ -1,0 +1,23 @@
+---
+title: "Performance Measurements"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(microbenchmark)
+library(ampir)
+
+seq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
+
+ampir:::extractPAAC(seq,lambda = 4)
+ampir:::calc_pseudo_comp(seq,lambda=4)
+
+microbenchmark(ampir:::extractPAAC(seq,lambda = 4),ampir:::calc_pseudo_comp(seq,lambda=4))
+
+```
+
+
