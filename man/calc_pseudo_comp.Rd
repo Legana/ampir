@@ -14,5 +14,5 @@ Calculate the pseudo amino acid composition
 }
 \references{
 Nan Xiao, Dong-Sheng Cao, Min-Feng Zhu, and Qing-Song Xu. (2015). protr/ProtrWeb: R package and web server for generating various numerical representation schemes of protein sequences. Bioinformatics 31 (11), 1857-1859.
-The imported function within this function originates from the protr package (https://github.com/road2stat/protr)
+The imported function within this function originates from the protr package (https://github.com/nanxstats/protr)
 }
