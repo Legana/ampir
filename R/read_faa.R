@@ -12,7 +12,7 @@
 #'
 #' @examples
 #'
-#' read_faa(system.file("extdata/bat_features.rds", package = "ampir"))
+#' read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 #' #         seq.name              seq.aa
 #' # [1] G1P6H5_MYOLU  MALTVRIQAACLLLLLLASLTSYSL....
 
