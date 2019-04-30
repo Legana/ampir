@@ -12,25 +12,23 @@
 #' @return A dataframe containing numerical values related to the protein features
 #'
 #' @examples
-#' # Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
+#' # Calculate features from Hepcidin AMP from \emph{Myotis lucifugus} (UniProt ID G1P6H5)
 #' calculate_features(seq =
 #'    "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
 #'
 #' ## Output (showing the first five output columns)
-#' # Length  Amphiphilicity  Hydrophobicity     pI          Mw         ....
-#' # [1] 83      0.4145847       0.4373494     8.501312     9013.757   ....
+#' #  Amphiphilicity  Hydrophobicity     pI          Mw         Charge    ....
+#' # [1]  0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
 calculate_features <- function(seq) {
-  Length            <- calc_length(seq)
   Amphiphilicity    <- calc_amphiphilicity(seq)
   Hydrophobicity    <- calc_hydrophobicity(seq)
   Isoelectric_point <- calc_pI(seq)
   Mol_weight        <- calc_mw(seq)
   Net_charge        <- calc_net_charge(seq)
-  Composition       <- calc_composition(seq)
   Pseudo_composition<- calc_pseudo_comp(seq)
 
-  cbind(Length, Amphiphilicity, Hydrophobicity, Isoelectric_point, Mol_weight, Net_charge, Composition, Pseudo_composition)
+  cbind(Amphiphilicity, Hydrophobicity, Isoelectric_point, Mol_weight, Net_charge, Pseudo_composition)
 }
 
 
