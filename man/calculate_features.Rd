@@ -19,7 +19,7 @@ This function calculates set physicochemical and compositional features from pro
 This function depends on the Peptides package
 }
 \examples{
-# Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
+# Calculate features from Hepcidin AMP from \\emph{Myotis lucifugus} (UniProt ID G1P6H5)
 calculate_features(seq =
    "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
 
