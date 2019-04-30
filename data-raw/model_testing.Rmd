@@ -1,0 +1,147 @@
+---
+title: "Model_testing"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+AMPEP background data with SP AMPs 
+
+```{r}
+
+tg <- read_faa("tmpdata/swissprot-amps-april19.fasta")
+tg$Label <- "Tg"
+
+tg <- remove_nonstandard_aa(tg, tg$seq.aa)
+
+PEPbg <- read_faa("tmpdata/M_model_train_nonAMP_sequence.fasta")
+PEPbg$Label <- "Bg"
+
+#background very large (166791 sequences) so set to same length as target through random sample
+PEPbg <- PEPbg[sample(nrow(PEPbg),3481),]
+
+
+
+PEPbg_tg <- rbind(tg, PEPbg)
+```
+
+ampep data (tg and bg)
+```{r}
+PEPtg <- read_faa("tmpdata/M_model_train_AMP_sequence.fasta")
+PEPtg$Label <- "Tg"
+
+#3:1
+PEPbg <- PEPbg[sample(nrow(PEPbg),9804),]
+
+#1:1
+PEPbg <- PEPbg[sample(nrow(PEPbg),3268),]
+
+PEPbg_tg <- rbind(PEPtg, PEPbg)
+
+```
+
+```{r}
+
+featuresPEP <- calculate_features(PEPbg_tg$seq.aa)
+
+featuresPEP$Label <- PEPbg_tg$Label
+featuresPEP[["Label"]] <- factor(featuresPEP[["Label"]])
+```
+
+```{r}
+trainPEPIndex <-createDataPartition(y=featuresPEP$Label, p=.8, list = FALSE)
+featuresPEPTrain <-featuresPEP[trainPEPIndex,]
+featuresPEPTest <-featuresPEP[-trainPEPIndex,]
+
+trctrlPEP <- trainControl(method = "repeatedcv", number = 10, repeats = 3)
+
+set.seed(3)
+svm_PEPbg_Radial <- train(Label~., data = featuresPEPTrain, method="svmRadial",
+                    trControl = trctrlPEP, preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+svm_PEPtgbg <- train(Label~., data = featuresPEPTrain, method="svmRadial",
+                    trControl = trctrlPEP, preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+pep_RF <- train(Label~., data = featuresPEPTrain, method="rf", ntree = 100,
+                    trControl = trctrlPEP, preProcess = c("center", "scale"))
+
+svm_PEP31 <- train(Label~., data = featuresPEPTrain, method="svmRadial",
+                    trControl = trctrlPEP, preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+test_PEPpred <- predict(svm_PEPtgbg, newdata = featuresPEPTest)
+
+test_PEPpredRF <- predict(pep_RF, newdata = featuresPEPTest)
+
+confusionMatrix(test_PEPpred, featuresPEPTest$Label)
+
+confusionMatrix(test_PEPpredRF, featuresPEPTest$Label)
+
+```
+
+ #for model using pepbg as background and sp tg as tg without length and aacomp
+
+              Accuracy : 0.9267          
+                 95% CI : (0.9118, 0.9399)
+    No Information Rate : 0.5             
+    P-Value [Acc > NIR] : <2e-16          
+                                          
+                  Kappa : 0.8534          
+ Mcnemar's Test P-Value : 0.198           
+                                          
+            Sensitivity : 0.9167          
+            Specificity : 0.9368   
+         
+        
+         #for model using pepbg as background and sp tg as tg with all features
+         
+               Accuracy : 0.9224          
+                 95% CI : (0.9071, 0.9359)
+    No Information Rate : 0.5             
+    P-Value [Acc > NIR] : <2e-16          
+                                          
+                  Kappa : 0.8448          
+ Mcnemar's Test P-Value : 0.1489          
+                                          
+            Sensitivity : 0.9339          
+            Specificity : 0.9109  
+            
+            
+
+# for model using PEP data (tg and bg)
+
+Confusion Matrix and Statistics
+
+          Reference
+Prediction  Bg  Tg
+        Bg 611  25
+        Tg  42 628
+                                        
+               Accuracy : 0.9487        
+                 95% CI : (0.9353, 0.96)
+    No Information Rate : 0.5           
+    P-Value [Acc > NIR] : < 2e-16       
+                                        
+                  Kappa : 0.8974        
+ Mcnemar's Test P-Value : 0.05062       
+                                        
+            Sensitivity : 0.9357        
+            Specificity : 0.9617 
+            
+            
+  # same model with reduced featyres
+  
+                 Accuracy : 0.951           
+                 95% CI : (0.9379, 0.9621)
+    No Information Rate : 0.5             
+    P-Value [Acc > NIR] : <2e-16          
+                                          
+                  Kappa : 0.902           
+ Mcnemar's Test P-Value : 0.9005          
+                                          
+            Sensitivity : 0.9495          
+            Specificity : 0.9525   

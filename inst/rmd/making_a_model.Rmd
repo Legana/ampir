@@ -8,7 +8,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
-load("R/uniprot_features.Rdata")
+load("data-raw/uniprot_features.Rdata")
 ```
 
 
@@ -78,5 +78,7 @@ Prediction  Bg  Tg
       Balanced Accuracy : 0.9133          
                                           
        'Positive' Class : Bg    
-```
+
+
+
 
