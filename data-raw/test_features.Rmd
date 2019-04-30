@@ -1,0 +1,40 @@
+---
+title: "test_features"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+#find correlated features 
+
+cor_matrix <- cor(features[1:39])
+
+highly_cor_features <- findCorrelation(cor_matrix, names = TRUE, exact = TRUE, verbose = TRUE)
+
+#  5  1 19 35 26 11
+
+rfe_control <- rfeControl(functions = caretFuncs, method = "repeatedcv", number = 10, repeats = 3)
+
+#rfe_control <- rfeControl(functions = caretFuncs, number = 5)
+
+set.seed(10)
+
+svmProfile <- rfe(features[,1:39], features[,40], rfeControl = rfe_control, method = "svmRadial", preProcess = c("center", "scale"))
+
+#svmProfile <- rfe(features[c(1:25,6925:6950),1:39], features[c(1:25,6925:6950),40], rfeControl = rfe_control, method = "svmRadial", preProcess = c("center", "scale"))
+```
+
+```{r}
+#rank important features
+
+svmProfile$results
+
+varImp(svmProfile)
+
+```
+```
+
