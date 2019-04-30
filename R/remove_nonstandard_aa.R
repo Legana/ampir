@@ -17,7 +17,7 @@
 #' non_standard_df
 #' #       seq.name            seq.aa
 #' # [1] G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
-#' # [2] fake_sequence   MKVTHEUSYR$GXMBIJIDGM80-%
+#' # [2] fake_sequence   MKVTHEUSYR$GXMBIJIDG*M80-%
 #'
 #' remove_nonstandard_aa(non_standard_df, non_standard_df$seq.aa)
 #'
