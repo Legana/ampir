@@ -13,11 +13,15 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Depends: R (>= 3.5.0)
-Imports: protr,
-         Peptides,
-         caret
+Imports: 
+    Peptides,
+    caret,
+    Rcpp
 RoxygenNote: 6.1.1
 Suggests: 
+    testthat,
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+LinkingTo: 
+    Rcpp
