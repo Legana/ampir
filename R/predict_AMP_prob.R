@@ -22,9 +22,9 @@
 
 predict_AMP_prob <- function(df) {
 
-  svmRadialwithprob_amph <- ampir_package_data[['svmRadialwithprob_amph']]
+  svm_Radial <- ampir_package_data[['svm_Radial']]
 
-  p_AMP <- predict.train(svmRadialwithprob_amph, df, type = "prob")
+  p_AMP <- predict.train(svm_Radial, df, type = "prob")
 
   names(p_AMP)[names(p_AMP) == "Tg"] <- "prob_AMP"
 
