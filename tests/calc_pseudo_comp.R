@@ -17,17 +17,17 @@ calc_pseudo_comp <- function(seq,lambda = NULL) {
   # Note that this is probably the slowest part of this function now.
   # Further performance gains could be obtained by caching this result (via memoize)
   #
-  AAidx <- ampir_package_data[["AAidx"]]
-  aaidx <- AAidx[, -1]
-  row.names(aaidx) <- AAidx[, 1]
-  props <- c('Hydrophobicity', 'Hydrophilicity', 'SideChainMass')
-  n <- length(props)
+  AAidx = ampir:::ampir_package_data[['AAidx']]
+  aaidx = AAidx[, -1]
+  row.names(aaidx) = AAidx[, 1]
+  props = c('Hydrophobicity', 'Hydrophilicity', 'SideChainMass')
+  n = length(props)
 
   # Standardize H0 to H
 
-  H0 <- as.matrix(aaidx[props, ])
+  H0 = as.matrix(aaidx[props, ])
 
-  H  <- matrix(ncol = 20, nrow = n)
+  H  = matrix(ncol = 20, nrow = n)
   for (i in 1:n) H[i, ] =
     (H0[i, ] - mean(H0[i, ]))/(sqrt(sum((H0[i, ] - mean(H0[i, ]))^2)/20))
   AADict = c(

@@ -5,8 +5,10 @@ library(usethis)
 # Used by calc_pseudo_comp
 # Obtained from protr
 #
-AAidx = read.csv('data-raw/AAidx.csv', header = TRUE)
-tmp = data.frame(
+#AAidx <- read.csv('data-raw/AAidx.csv', header = TRUE)
+AAidx <- readRDS("data-raw/AAidx.rds")
+
+tmp <- data.frame(
   AccNo = c('Hydrophobicity', 'Hydrophilicity', 'SideChainMass'),
   A = c(0.62,  -0.5, 15),  R = c(-2.53,   3, 101),
   N = c(-0.78,  0.2, 58),  D = c(-0.9,    3, 59),
@@ -18,7 +20,7 @@ tmp = data.frame(
   P = c(0.12,     0, 42),  S = c(-0.18, 0.3, 31),
   T = c(-0.05, -0.4, 45),  W = c(0.81, -3.4, 130),
   Y = c(0.26,  -2.3, 107), V = c(1.08, -1.5, 43))
-AAidx = rbind(AAidx, tmp)
+AAidx <- rbind(AAidx, tmp)
 
 
 ampir_package_data <- list('svm_Radial'=svm_Radial,
@@ -26,6 +28,7 @@ ampir_package_data <- list('svm_Radial'=svm_Radial,
 
 
 ##test best compression for each file:
-#tools::checkRdaFiles("data-raw/svmRadialwithprob_amph.Rdata")
+#tools::checkRdaFiles("data-raw/svm_radial96.rds")
+#tools::checkRdaFiles("data-raw/AAidx.rds")
 
-usethis::use_data(ampir_package_data,internal = TRUE,overwrite = TRUE, compress = "gzip")
+usethis::use_data(ampir_package_data,internal = TRUE,overwrite = TRUE, compress = "xz")

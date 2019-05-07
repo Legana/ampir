@@ -1,34 +1,50 @@
 ---
-title: "Introduction to ampir"
-author: "Legana Fingerhut"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Introduction to ampir}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: github_document
 ---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
 )
 ```
+# Introduction to ampir
+
+<!-- badges: start -->
+<!-- badges: end -->
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r** ) package was designed to be an open and user-friendly method to predict AMPs (antimicrobial peptides) from any given size protein dataset. **ampir** uses four sequential functions to create a four step approach to predict AMPs.
 
-# Brief background
+## Installation
+
+You can install the development version of ampir from [GitHub](https://github.com/) with:
+
+Note: this does not yet work as the repository is private.
+```r
+# install.packages("devtools")
+devtools::install_github("Legana/ampir")
+```
+
+```{r, echo = FALSE, eval=FALSE}
+#devtools::install_github("Legana/ampir",auth_token = "07d66396f0c3f7a5ac675b8e7312b9eda55d1d8b")
+```
+
+## Brief background
 
 **ampir** uses a *supervised statistical machine learning* approach to predict AMPs. Basically this involves making a statistical model based on *input* data to predict *output* data [James, Witten, Hastie & Tibshirani 2013](http://www-bcf.usc.edu/~gareth/ISL/). The input data are also known as *features* which are used to describe the data. To predict AMPs, physicochemical and compositional properties of protein sequences are used as features [Osorio, Rondón-Villarreal & Torres 2015](https://journal.r-project.org/archive/2015/RJ-2015-001/RJ-2015-001.pdf). Therefore, within this package, it is important to ***follow an order of functions***.
 
-## Order of functions to follow
+### Order of functions to follow
 
 1. `read_faa()` to read FASTA amino acid files.
 2. `remove_nonstandard_aa()` to remove non standard amino acid sequences.
 3. `calculate_features()` to calculate data descriptors used by the predictive model.
 4. `predict_AMP_prob()` to predict the AMP probability of a protein.
 
-# Example workflow
+## Example workflow
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(ampir)
@@ -44,17 +60,22 @@ my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir
 
 ```{r, echo=FALSE}
 #sapply to shorten words in df and use data.frame(as.list) to tidy up kable output
-knitr::kable(as.data.frame(as.list(sapply(my_protein, strtrim, 35))), caption = "My protein")
+#knitr::kable(as.data.frame(as.list(sapply(my_protein, strtrim, 35))), caption = "My protein")
+
+knitr::kable(my_protein, caption = "My protein")
 ```
 
 ### Step 2: Remove non standard amino acids with `remove_nonstandard_aa()`
 
 `remove_nonstandard_aa()` is used to remove sequences that contain anything other than the 20 standard amino acids. These sequences are removed to circumvent potential complications with calculations.
 
+
 ```{r, echo=FALSE}
 nonstandard_example_df <- readRDS(system.file("extdata/non_standard_df.rds", package = "ampir"))
 
-knitr::kable(sapply(nonstandard_example_df, strtrim, 35), caption = "Example dataframe with a nonsense protein")
+#knitr::kable(sapply(nonstandard_example_df, strtrim, 35), caption = "Example dataframe with a nonsense protein")
+
+knitr::kable(nonstandard_example_df, caption = "Example dataframe with a nonsense protein")
 ```
 
 The table above shows a dataframe with protein sequences in it. The second row contains a made up sequence to serve as an example. This made up sequence will be removed with `remove_nonstandard_aa()`.
@@ -64,8 +85,11 @@ my_clean_protein <- remove_nonstandard_aa(nonstandard_example_df)
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(as.data.frame(as.list(sapply(my_clean_protein, strtrim, 35))), caption = "My clean protein")
+#knitr::kable(as.data.frame(as.list(sapply(my_clean_protein, strtrim, 35))), caption = "My clean protein")
+
+knitr::kable(my_clean_protein, caption = "My clean protein")
 ```
+
 
 ### Step 3: Calculate features with `calculate_features()`
 
@@ -76,7 +100,10 @@ my_protein_features <- calculate_features(my_clean_protein)
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(my_protein_features[1:6], digits = 3, caption = "My protein features ( first six columns )")
+#knitr::kable(my_protein_features[1:6], digits = 3, caption = "My protein features ( first six columns )")
+
+knitr::kable(my_protein_features, digits = 3, caption = "My protein features")
+
 ```
 
 ### Step 4: Predict antimicrobial peptide probability with `predict_AMP_prob()` 
@@ -84,12 +111,10 @@ knitr::kable(my_protein_features[1:6], digits = 3, caption = "My protein feature
 `predict_AMP_prob()` uses the output from `calculate_features()` to predict the probability of a protein to be an antimicrobial peptide.
 
 ```{r}
-my_prediction <- predict_AMP_prob(my_protein_features)
+my_protein_prediction <- predict_AMP_prob(my_protein_features)
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(my_prediction)
+knitr::kable(my_protein_prediction, digits = 3, caption = "My protein prediction")
 ```
-
-
 

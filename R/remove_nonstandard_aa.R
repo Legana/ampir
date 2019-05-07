@@ -4,8 +4,7 @@
 #'
 #' @export remove_nonstandard_aa
 #'
-#' @param df a dataframe
-#' @param seq a column in a dataframe containing protein sequences
+#' @param df A dataframe which contains protein sequence names as the first column and amino acid sequence as the second column
 #'
 #' @return a dataframe like the input dataframe but with removed proteins that contained non standard amino acids
 #'
@@ -19,13 +18,16 @@
 #' # [1] G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
 #' # [2] fake_sequence   MKVTHEUSYR$GXMBIJIDG*M80-%
 #'
-#' remove_nonstandard_aa(non_standard_df, non_standard_df$seq.aa)
+#' remove_nonstandard_aa(non_standard_df)
 #'
 #' ## Output
 #' #       seq.name        seq.aa
 #' # [1] G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
 
-remove_nonstandard_aa <- function(df, seq) {
+remove_nonstandard_aa <- function(df) {
+
+  seq <- df[,2]
+  seq.name <- df[,1]
 
   standard_aa_indices <-grepl('^[ARNDCEQGHILKMFPSTWYV]+$', seq)
 

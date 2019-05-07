@@ -20,7 +20,9 @@ This function was originally written by Jinlong Zhang (jinlongzhang01@gmail.com)
 }
 \examples{
 
-read_faa(system.file("extdata/bat_features.rds", package = "ampir"))
+read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
+
+## Output
 #         seq.name              seq.aa
 # [1] G1P6H5_MYOLU  MALTVRIQAACLLLLLLASLTSYSL....
 }

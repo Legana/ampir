@@ -4,15 +4,16 @@
 \alias{calc_pseudo_comp}
 \title{Calculate the pseudo amino acid composition}
 \usage{
-calc_pseudo_comp(seq)
+calc_pseudo_comp(seq, lambda = NULL)
 }
 \arguments{
 \item{seq}{A protein sequence}
+
+\item{lambda}{lambda value (determined within the function)}
 }
 \description{
-Calculate the pseudo amino acid composition
+This function is adapted from the extractPAAC function from the protr package (https://github.com/nanxstats/protr)
 }
 \references{
 Nan Xiao, Dong-Sheng Cao, Min-Feng Zhu, and Qing-Song Xu. (2015). protr/ProtrWeb: R package and web server for generating various numerical representation schemes of protein sequences. Bioinformatics 31 (11), 1857-1859.
-The imported function within this function originates from the protr package (https://github.com/nanxstats/protr)
 }

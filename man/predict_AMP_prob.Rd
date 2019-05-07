@@ -20,9 +20,9 @@ This model was created via the caret package (https://github.com/topepo/caret/)
 }
 \examples{
 
-bat_features <- readRDS(system.file("extdata/bat_features.rds", package = "ampir"))
+my_protein_features <- readRDS(system.file("extdata/my_protein_features.rds", package = "ampir"))
 
-predict_AMP_prob(bat_features)
-#      prob_AMP
-# [1] 0.9672241
+predict_AMP_prob(my_protein_features)
+#       seq.name    prob_AMP
+# [1] G1P6H5_MYOLU  0.9723796
 }

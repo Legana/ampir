@@ -1,4 +1,7 @@
-# These functions
+
+#These functions are from the protr package (https://github.com/nanxstats/protr)
+# references Nan Xiao, Dong-Sheng Cao, Min-Feng Zhu, and Qing-Song Xu. (2015). protr/ProtrWeb: R package and web server for generating various numerical representation schemes of protein sequences. Bioinformatics 31 (11), 1857-1859.
+
 
 protcheck = function(x) {
 

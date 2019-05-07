@@ -6,22 +6,10 @@ context("Calculate features")
 #'    "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
 #'
 #' ## Output (showing the first five output columns)
-#' # Length  Amphiphilicity  Hydrophobicity     pI          Mw         ....
-#' # [1] 83      0.4145847       0.4373494     8.501312     9013.757   ....
+#' # Amphiphilicity  Hydrophobicity     pI          Mw         ....
+#' # [1]  0.4145847       0.4373494     8.501312     9013.757   ....
 
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
-
-test_that("Hepcidin gives correct length", {
-
-  result <- calc_length(hepseq)
-
-  expect_is(result,"data.frame")
-
-  expect_equal(
-    result$Length,
-    83)
-
-})
 
 
 test_that("Hepcidin gives correct Amphiphilicity", {
@@ -37,7 +25,7 @@ test_that("Hepcidin gives correct Amphiphilicity", {
 })
 
 
-test_that("Hepcidin gives correct Amphiphilicity", {
+test_that("Hepcidin gives correct Hydrophobicity", {
 
   result <- calc_hydrophobicity(hepseq)
 
@@ -88,26 +76,6 @@ test_that("Hepcidin gives correct Net charge", {
     4.53015, tolerance=1e-5)
 
 })
-
-
-
-test_that("Hepcidin gives correct Composition", {
-
-  expected_result <- as.data.frame(t(c(43.373,51.807,33.735,6.024,61.446,38.554,14.458,10.843,3.614)))
-  rownames(expected_result) <- rownames(seq)
-
-  names(expected_result) <- c("TinyAA", "SmallAA", "AliphaticAA", "AromaticAA", "NonPolarAA", "PolarAA", "ChargedAA","BasicAA", "AcidicAA")
-
-  result <- calc_composition(hepseq)
-
-  expect_is(result,"data.frame")
-
-  expect_equal(
-    result,
-    expected_result, tolerance=1e-5)
-
-})
-
 
 
 test_that("Hepcidin gives correct Pseudo Amino Acid Composition", {

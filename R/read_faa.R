@@ -13,6 +13,8 @@
 #' @examples
 #'
 #' read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
+#'
+#' ## Output
 #' #         seq.name              seq.aa
 #' # [1] G1P6H5_MYOLU  MALTVRIQAACLLLLLLASLTSYSL....
 
@@ -38,6 +40,6 @@ read_faa <- function (file = NULL) {
                             collapse = ""))
   }
 
-  res <- data.frame(seq.name, seq.aa)
+  res <- data.frame(seq.name, seq.aa, stringsAsFactors = FALSE)
   return(res)
 }

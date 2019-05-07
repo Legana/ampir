@@ -14,21 +14,26 @@
 #'
 #' @examples
 #'
-#' bat_features <- readRDS(system.file("extdata/bat_features.rds", package = "ampir"))
+#' my_protein_features <- readRDS(system.file("extdata/my_protein_features.rds", package = "ampir"))
 #'
-#' predict_AMP_prob(bat_features)
-#' #      prob_AMP
-#' # [1] 0.9672241
+#' predict_AMP_prob(my_protein_features)
+#' #       seq.name    prob_AMP
+#' # [1] G1P6H5_MYOLU  0.9723796
 
 predict_AMP_prob <- function(df) {
 
-  svm_Radial <- ampir_package_data[['svm_Radial']]
+  seq.name <- df[,1]
+  df <- df[,-1]
+
+  svm_Radial <- ampir_package_data[["svm_Radial"]]
 
   p_AMP <- predict.train(svm_Radial, df, type = "prob")
 
   names(p_AMP)[names(p_AMP) == "Tg"] <- "prob_AMP"
 
-  as.data.frame(p_AMP)[2]
+  p_AMP_df <- as.data.frame(p_AMP)[2]
+
+  cbind(seq.name, p_AMP_df)
 
 }
 
