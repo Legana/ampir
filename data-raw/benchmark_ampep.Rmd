@@ -1,0 +1,205 @@
+---
+title: "benchmark_ampep"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+AMPEP background data with SP AMPs 
+
+```{r}
+
+tg <- read_faa("tmpdata/swissprot-amps-april19.fasta")
+tg$Label <- "Tg"
+
+tg <- remove_nonstandard_aa(tg, tg$seq.aa)
+
+PEPbg <- read_faa("tmpdata/M_model_train_nonAMP_sequence.fasta")
+PEPbg$Label <- "Bg"
+
+#background very large (166791 sequences) so set to same length as target through random sample
+PEPbg <- PEPbg[sample(nrow(PEPbg),3481),]
+
+
+
+PEPbg_tg <- rbind(tg, PEPbg)
+```
+
+ampep data (tg and bg)
+```{r}
+PEPtg <- read_faa("tmpdata/ampep/M_model_train_AMP_sequence.fasta")
+PEPtg$Label <- "Tg"
+
+
+PEPbg <- read_faa("tmpdata/ampep/M_model_train_nonAMP_sequence.fasta")
+PEPbg$Label <- "Bg"
+
+
+PEPtg <- PEPtg[nchar(PEPtg$seq.aa) >=20,]
+PEPbg <- PEPbg[nchar(PEPbg$seq.aa) >=20,]
+
+set.seed(36)
+
+#3:1
+PEPbg31 <- PEPbg[sample(nrow(PEPbg),7791),]
+
+#1:1
+PEPbg <- PEPbg31[sample(nrow(PEPbg31),2597),]
+
+#1:1
+PEPbg_tg <- rbind(PEPtg, PEPbg)
+
+#3:1
+PEPbg_tg31 <- rbind(PEPtg, PEPbg31)
+
+```
+
+```{r}
+featuresPEP31 <- calculate_features(PEPbg_tg31)
+
+featuresPEP <- calculate_features(PEPbg_tg)
+
+featuresPEP31$Label <- PEPbg_tg31$Label
+featuresPEP31[["Label"]] <- factor(featuresPEP31[["Label"]])
+
+featuresPEP$Label <- PEPbg_tg$Label
+featuresPEP[["Label"]] <- factor(featuresPEP[["Label"]])
+```
+
+```{r}
+trainPEPIndex <-createDataPartition(y=featuresPEP$Label, p=.8, list = FALSE)
+featuresPEPTrain <-featuresPEP[trainPEPIndex,]
+featuresPEPTest <-featuresPEP[-trainPEPIndex,]
+
+trctrl <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
+
+
+svm_PEPtgbg <- train(Label~., data = featuresPEPTrain[,-c(1,27:45)], method="svmRadial",
+                    trControl = trctrl, preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+
+trainPEP31Index <-createDataPartition(y=featuresPEP31$Label, p=.8, list = FALSE)
+featuresPEP31Train <-featuresPEP31[trainPEP31Index,]
+featuresPEP31Test <-featuresPEP31[-trainPEP31Index,]
+
+
+svm_PEPtgbg31 <- train(Label~., data = featuresPEP31Train[,-c(1,27:45)], method="svmRadial",
+                    trControl = trctrl, preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+
+
+test_PEPpred <- predict(svm_PEPtgbg, newdata = featuresPEPTest)
+
+confusionMatrix(test_PEPpred, featuresPEPTest$Label)
+
+library(mltools)
+
+mcc(TP = 497, FP = 22, TN = 502, FN = 17)
+
+library(pROC)
+
+test_pred_prob <- predict(svm_PEPtgbg, featuresPEPTest, type = "prob")
+roc_out <- roc(featuresPEPTest$Label, test_pred_prob$Tg)
+
+plot(roc_out)
+
+
+#test with bg3:1tg 
+
+test_PEP31pred <- predict(svm_PEPtgbg31, newdata = featuresPEP31Test)
+
+confusionMatrix(test_PEP31pred, featuresPEP31Test$Label)
+
+library(mltools)
+
+mcc(TP = 478, FP = 41, TN = 1527, FN = 31)
+
+library(pROC)
+
+test_pred_prob <- predict(svm_PEPtgbg31, featuresPEP31Test, type = "prob")
+roc_out <- roc(featuresPEP31Test$Label, test_pred_prob$Tg)
+
+```
+
+```{r}
+
+tst <- readRDS("tmpdata/1000_test_features.rds")
+
+#test with 1000 sp proteins
+test_PEP1000 <- predict(svm_PEPtgbg, newdata = featuresTest_1000)
+
+confusionMatrix(test_PEP1000, featuresTest_1000$Label)
+
+library(mltools)
+
+mcc(TP = 344, FP = 157, TN = 418, FN = 81)
+
+library(pROC)
+
+test_pred_prob <- predict(svm_PEPtgbg, featuresTest_1000, type = "prob")
+roc_out <- roc(featuresTest_1000$Label, test_pred_prob$Tg)
+
+
+# test 3:1 ampep model with 1000 proteins
+
+
+```
+
+
+```{r}
+test_PEP1000 <- predict(svm_PEPtgbg31, newdata = featuresTest_1000)
+
+confusionMatrix(test_PEP1000, featuresTest_1000$Label)
+
+library(mltools)
+
+mcc(TP = 290, FP = 211, TN = 398, FN = 101)
+
+library(pROC)
+
+test_pred_prob <- predict(svm_PEPtgbg31, featuresTest_1000, type = "prob")
+roc(featuresTest_1000$Label, test_pred_prob$Tg)
+```
+
+
+```{r}
+#import prediction result from 1000 proteins from original ampep model 
+ampep_1000_results <- read.csv("tmpdata/ampep/ampresults2.csv")
+
+ampep_1000_results$Label <- NA
+  
+ampep_1000_results$Label[grep("0", ampep_1000_results$prediction)] = "Bg"
+
+ampep_1000_results$Label[grep("1", ampep_1000_results$prediction)] = "Tg"
+
+ampep_1000_results$Label <- as.factor(ampep_1000_results$Label)
+
+colnames(ampep_1000_results)[3] <- "Tg_prob"
+
+ampep_1000_results$Bg_prob <- 1 - ampep_1000_results$Tg_prob
+
+
+```
+
+```{r}
+#predicted against reference (true results)
+library(caret)
+confusionMatrix(ampep_1000_results$Label, featuresTest_1000$Label)
+
+library(mltools)
+mcc(TP = 260, FP = 241, TN = 354, FN = 145)
+
+
+library(pROC)
+
+ampep_pred_prob <- ampep_1000_results[,c(5,3)]
+
+roc(featuresTest_1000$Label, ampep_pred_prob$Tg_prob)
+
+
+```
+

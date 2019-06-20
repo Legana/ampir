@@ -1,0 +1,199 @@
+---
+title: "validate_model"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+features <- readRDS("tmpdata/featuressptgbg13.rds")
+
+features <- readRDS("tmpdata/featuressp11.rds")
+```
+
+```{r}
+nrow(features) #13924 #6414
+
+length(grep("Tg", features$Label)) #3481 #3207
+
+length(grep("Bg", features$Label)) #10443 #3207
+
+#features <- features[6963:13924,] #now its 3481 tg and bg
+
+features_extrabg31 <- features
+features_cut_bg <- features[1:6414,]
+
+features_11 <- features[6415:12828,]
+
+```
+
+```{r}
+library(caret)
+
+set.seed(3698)
+set.seed(3699)
+
+trainIndex <-createDataPartition(y=features$Label, p=.8, list = FALSE)
+
+featuresTrain <-features[trainIndex,]
+featuresTest <-features[-trainIndex,]
+
+#featurestestextrabg <- rbind(features_cut_bg, featuresTest)
+
+length(grep("Tg", featuresTrain$Label)) #2566
+length(grep("Bg", featuresTrain$Label)) #2566
+
+#subset 10% off training data for validation 
+trainIndex2 <-createDataPartition(y=featuresTrain$Label, p=.90, list = FALSE)
+
+featuresTrain <-featuresTrain[trainIndex2,]
+featuresValidation <-featuresTrain[-trainIndex2,]
+
+length(grep("Tg", featuresTrain$Label)) #2438
+length(grep("Bg", featuresTrain$Label)) #2438
+
+length(grep("Tg", featuresValidation$Label)) #139 #117
+length(grep("Bg", featuresValidation$Label)) #139 #125
+```
+
+```{r}
+
+trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE, savePredictions = TRUE)
+
+```
+
+```{r}
+library(caret)
+library(ranger)
+
+#set.seed(459)
+set.seed(398)
+
+trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE, savePredictions = TRUE)
+
+
+
+#tree_grid <- expand.grid(mtry = c(34, 35, 36, 37, 39, 40),
+                         #splitrule = "extratrees",
+                        # min.node.size = c(0.5, 0.7, 0.9, 1, 1.2, 1.4))
+
+
+
+ranger <- train(Label~., data = featuresTrain[,-c(1,27:45)],
+      method = "ranger",
+      trControl = trctrl_prob,
+      preProcess = c("center", "scale"),
+      num.trees = 100,
+      tuneLength = 10,
+      importance = "impurity")
+
+ranger_bg60 <- train(Label~., data = featuresTrain[,-c(1,27:45)],
+      method = "ranger",
+      trControl = trctrl_prob,
+      preProcess = c("center", "scale"),
+      num.trees = 100,
+      tuneLength = 10,
+      importance = "impurity")
+
+
+test_pred <- predict(ranger_bg60, featuresTest)
+confusionMatrix(test_pred, featuresTest$Label)
+
+mcc(TP = 889, FP = 107, TN = 933, FN = 63)
+
+test_pred_prob <- predict(ranger_bg60, featuresTest, type = "prob")
+roc_out <- roc(featuresTest$Label, test_pred_prob$Tg)
+
+
+#https://uc-r.github.io/random_forests
+
+#https://www.r-bloggers.com/how-to-implement-random-forests-in-r/
+
+#https://rpubs.com/phamdinhkhanh/389752
+```
+
+```{r}
+#reduced test set
+
+test_pred_short <- predict(ranger_nolamda, featuresTest_1000)
+confusionMatrix(test_pred_short, featuresTest_1000$Label)
+
+mcc(TP = 451, FP = 50, TN = 472, FN = 27)
+
+test_pred_short_prob <- predict(ranger_nolamda, featuresTest_1000, type = "prob")
+roc_out <- roc(featuresTest_1000$Label, test_pred_short_prob$Tg)
+```
+
+```{r}
+grid <- expand.grid(sigma = 0.01962484, 
+                    C = c(8, 10, 12, 14, 16))
+
+grid_finer <- expand.grid(sigma = 0.01962484, 
+                    C = c(8, 9, 10, 11, 12))
+
+grid_both <- expand.grid(sigma = c(0.0190, 0.0193, 0.0195, 0.0197, 0.020), 
+                    C = c(8.5, 9, 9.5, 10, 10.5))
+
+
+                  
+svm_Radial_tuneC_acc <- train(Label~., data = featuresTrain[,-1], 
+                    method="svmRadial",
+                    trControl = trctrl_prob, 
+                    preProcess = c("center", "scale"), 
+                    metric = "Accuracy",
+                    tuneGrid = grid)
+
+
+```
+
+```{r}
+test_pred <- predict(svm_Radial, featuresTest)
+confusionMatrix(test_pred, featuresTest$Label)
+
+test_pred_extrabg <- predict(svm_Radial, featurestestextrabg)
+confusionMatrix(test_pred_extrabg, featurestestextrabg$Label)
+
+
+
+test_pred <- predict(svm_Radial, featuresValidation2)
+confusionMatrix(test_pred, featuresValidation2$Label)
+
+
+confusionMatrix(test_pred, featuresTest$Label, positive = "Tg", mode = "prec_recall")
+
+```
+
+
+```{r}
+library(pROC)
+
+test_pred_prob <- predict(svm_Radial_nolambda, featuresTest, type = "prob")
+roc_out <- roc(featuresTest$Label, test_pred_prob$Tg)
+
+
+test_pred_prob <- predict(svm_Radial, featuresValidation2[,-c(1,46)], type = "prob")
+
+
+test_pred_prob <- predict(svm_Radial, featuresValidation, type = "prob")
+
+roc_out <- roc(featuresValidation$Label, test_pred_prob$Tg)
+
+
+plot(roc_out)
+
+#plot(roc_out, print.thres="best", print.thres.best.method="closest.topleft")
+
+####do on a loop and take a different 5 percent every time
+
+library(ggROC)
+
+ggroc(roc_out)
+
+ggroc(roc_out) + xlab("FPR") + ylab("TPR") + geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1), color="darkgrey", linetype="dashed")
+
+
+
+```
+

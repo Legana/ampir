@@ -11,11 +11,11 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #find correlated features 
 
-cor_matrix <- cor(features[1:39])
+cor_matrix <- cor(features_all21[,2:55])
 
-highly_cor_features <- findCorrelation(cor_matrix, names = TRUE, exact = TRUE, verbose = TRUE)
+cor_matrix <- cor(features[,2:45])
 
-#  5  1 19 35 26 11
+highly_cor_features <- findCorrelation(cor_matrix, cutoff = 0.8, names = TRUE, exact = TRUE, verbose = TRUE)
 
 rfe_control <- rfeControl(functions = caretFuncs, method = "repeatedcv", number = 10, repeats = 3)
 
@@ -23,7 +23,7 @@ rfe_control <- rfeControl(functions = caretFuncs, method = "repeatedcv", number 
 
 set.seed(10)
 
-svmProfile <- rfe(features[,1:39], features[,40], rfeControl = rfe_control, method = "svmRadial", preProcess = c("center", "scale"))
+#svmProfile <- rfe(features[,1:39], features[,40], rfeControl = rfe_control, method = "svmRadial", preProcess = c("center", "scale"))
 
 #svmProfile <- rfe(features[c(1:25,6925:6950),1:39], features[c(1:25,6925:6950),40], rfeControl = rfe_control, method = "svmRadial", preProcess = c("center", "scale"))
 ```

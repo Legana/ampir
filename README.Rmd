@@ -81,7 +81,7 @@ knitr::kable(nonstandard_example_df, caption = "Example dataframe with a nonsens
 The table above shows a dataframe with protein sequences in it. The second row contains a made up sequence to serve as an example. This made up sequence will be removed with `remove_nonstandard_aa()`.
 
 ```{r}
-my_clean_protein <- remove_nonstandard_aa(nonstandard_example_df)
+my_clean_protein <- remove_nonstandard_aa(df = nonstandard_example_df)
 ```
 
 ```{r, echo=FALSE}
@@ -96,7 +96,7 @@ knitr::kable(my_clean_protein, caption = "My clean protein")
 `calculate_features()` calculates a range of physicochemical properties that are used by the predictive model within `predict_AMP_prob()` to make its predictions (step 4).
 
 ```{r}
-my_protein_features <- calculate_features(my_clean_protein)
+my_protein_features <- calculate_features(df = my_clean_protein)
 ```
 
 ```{r, echo=FALSE}
@@ -108,13 +108,32 @@ knitr::kable(my_protein_features, digits = 3, caption = "My protein features")
 
 ### Step 4: Predict antimicrobial peptide probability with `predict_AMP_prob()` 
 
-`predict_AMP_prob()` uses the output from `calculate_features()` to predict the probability of a protein to be an antimicrobial peptide.
+`predict_AMP_prob()` uses the output from `calculate_features()` as a parameter to predict the probability of a protein to be an antimicrobial peptide.
 
 ```{r}
-my_protein_prediction <- predict_AMP_prob(my_protein_features)
+my_prediction <- predict_AMP_prob(df = my_protein_features)
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(my_protein_prediction, digits = 3, caption = "My protein prediction")
+knitr::kable(my_prediction, digits = 3, caption = "My protein prediction")
 ```
+
+#### Optional steps: Extract AMP sequences and save as FASTA format file
+
+`extract_amps()` uses the output from `read_faa()` and `predict_AMP_prob()` as parameters to create a new dataframe which contains the sequence name and sequence of the identified antimicrobial peptides at a set probability threshold of >=0.50. The default threshold of >=0.50 can be changed with the "prob" parameter.
+
+```{r}
+my_predicted_amps <- extract_amps(df_w_seq = my_protein, df_w_prob = my_prediction, prob = 0.55)
+```
+
+```{r, echo=FALSE}
+knitr::kable(my_predicted_amps, caption = "My predicted AMPs")
+```
+
+`df_to_faa()` writes a dataframe containing the sequence and corresponding sequence name to a FASTA file.
+
+```{r,eval=FALSE}
+df_to_faa(my_predicted_amps, "my_predicted_amps.fasta")
+```
+
 

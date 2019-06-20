@@ -9,7 +9,7 @@
 calc_pseudo_comp <- function(seq,lambda = NULL) {
 
   if ( is.factor(seq)){
-    warning("Coercing factor to character")
+    message("Coercing factor to character")
     seq <- as.character(seq)
   }
 
@@ -36,10 +36,12 @@ calc_pseudo_comp <- function(seq,lambda = NULL) {
   dimnames(H) = list(props, AADict)
 
 
-  if ( is.null(lambda) ){
-    max_lambda <- max(sapply(seq,nchar))
-    lambda <- min(30,max_lambda)
+  if (is.null(lambda)){
+    max_lambda <- max(sapply(seq, nchar))
+    lambda <- min(19, max_lambda)
   }
+
+
   pseudo_comp = NULL
   pseudo_comp_names <- c(paste('Xc1.', AADict, sep = ''),paste('Xc2.lambda.', 1:lambda, sep = ''))
 

@@ -91,5 +91,22 @@ my_prediction <- predict_AMP_prob(my_protein_features)
 knitr::kable(my_prediction)
 ```
 
+#### Optional steps: Extract AMP sequences and save as FASTA format file
+
+`extract_amps()` uses the output from `read_faa()` and `predict_AMP_prob()` as parameters to create a new dataframe which contains the sequence name and sequence of the identified antimicrobial peptides at a set probability threshold of >=0.50. The default threshold of >=0.50 can be changed with the "prob" parameter.
+
+```{r}
+my_predicted_amps <- extract_amps(df_w_seq = my_protein, df_w_prob = my_prediction, prob = 0.55)
+```
+
+```{r, echo=FALSE}
+knitr::kable(my_predicted_amps, caption = "My predicted AMPs")
+```
+
+`df_to_faa()` writes a dataframe containing the sequence and corresponding sequence name to a FASTA file.
+
+```{r,eval=FALSE}
+df_to_faa(my_predicted_amps, "my_predicted_amps.fasta")
+```
 
 

@@ -12,14 +12,13 @@ library(microbenchmark)
 library(ampir)
 library(protr)
 
-source("calc_pseudo_comp.R")
 
 seq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
 
 extractPAAC(seq,lambda = 4)
-calc_pseudo_comp(seq,lambda=4)
+ampir:::calc_pseudo_comp(seq,lambda=4)
 
-microbenchmark(extractPAAC(seq,lambda = 4),calc_pseudo_comp(seq,lambda=4))
+microbenchmark(extractPAAC(seq,lambda = 4),ampir:::calc_pseudo_comp(seq,lambda=4))
 
 ```
 

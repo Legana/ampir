@@ -6,7 +6,7 @@
 #'
 #' @importFrom caret predict.train
 #'
-#' @note This model was created via the caret package (https://github.com/topepo/caret/)
+#' @note The predictive model within this function was created via the caret package (https://github.com/topepo/caret/)
 #'
 #' @param df A dataframe containing numerical features (as calculated by \code{calculate_features})
 #'

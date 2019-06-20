@@ -2,7 +2,7 @@
 #'
 #' This function extracts the protein sequences predicted to be AMPs from \code{predict_AMP_prob}
 #'
-#' @export df_to_faa
+#' @export extract_amps
 #'
 #' @param df_w_seq a dataframe containing two columns (sequence name and sequence)
 #'           (output from  \code{read_faa})
@@ -17,9 +17,9 @@
 #' @examples
 #'
 #' my_protein <- readRDS(system.file("extdata/my_protein_df.rds", package = "ampir"))
-#' my_protein_prediction <- readRDS(system.file("extdata/my_protein_prediction.rds", package = "ampir"))
+#' my_prediction <- readRDS(system.file("extdata/my_protein_pred.rds", package = "ampir"))
 #'
-#' extract_amps(my_protein, my_protein_prediction, prob = 0.55)
+#' extract_amps(my_protein, my_prediction, prob = 0.55)
 #'
 #' #' ## Output
 #' #         seq.name              seq.aa

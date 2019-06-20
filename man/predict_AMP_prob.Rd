@@ -16,7 +16,7 @@ A dataframe containing a single column with probability values
 This function predicts the probability of a protein to be an antimicrobial peptide based on feature calculations (as obtained from \code{calculate_features})
 }
 \note{
-This model was created via the caret package (https://github.com/topepo/caret/)
+The predictive model within this function was created via the caret package (https://github.com/topepo/caret/)
 }
 \examples{
 

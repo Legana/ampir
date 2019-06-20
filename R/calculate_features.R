@@ -25,8 +25,16 @@
 
 calculate_features <- function(df) {
 
-  seq <- df[,2]
-  seq.name <- df[,1]
+  longer_proteins_index <- nchar(df[,2]) >=20
+  df_cut <- df[longer_proteins_index,]
+
+  short_proteins_index <- nchar(df[,2]) <20
+
+  message("Proteins less than twenty amino acids long were removed and totalled at: ", sum(short_proteins_index))
+
+
+  seq <- df_cut[,2]
+  seq.name <- df_cut[,1]
 
   Amphiphilicity    <- calc_amphiphilicity(seq)
   Hydrophobicity    <- calc_hydrophobicity(seq)

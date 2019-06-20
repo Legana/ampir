@@ -16,7 +16,7 @@
 #' my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 #'
 #' # Use \code{df_to_faa} to write a dataframe into FASTA file format
-#' df_to_faa(my_protein, "inst/extdata/my_protein.fasta")
+#' df_to_faa(my_protein,(system.file("extdata/my_protein.fasta", package = "ampir")))
 #'
 #'
 #' ## Output written in "my_protein.fasta"

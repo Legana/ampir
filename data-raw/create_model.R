@@ -5,7 +5,7 @@ library(usethis)
 # Used by calc_pseudo_comp
 # Obtained from protr
 #
-#AAidx <- read.csv('data-raw/AAidx.csv', header = TRUE)
+
 AAidx <- readRDS("data-raw/AAidx.rds")
 
 tmp <- data.frame(
@@ -23,12 +23,8 @@ tmp <- data.frame(
 AAidx <- rbind(AAidx, tmp)
 
 
-ampir_package_data <- list('svm_Radial'=svm_Radial,
+ampir_package_data <- list('svm_Radial'=svm_Radial_tuned_fine,
                            'AAidx'=AAidx)
 
-
-##test best compression for each file:
-#tools::checkRdaFiles("data-raw/svm_radial96.rds")
-#tools::checkRdaFiles("data-raw/AAidx.rds")
 
 usethis::use_data(ampir_package_data,internal = TRUE,overwrite = TRUE, compress = "xz")
