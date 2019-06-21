@@ -15,6 +15,8 @@ knitr::opts_chunk$set(
 # Introduction to ampir
 
 <!-- badges: start -->
+[![Build Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch=master)](https://travis-ci.com/Legana/ampir)
+[![Travis build status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
 <!-- badges: end -->
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r** ) package was designed to be an open and user-friendly method to predict AMPs (antimicrobial peptides) from any given size protein dataset. **ampir** uses four sequential functions to create a four step approach to predict AMPs.
