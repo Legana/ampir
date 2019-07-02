@@ -32,8 +32,7 @@ features_11 <- features[6415:12828,]
 ```{r}
 library(caret)
 
-set.seed(3698)
-set.seed(3699)
+set.seed(396)
 
 trainIndex <-createDataPartition(y=features$Label, p=.8, list = FALSE)
 
@@ -69,15 +68,15 @@ library(caret)
 library(ranger)
 
 #set.seed(459)
-set.seed(398)
+set.seed(396)
 
 trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE, savePredictions = TRUE)
 
 
 
-#tree_grid <- expand.grid(mtry = c(34, 35, 36, 37, 39, 40),
-                         #splitrule = "extratrees",
-                        # min.node.size = c(0.5, 0.7, 0.9, 1, 1.2, 1.4))
+tree_grid <- expand.grid(mtry = c(15:25),
+                         splitrule = "extratrees",
+                         min.node.size = c(0.5, 0.7, 0.9, 1, 1.2, 1.4, 5, 10))
 
 
 
@@ -89,7 +88,7 @@ ranger <- train(Label~., data = featuresTrain[,-c(1,27:45)],
       tuneLength = 10,
       importance = "impurity")
 
-ranger_bg60 <- train(Label~., data = featuresTrain[,-c(1,27:45)],
+ranger_bg70 <- train(Label~., data = featuresTrain[,-c(1,27:45)],
       method = "ranger",
       trControl = trctrl_prob,
       preProcess = c("center", "scale"),
@@ -98,12 +97,20 @@ ranger_bg60 <- train(Label~., data = featuresTrain[,-c(1,27:45)],
       importance = "impurity")
 
 
-test_pred <- predict(ranger_bg60, featuresTest)
+ranger_bg70_tuned <- train(Label~., data = featuresTrain[,-c(1,27:45)],
+      method = "ranger",
+      trControl = trctrl_prob,
+      preProcess = c("center", "scale"),
+      num.trees = 100,
+      tuneGrid = tree_grid,
+      importance = "impurity")
+
+test_pred <- predict(ranger_bg70_tuned, featuresTest)
 confusionMatrix(test_pred, featuresTest$Label)
 
-mcc(TP = 889, FP = 107, TN = 933, FN = 63)
+mcc(TP = 894, FP = 102, TN = 926, FN = 70)
 
-test_pred_prob <- predict(ranger_bg60, featuresTest, type = "prob")
+test_pred_prob <- predict(ranger_bg70, featuresTest, type = "prob")
 roc_out <- roc(featuresTest$Label, test_pred_prob$Tg)
 
 
@@ -183,15 +190,12 @@ roc_out <- roc(featuresValidation$Label, test_pred_prob$Tg)
 
 plot(roc_out)
 
-#plot(roc_out, print.thres="best", print.thres.best.method="closest.topleft")
 
 ####do on a loop and take a different 5 percent every time
 
 library(ggROC)
 
 ggroc(roc_out)
-
-ggroc(roc_out) + xlab("FPR") + ylab("TPR") + geom_segment(aes(x = 0, xend = 1, y = 0, yend = 1), color="darkgrey", linetype="dashed")
 
 
 

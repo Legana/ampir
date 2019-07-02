@@ -30,7 +30,6 @@ tg <- tg[nchar(tg$seq.aa) >=20,]
 bg <- bg[nchar(bg$seq.aa) >=20,]
 
 #select the same number of rows as tg so databases are 1:1
-set.seed(398)
 set.seed(396)
 
 bg <- bg[sample(nrow(bg),4981),]
@@ -85,7 +84,7 @@ trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, cla
 
 grid <- expand.grid(sigma = 0.0571133, C = c(3, 4, 5, 6, 7, 8 ,9, 10, 11, 12, 13, 14, 15, 16))
 
-grid1 <- expand.grid(sigma=seq(0,.65,by=0.005), C=c(1:16))
+
 
 grid2 <- expand.grid(sigma=seq(0.05,0.06,by=0.005), C=c(6:16))
 
@@ -112,6 +111,7 @@ svm_Radial_tuned <- train(Label~.,
                           preProcess = c("center", "scale"),
                           tuneGrid = grid3)
 
+# this one is currently being used as ampir model
 svm_Radial_tuned_fine <- train(Label~.,
                           data = featuresTrain[,-c(1,27:45)], #without names and lamda values
                           method="svmRadial",
@@ -212,7 +212,7 @@ tg$Label <- "Tg"
 
 #bg <- read_faa("data-raw/tmpdata/filtered_random.fasta")
 
-#bg_filtered <- read_faa("data-raw/tmpdata/bg_filtered40.fasta")
+bg_filtered <- read_faa("data-raw/tmpdata/bg_filtered70.fasta")
 bg_filtered <- read_faa("data-raw/tmpdata/uniprot-filtered.fasta")
 bg_filtered$Label <- "Bg"
 
@@ -224,7 +224,7 @@ bg_filtered <- remove_nonstandard_aa(bg_filtered)
 tg <- tg[nchar(tg$seq.aa) >=20,]
 bg_filtered <- bg_filtered[nchar(bg$seq.aa) >=20,]
 
-set.seed(567)
+set.seed(386)
 #select the same number of rows as tg so databases are 1:1
 bg_filtered <- bg_filtered[sample(nrow(bg_filtered),4981),]
 
@@ -253,7 +253,12 @@ filtered_featuresTest <-filtered_features[-trainIndex,]
 trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
 
 
-#training the model
+#training the model with seed 386
+svm_Radial_filtered_bg70 <- train(Label~.,
+                             data = filtered_featuresTrain[,-c(1,27:45)], method="svmRadial",
+                             trControl = trctrl_prob, preProcess = c("center", "scale"),
+                             tuneLength = 10)
+
 svm_Radial_filtered <- train(Label~.,
                              data = filtered_featuresTrain[,-c(1,27:45)], method="svmRadial",
                              trControl = trctrl_prob, preProcess = c("center", "scale"),
@@ -266,7 +271,9 @@ confusionMatrix(filtered_test_pred, filtered_featuresTest$Label)
 
 library(mltools)
 
-mcc(TP = 946, FP = 50, TN = 952, FN = 44)
+mcc(TP = 931, FP = 65, TN = 933, FN = 63)
+
+mcc(TP = 941, FP = 55, TN = 948, FN = 48)
 
 library(pROC)
 
@@ -282,7 +289,7 @@ filtered_test_pred <- predict(svm_Radial_filtered, featuresTest_1000)
 confusionMatrix(filtered_test_pred, featuresTest_1000$Label)
 
 library(mltools)
-mcc(TP = 483, FP = 18, TN = 247, FN = 252)
+mcc(TP = 479, FP = 22, TN = 245, FN = 254)
 
 
 library(pROC)
