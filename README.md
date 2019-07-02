@@ -7,8 +7,6 @@
 
 [![Build
 Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch=master)](https://travis-ci.com/Legana/ampir)
-[![Travis build
-status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
 <!-- badges: end -->
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
@@ -50,6 +48,13 @@ functions***.
 3.  `calculate_features()` to calculate data descriptors used by the
     predictive model.
 4.  `predict_AMP_prob()` to predict the AMP probability of a protein.
+
+### Additional optional functions
+
+5.  `extract_amps()` to extract predicted AMP sequences based on a set
+    probability.
+6.  `df_to_faa()` to write a dataframe of sequences as a local FASTA
+    file.
 
 ## Example workflow
 
@@ -106,7 +111,8 @@ My clean protein
 
 `calculate_features()` calculates a range of physicochemical properties
 that are used by the predictive model within `predict_AMP_prob()` to
-make its predictions (step 4).
+make its predictions (step 4). It removes sequences less than 20 amino
+acids long and reports the quantity of these.
 
 ``` r
 my_protein_features <- calculate_features(df = my_clean_protein)
@@ -134,26 +140,29 @@ my_prediction <- predict_AMP_prob(df = my_protein_features)
 | :------------ | --------: |
 | G1P6H5\_MYOLU |     0.895 |
 
-My protein prediction
+My protein
+prediction
 
-#### Optional steps: Extract AMP sequences and save as FASTA format file
+### Optional step 5: Extract AMP sequences using a set probability threshold (default \>= 0.50)
 
 `extract_amps()` uses the output from `read_faa()` and
 `predict_AMP_prob()` as parameters to create a new dataframe which
 contains the sequence name and sequence of the identified antimicrobial
-peptides at a set probability threshold of \>=0.50. The default
-threshold of \>=0.50 can be changed with the “prob”
+peptides at a set probability threshold of \>= 0.50. The default
+threshold of \>= 0.50 can be changed with the “prob”
 parameter.
 
 ``` r
 my_predicted_amps <- extract_amps(df_w_seq = my_protein, df_w_prob = my_prediction, prob = 0.55)
 ```
 
-| seq.name      | seq.aa                                                                              |
-| :------------ | :---------------------------------------------------------------------------------- |
-| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT |
+| seq.name      | seq.aa                              |
+| :------------ | :---------------------------------- |
+| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLAD |
 
 My predicted AMPs
+
+### Optional step 6: Save sequences as FASTA format file
 
 `df_to_faa()` writes a dataframe containing the sequence and
 corresponding sequence name to a FASTA file.
