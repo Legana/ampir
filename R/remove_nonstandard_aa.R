@@ -24,6 +24,7 @@
 #' #       seq.name        seq.aa
 #' # [1] G1P6H5_MYOLU    MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQ....
 
+#todo: edit function to remove terminal stop codons automatically and give warning if stop codons are present within the sequence
 remove_nonstandard_aa <- function(df) {
 
   seq <- df[,2]
