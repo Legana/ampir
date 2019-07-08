@@ -58,6 +58,8 @@ features$Label <- bg_tg$Label
 
 features[["Label"]] <- factor(features[["Label"]])
 
+rownames(features) <- NULL
+
 #set aside extra bg sequences to append later in the test set
 #features_cut_bg <- features[1:9982,]
 #make a balanced dataset
@@ -80,7 +82,7 @@ featuresTest <-features[-trainIndex,]
 #resample method using repeated cross validation and adding in and adding in a probability calculation to use later when predicting
 trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
 
-#set.seed(398)
+set.seed(396)
 
 grid <- expand.grid(sigma = 0.0571133, C = c(3, 4, 5, 6, 7, 8 ,9, 10, 11, 12, 13, 14, 15, 16))
 
@@ -133,6 +135,45 @@ svm_Radial_bg60 <- train(Label~.,
                     trControl = trctrl_prob,
                     preProcess = c("center", "scale"),
                     tuneLength = 10)
+
+svm_Linear <- train(Label~.,
+                    data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                    method="svmLinear2",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+svm_Poly <- train(Label~.,
+                    data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                    method="svmPoly",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+svm_RadialSigma <- train(Label~.,
+                  data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                  method="svmRadialSigma",
+                  trControl = trctrl_prob,
+                  preProcess = c("center", "scale"),
+                  tuneLength = 5)
+
+tstgrid <- expand.grid(sigma=seq(0,10.5,by=0.5), C=c(1:10))
+
+
+tstradial <- train(Label~.,
+                         data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                         method="svmRadial",
+                         trControl = trctrl_prob,
+                         preProcess = c("center", "scale"),
+                         tuneLength = 10)
+
+tstradial <- train(Label~.,
+                   data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                   method="svmRadial",
+                   trControl = trctrl_prob,
+                   preProcess = c("center", "scale"),
+                   tuneGrid = tstgrid)
+
 #test model
 test_pred <- predict(svm_Radial, featuresTest)
 
@@ -144,6 +185,7 @@ mcc(TP = 909, FP = 87, TN = 915, FN = 81)
 
 mcc(TP = 916, FP = 96, TN = 916, FN = 80)
 
+mcc(TP = 903, FP = 93, TN = 918, FN = 78)
 
 test_pred_prob <- predict(svm_Radial_tuned_fine, featuresTest, type = "prob")
 roc_out <- roc(featuresTest$Label, test_pred_prob$Tg)
@@ -181,9 +223,9 @@ featuresTest_1000 <-featuresTest[testIndex1,]
 #make fasta formatable file
 test_1000 <- bg_tg[bg_tg$seq.name %in% featuresTest_1000$seq.name,]
 rownames(test_1000) <- NULL
-df_to_faa(test_1000[,-3], "data-raw/tmpdata/1000_test_sqns.fasta")
+df_to_faa(test_1000[,-3], "data-raw/tmpdata/1000_test_sqns_new.fasta")
 
-saveRDS(featuresTest_1000 ,"data-raw/tmpdata/1000_test_features.rds")
+saveRDS(featuresTest_1000 ,"data-raw/tmpdata/1000_test_features_new.rds")
 
 
 #half these 1000 to use in webservers
