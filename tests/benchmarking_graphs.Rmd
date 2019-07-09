@@ -1,0 +1,54 @@
+---
+title: "benchmark_graphs"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+```
+
+```{r}
+# Training and testing models with their corresponding data and using SVM
+
+SVM_model <- c("ampir", "ampir_filt","amPEP31", "iAMP-2L","iAMPpred")
+Accuracy <- c(0.9116, 0.9483, 0.9653, 0.9691, 0.9071)
+TP_rate <- c(0.9197, 0.9518, 0.9801, 1.000, 0.7893)
+TN_rate <- c(0.9036, 0.9448, 0.9210, 0.9377, 0.9528)
+ROC_AUC <- c(0.9597, 0.9858, 0.9876, 0.9961, 0.9516)
+MCC <- c(0.8248, 0.8966, 0.9070, 0.9399, 0.7645)
+
+bm_svm_models <- data.frame(SVM_model, Accuracy, TP_rate, TN_rate, ROC_AUC, MCC, stringsAsFactors = FALSE)
+```
+
+
+```{r}
+# Using 1000 randomly selected proteins from Swiss-Prot (>20 length) to test previously trained SVM models 
+SVM_model <- c("ampir", "ampir_filt", "amPEP31", "iAMP-2L","iAMPpred")
+Accuracy <- c(0.920, 0.724, 0.688, 0.702, 0.496)
+TP_rate <- c(0.9238, 0.4910, 0.7976, 0.9980, 0.0400)
+TN_rate <- c(0.9162, 0.9561, 0.5788, 0.4072, 0.9501)
+ROC_AUC <- c(0.9636, 0.8615, 0.7382, 0.5822, 0.7327)
+MCC <- c(0.84, 0.5052, 0.3857, 0.5018, -0.0236)
+
+bm_svm_models_1000 <- data.frame(SVM_model, Accuracy, TP_rate, TN_rate, ROC_AUC, MCC, stringsAsFactors = FALSE)
+
+```
+
+```{r}
+#Using 1000 randomly selected proteins from SP (>20aa) to test current AMP predictors
+
+AMP_predictor <- c("amPEP", "iAMP-2L","iAMPpred")
+Accuracy <- c(0.614, 0.726, 0.47)
+TP_rate <- c(0.7094, 0.9860, 0.081)
+TN_rate <- c(0.5190, 0.4671, 0.8323)
+ROC_AUC <- c(0.6609, NA, 0.59)
+MCC <- c(0.2326, 0.5296, -0.1234)
+
+bm_amp_predictors_1000 <- data.frame(AMP_predictor, Accuracy, TP_rate, TN_rate, ROC_AUC, MCC, stringsAsFactors = FALSE)
+```
+
+
