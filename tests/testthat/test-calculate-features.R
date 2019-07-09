@@ -1,16 +1,28 @@
 context("Calculate features")
 
-
-#' # Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
-#' calculate_features(seq =
-#'    "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT")
+# Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
+#' calculate_features(my_protein)
 #'
-#' ## Output (showing the first five output columns)
-#' # Amphiphilicity  Hydrophobicity     pI          Mw         ....
-#' # [1]  0.4145847       0.4373494     8.501312     9013.757   ....
+#' ## Output (showing the first six output columns)
+#' #      seq.name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
+#' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
+
+hepseq_name <- "Hepcidin"
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
+my_protein_test <- data.frame(hepseq_name, hepseq, stringsAsFactors = FALSE)
 
+test_that("Calculate_features results in 45 columns", {
+
+  result <- calculate_features(my_protein_test)
+
+  expect_is(result,"data.frame")
+
+  expect_length(
+    result,
+    45)
+
+})
 
 test_that("Hepcidin gives correct Amphiphilicity", {
 

@@ -1,10 +1,78 @@
 library(usethis)
+library(caret)
 
-#svm_radial <- readRDS(system.file("svm_radial.rds", package = "ampir"))
+# read and prepare data
 
-# Used by calc_pseudo_comp
-# Obtained from protr
-#
+set.seed(396)
+
+tg <- read_faa("data-raw/tmpdata/amps_sp_ampdbs98.fasta")
+tg$Label <- "Tg"
+bg <- read_faa("data-raw/tmpdata/bg70g.fasta")
+bg$Label <- "Bg"
+#remove rows in bg that are in tg
+bg <- bg[!bg$seq.aa %in% tg$seq.aa,]
+#remove nonstandard amino acids
+tg <- remove_nonstandard_aa(tg)
+bg <- remove_nonstandard_aa(bg)
+#remove sequences shorter than 20 amino acids
+tg <- tg[nchar(tg$seq.aa) >=20,]
+bg <- bg[nchar(bg$seq.aa) >=20,]
+#select the same number of rows as tg so databases are 1:1
+bg <- bg[sample(nrow(bg),4981),]
+#bind target and background datasets
+bg_tg <- rbind(bg, tg)
+#remove rownames
+rownames(bg_tg) <- NULL
+#calculate features
+features <- calculate_features(bg_tg)
+#add Label column for y variable
+features$Label <- bg_tg$Label
+#convert to factor
+features[["Label"]] <- factor(features[["Label"]])
+
+# Use features to train the model
+
+#split the data 80/20 and create train and test set from features
+trainIndex <-createDataPartition(y=features$Label, p=.8, list = FALSE)
+featuresTrain <-features[trainIndex,]
+featuresTest <-features[-trainIndex,]
+
+#resample method using repeated cross validation and adding in and adding in a probability calculation to use later when predicting
+trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
+
+# train model
+
+svm_Radial <- train(Label~.,
+                    data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                    method="svmRadial",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+#make grids for tuning
+grid3 <- expand.grid(sigma=seq(0.05,0.06,by=0.003), C=c(1:9))
+grid4 <- expand.grid(sigma=seq(0.05,0.06,by=0.001), C=c(5:8))
+
+svm_Radial_tuned_fine <- train(Label~.,
+                               data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                               method="svmRadial",
+                               trControl = trctrl_prob,
+                               preProcess = c("center", "scale"),
+                               tuneGrid = grid4)
+
+# Test model
+
+test_pred <- predict(svm_Radial_tuned_fine, featuresTest)
+confusionMatrix(test_pred, featuresTest$Label)
+#mcc
+mcc(TP = 916, FP = 96, TN = 916, FN = 80)
+#roc-auc
+test_pred_prob <- predict(svm_Radial_tuned_fine, featuresTest, type = "prob")
+roc_out <- roc(featuresTest$Label, test_pred_prob$Tg)
+
+
+# Data used for calc_pseudo_comp function
+# data obtained from protr package (https://github.com/nanxstats/protr)
 
 AAidx <- readRDS("data-raw/AAidx.rds")
 

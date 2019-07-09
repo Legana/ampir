@@ -3,3 +3,5 @@
 ^\.Rproj\.user$
 ^README\.Rmd$
 ^\.travis\.yml$
+tests/tmpdata
+inst/rmd
