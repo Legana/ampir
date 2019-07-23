@@ -49,9 +49,21 @@ svm_Radial <- train(Label~.,
                     preProcess = c("center", "scale"),
                     tuneLength = 10)
 
+# test model
+test_pred <- predict(svm_Radial, featuresTest)
+confusionMatrix(test_pred, featuresTest$Label)
+#mcc
+mcc(TP = 893, FP = 103, TN = 911, FN = 85)
+#roc-auc
+test_pred_prob <- predict(svm_Radial, featuresTest, type = "prob")
+roc(featuresTest$Label, test_pred_prob$Tg)
+
 #make grids for tuning
 grid3 <- expand.grid(sigma=seq(0.05,0.06,by=0.003), C=c(1:9))
 grid4 <- expand.grid(sigma=seq(0.05,0.06,by=0.001), C=c(5:8))
+grid5 <- expand.grid(sigma=seq(0.01,0.07,by=0.003), C=c(1:8))
+
+
 
 svm_Radial_tuned_fine <- train(Label~.,
                                data = featuresTrain[,-c(1,27:45)], #without names and lamda values
@@ -60,6 +72,12 @@ svm_Radial_tuned_fine <- train(Label~.,
                                preProcess = c("center", "scale"),
                                tuneGrid = grid4)
 
+svm_Radial_wide_tune_range <- train(Label~.,
+                               data = featuresTrain[,-c(1,27:45)], #without names and lamda values
+                               method="svmRadial",
+                               trControl = trctrl_prob,
+                               preProcess = c("center", "scale"),
+                               tuneGrid = grid5)
 # Test model
 
 test_pred <- predict(svm_Radial_tuned_fine, featuresTest)
@@ -69,6 +87,15 @@ mcc(TP = 916, FP = 96, TN = 916, FN = 80)
 #roc-auc
 test_pred_prob <- predict(svm_Radial_tuned_fine, featuresTest, type = "prob")
 roc_out <- roc(featuresTest$Label, test_pred_prob$Tg)
+
+# wide tune
+test_pred <- predict(svm_Radial_wide_tune_range, featuresTest)
+confusionMatrix(test_pred, featuresTest$Label)
+#mcc
+mcc(TP = 898, FP = 98, TN = 916, FN = 80)
+#roc-auc
+test_pred_prob <- predict(svm_Radial_wide_tune_range, featuresTest, type = "prob")
+roc(featuresTest$Label, test_pred_prob$Tg)
 
 
 # Data used for calc_pseudo_comp function
