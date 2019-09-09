@@ -1,0 +1,324 @@
+---
+title: "Probability plot"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)
+library(ggplot2)
+```
+
+
+```{r read_and_prepare_data, echo=FALSE}
+
+#from test_pred_prob <- predict(svm_Radial98_tuned, features98Test, type = "prob")
+test_pred_prob <- readRDS("tmpdata/test_pred_prob_svmtuned98.rds") 
+features98Test <- readRDS("tmpdata/features98Test.rds")
+#svm_Radial98_final <- readRDS("svm_Radial98_final.rds")
+
+# add the true predictions from the test set to the predicted probabilities dataset
+prob_curve_prep <- test_pred_prob %>% add_column(actual = features98Test$Label)
+
+```
+
+## Background
+
+Terminology and calculations source: https://github.com/justmarkham/scikit-learn-videos/blob/master/09_classification_metrics.ipynb
+
+A confusion matrix reports the performance of a classification model. 
+
+Standard metrics include:
+
+  * True positives (TP) : correct prediction of a true positive case 
+  * False positives (FP) : incorrect prediction of a false case 
+      + a type I error
+  * True negatives (TN) : correct prediction of a true negative case 
+  * False negatives (FN): incorrect prediction of a negative case 
+      + a type II error
+  
+In a binary classification model two classes are being predicted:
+
+  * Positive class
+    + also called "target" or indicated by "1"- these are the true positive cases (AMPs)
+  * Negative class
+    + also called "background" or indicated by "0" - these are the true negative cases
+
+Table 1: Example of what standard confusion matrix metrics would look like in a binary classifier where TRUE equals the true case and PRED equals the prediction
+
+|       | TP   | TN   | FP   | FN  |
+| :----: | :--: | :--: | :--: | :--:|
+| TRUE   | 1    | 0    |  0   | 1   |
+| PRED   | 1    | 0    |  1   | 0   |
+
+
+Rates calculated from the confusion matrix used in this study:
+
+  * **Sensitivity** : when the actual value is positive, how often is classifier correct
+      + also known as *true positive rate* or *recall*
+   
+  $$ TP / (TP + FN) $$
+  
+  * **Specificity** : when the actual value is negative, how often is classifier correct
+      + also known as *true negative rate*
+  
+  $$ TN / (TN + FP) $$
+  
+  * **Precision** : when a positive value is predicted, how often is classifier correct
+      + also known as *positive predictive value*
+  
+  $$ TP / (TP + FP) $$
+
+### Function to calculate confusion matrix metrix
+
+```{r function_to_calculate_cm_stats}
+
+calc_cm_metrics <- function(p_threshold, df) {
+  
+  TP <- df %>% filter((actual=="Tg")) %>% filter(Tg > p_threshold) %>% n_distinct()
+  FP <- df %>% filter((actual=="Bg")) %>% filter(Tg > p_threshold) %>% n_distinct()
+  TN <- df %>% filter((actual=="Bg")) %>% filter(Tg < p_threshold) %>% n_distinct()
+  FN <- df %>% filter((actual=="Tg")) %>% filter(Tg < p_threshold) %>% n_distinct()
+  
+  Specificity <- round(TN / (TN + FP), digits = 3)
+  Recall <- round(TP / (TP + FN), digits = 3)
+  Precision <- round(TP/ (TP + FP), digits = 3)
+    
+  cm <- c(TP, FP, TN, FN, Specificity, Recall, Precision, p_threshold)
+  names(cm) <-c("TP", "FP", "TN", "FN", "Specificity", "Recall", "Precision", "p_threshold") 
+  cm
+}
+```
+
+##### Testing the function
+
+Output of the function is a vector. To use multiple probability threshold, `sapply` is used for iteration.
+`t` is used to transpose the matrix result from `sapply` and then `as.data.frame` is used to convert the matrix to a dataframe.
+
+```{r testing_function}
+# using function and testing with 0.5 p_threshold
+calc_cm_metrics(p_threshold = 0.5, df = prob_curve_prep)
+
+#using function with a range of p_thresholds using sapply 
+roc_data <- as.data.frame(t(sapply(seq(0.01, 0.99, 0.01), calc_cm_metrics, prob_curve_prep)))
+```
+
+##### Converting data to long format
+
+```{r plotting_preparation}
+#convert to long format with p_threshold as separate column for x value
+pr_curve_data_long <- roc_data[,6:8] %>% tidyr::gather("metric", "value", 1:2)
+```
+
+
+### Plots 
+
+Precision and recall metrics are often used to calculate the "precision-recall curve" in unbalanced datasets. It summarises the trade-off between the true positive rate (recall or sensitivity) and the positive predictive value (precision) for a predictive model using different probability thresholds.
+
+Source: https://machinelearningmastery.com/roc-curves-and-precision-recall-curves-for-classification-in-python/
+
+ 
+```{r pr_plot_of_test_set}
+#precision recall of test set over 99 probabilities
+ggplot(pr_curve_data_long, aes(x=p_threshold, y=value)) + geom_line(aes(color = metric)) 
+```
+
+To create an idea what to set the probability threshold to for AMP prediction in genomes, a (precision recall (recall aka sensitivity) probability curve was constructed using a dataset where AMPs only comprise approximately 1% (10/996).`
+
+```{r edit_testset_to_contain_small_AMP_prop, echo=FALSE}
+#extract the actual/true Bg cases
+prob_pred_bg <- prob_curve_prep[grep("Bg", prob_curve_prep$actual),]
+#extract 10 random true Tg as 1% representative
+prob_pred_tg_10 <- prob_curve_prep[sample(grep("Tg", prob_curve_prep$actual), 10),]
+#rbind together
+prob_pred_bg_tg10 <- rbind(prob_pred_tg_10, prob_pred_bg)
+#calculate metrics
+pr_curve_sample <- as.data.frame(t(sapply(seq(0.01, 0.99, 0.01), calc_cm_metrics, prob_pred_bg_tg10)))
+#convert to long format for plotting
+pr_curve_sample_long <- pr_curve_sample[,6:8] %>% tidyr::gather("metric", "value", 1:2)
+
+```
+
+
+```{r pr_curve_small_AMP_prop}
+ggplot(pr_curve_sample_long, aes(x=p_threshold, y=value)) + geom_line(aes(color = metric)) + scale_x_continuous(breaks=c(0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00))
+```
+
+1% is a very small proportion and the curve is creating "big steps". To try to circumvent it, 100 random selection of 1% (10 AMPs) were used to average the curves.
+
+the samples_list_x variable is created using the `lapply`, `seq_along` and `function` combination which I need to get more clarification on... I also am not sure why a replicate representation `sample` needs to be added as I calculate the metrics on each df separately and then average the precision and recall later
+
+```{r}
+#select 10 random AMPs 100 different times to get 100 dataframes and place in list
+samples_list <- replicate(n = 100,
+                     expr = {prob_curve_prep[sample(grep("Tg", prob_curve_prep$actual), 10),]},
+                     simplify = F)
+
+#rbind the bg (prob_pred_bg) dataset to each tg replicate and add a sample column to each dataframe in the list as reference point
+samples_list_x <- lapply(seq_along(samples_list), function(i) {
+                      df <- samples_list[[i]]
+                      df <- df %>% rbind(prob_pred_bg)
+                      df %>% add_column(sample = i)
+})
+
+```
+
+The use of this calc_cm_metrics function is a bit wonky. I cannot use it on a list (except for 1 at a time as shown: `as.data.frame(t(sapply(seq(0.1, 0.5, 0.01), calc_cm_metrics, samples_list_x[[1]])))` as the built in `filter` doesn't like it. (that's what the error message says when trying it on a list)
+
+To make it work I used it within a loop/function thing I do not quite fully understand. It is incredibly slow. How can I improve this?
+```{r}
+metric_list <- lapply(seq_along(samples_list_x), function(i) {
+                 as.data.frame(t(sapply(seq(0.01, 0.99, 0.01),
+                                        calc_cm_metrics, 
+                                        samples_list_x[[i]])))
+})
+```
+
+## Averaging the precision / sensitivity plot
+
+Now I have a list with 100 dfs in it that each contain metrics calculated with `calc_cm_metrics` from 100 dfs that each contain 10 random AMPs and 996 background proteins.
+
+I want to average the precision and recall columns over the 0.01 - 0.99 p_threshold range.
+To do this I bind all the dfs in the list together into one big df. Then I use the `group_by` function to group the df by the p_threshold and then use `summarise` to create two new columns that contain the calculated average of precision and recall.
+```{r}
+#bind the dataframes in list together into 1 big dataframe
+
+bound_metrics <- bind_rows(metric_list)
+
+
+pr_averages_with_p_threshold <- bound_metrics %>% 
+                                group_by(p_threshold) %>% 
+                                summarise(Precision_average = mean(Precision), 
+                                          Recall_average = mean(Recall)) 
+```
+As before, the data is transformed to a long format with `gather`
+
+```{r}
+#long format
+pr_averages_with_p_threshold_long <- pr_averages_with_p_threshold %>% 
+                                tidyr::gather("metric", "value", 2:3)
+
+#the precision average for 0.99 probability is NaN so replace it with 1
+pr_averages_with_p_threshold_long <- as.data.frame(pr_averages_with_p_threshold_long)
+pr_averages_with_p_threshold_long$value[which(is.na(pr_averages_with_p_threshold_long$value))] <- 1
+
+```
+
+### Average plot
+
+```{r}
+ggplot(pr_averages_with_p_threshold_long, aes(x=p_threshold, y=value)) + geom_line(aes(color = metric)) + scale_x_continuous(breaks=c(0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00))
+```
+
+
+## Theoretical AMP content
+
+We could generate the precision - recall curve purely from theory. Let's introduce a new variable, $\alpha$ which represents the percentage of AMPs in the test set.  In the original data you used an equal number of AMPs and non-AMPs so in that case we had $\alpha=0.5$.  Therefore:
+
+$$TP_{\alpha} = TP * \alpha / 0.5$$
+
+$$FP_{\alpha} = FP * (1-\alpha)/0.5$$
+$$TN_{\alpha} = TN * ( 1- \alpha)/0.5$$
+$$FN_{alpha} = FN * \alpha / 0.5$$
+
+Which gives us:
+
+$$Precision_{\alpha} = \frac{TP\alpha}{TP\alpha + FP(1-\alpha)}$$
+
+$$Recall_{\alpha} = \frac{TP}{TP + FN}$$
+Using these equations we can recalculate the Recall and Precision for any $alpha$ very easily. Let's make a function for it.
+
+```{r}
+calc_precision_recall <- function(df,alpha) {
+  df %>% 
+  mutate(Recall = Recall) %>% 
+  mutate(Precision = TP*alpha / (TP*alpha+FP*(1-alpha))) %>% 
+  select(Recall,Precision,p_threshold)
+}
+```
+
+Now run the calculation for a range of alpha values and collapse to a data frame
+
+```{r}
+pr_data <- do.call(rbind,lapply(c(0.001,0.01,0.02,0.05,0.1,0.5),function(alpha) {
+  calc_precision_recall(roc_data,alpha) %>% add_column(alpha=alpha)
+}))
+```
+
+
+Plot using a traditional precision vs recall curve.  This is useful in the sense that it very clearly shows the tradeoff between the two. A useful way to think of Precision is that it defines the "Purity" of our predicted set of AMPs whereas the Sensitivity or Recall defines the "Completeness" of the predicted AMP set.  We want to choose the p_threshold so that there is a balance or Purity and Completeness.  When `alpha` is high this is easy to do, but when it is low it becomes a very difficult tradeoff.
+
+```{r}
+ggplot(pr_data, aes(x=Recall, y=Precision)) + geom_line(aes(group=alpha,color=alpha)) 
+```
+
+Now plot again an explicit axis for `p_threshold`. This is useful for choosing the threshold value. Also note that as $\alpha$ gets smaller and smaller the Precision curve shifts so that high values of precision are only achieved for very high `p_threshold` values.
+
+```{r}
+pr_data_long <- pr_data %>% gather("metric","value",-p_threshold,-alpha)
+
+ggplot(pr_data_long,aes(x=p_threshold,y=value)) + 
+  geom_line(aes(color=metric)) + facet_wrap(~alpha)
+```
+
+## Comparing theoretical with real content
+
+Use `calc_precision_recall()` to calculate the precision and recall for a theoretical alpha value of 1% on the roc_data 
+
+```{r}
+pr_alpha1 <- calc_precision_recall(roc_data, 0.01) %>% add_column(alpha = 0.01)
+
+#convert to long format
+
+pr_alpha1_long <- pr_alpha1[,1:3] %>% gather("metric","value", 1:2)
+
+pr_alpha1_long_plot <- ggplot(pr_alpha1_long, aes(x=p_threshold, y=value)) + 
+  geom_line(aes(color = metric)) + 
+  scale_x_continuous(breaks=c(0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00)) +
+  theme(legend.position = "bottom") + theme(legend.title = element_blank())
+
+```
+
+```{r}
+pr_averages_real_plot <- ggplot(pr_averages_with_p_threshold_long, aes(x=p_threshold, y=value)) +
+  geom_line(aes(color = metric)) + 
+  scale_x_continuous(breaks=c(0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00)) +
+  theme(legend.position = "bottom") + theme(legend.title = element_blank())
+```
+
+### combine theoretical data with real data
+
+```{r}
+pr_theo_and_ave <- rbind(pr_averages_with_p_threshold_long, pr_alpha1_long)
+
+pr_theo_and_ave_plot <- ggplot(pr_theo_and_ave, aes(x=p_threshold, y=value)) +
+  geom_line(aes(color = metric)) +
+  scale_x_continuous(breaks=c(0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00)) +
+  theme(legend.position = "bottom") +
+  theme(legend.title = element_blank())
+
+ggsave("pr_theo_and_ave.pdf", pr_theo_and_ave_plot)
+
+```
+
+
+```{r, eval=FALSE}
+library(gridExtra)
+library(cowplot)
+
+# experimenting with different packages to save multiple plots on the same page
+
+ggsave("alpha_and_real_ave2.pdf", arrangeGrob(pr_alpha1_long_plot, pr_averages_real_plot))
+
+#plot_grid(pr_alpha1_long_plot, pr_averages_real_plot, pr_theo_and_ave_plot, ncol = 1, labels = "AUTO", rel_widths = c(0.1, 0.1, 0.1), rel_heights = c(15, 8 ,8))
+
+alpha_and_real_ave <- plot_grid(pr_alpha1_long_plot, pr_averages_real_plot, ncol = 2, labels = "AUTO", rel_widths = c(0.1, 0.1))
+ggsave("alpha_and_real_ave.pdf")
+#grid.arrange(pr_alpha1_long_plot, pr_averages_real_plot)
+```
+
