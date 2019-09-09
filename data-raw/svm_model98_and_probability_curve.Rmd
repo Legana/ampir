@@ -1,0 +1,334 @@
+---
+title: "SVMmodel98 and probability plot"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, warning=FALSE, message=FALSE}
+library(ampir)
+library(caret)
+library(tidyverse)
+library(ggplot2)
+library(pROC)
+library(mltools)
+
+```
+
+```{r read_and_prepare_data, eval=FALSE}
+set.seed(396)
+#read data
+tg98 <- read_faa("tmpdata/amps_sp_ampdbs98.fasta")
+tg98$Label <- "Tg"
+bg98 <- read_faa("tmpdata/swissprot_all_MAY98.fasta")
+bg98$Label <- "Bg"
+#remove rows in bg that are in tg
+bg98 <- bg98[!bg98$seq.aa %in% tg98$seq.aa,]
+#remove nonstandard amino acids
+tg98 <- remove_nonstandard_aa(tg98)
+bg98 <- remove_nonstandard_aa(bg98)
+#remove sequences shorter than 20 amino acids
+tg98 <- tg98[nchar(tg98$seq.aa) >=20,]
+bg98 <- bg98[nchar(bg98$seq.aa) >=20,]
+#select the same number of rows as tg so databases are 1:1
+bg98 <- bg98[sample(nrow(bg98),4981),]
+#bind target and background datasets
+bg_tg98 <- rbind(bg98, tg98)
+#remove rownames
+rownames(bg_tg98) <- NULL
+#calculate features
+features98 <- calculate_features(bg_tg98)
+#add Label column for y variable
+features98$Label <- bg_tg98$Label
+#convert to factor
+features98[["Label"]] <- factor(features98[["Label"]])
+```
+
+```{r train_model, eval=FALSE}
+trainIndex <-createDataPartition(y=features98$Label, p=.8, list = FALSE)
+features98Train <-features98[trainIndex,]
+features98Test <-features98[-trainIndex,]
+
+trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
+
+svm_Radial <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="svmRadial",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+ranger_98 <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="ranger",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneLength = 10)
+
+
+test_pred <- predict(ranger_98, features98Test)
+confusionMatrix(test_pred, features98Test$Label, positive = "Tg", mode = "everything")
+
+```
+
+
+```{r train_rf_model, eval=FALSE}
+
+tanger98_grid <- expand.grid(mtry = 1:7, min.node.size  = 1:4, splitrule = c("gini", "extratrees"))
+
+ranger_98_tune_100 <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="ranger",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = tanger98_grid,
+                    num.trees = 100)
+
+ranger_98_tune_200 <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="ranger",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = tanger98_grid,
+                    num.trees = 200)
+
+ranger_98_tune_300 <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="ranger",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = tanger98_grid,
+                    num.trees = 300)
+
+ranger_98_tune_400 <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="ranger",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = tanger98_grid,
+                    num.trees = 400)
+
+ranger_98_tune_500 <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="ranger",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = tanger98_grid,
+                    importance = "permutation",
+                    num.trees = 500)
+#rf model
+
+test_pred <- predict(ranger_98_tune_100, features98Test)
+confusionMatrix(test_pred, features98Test$Label, positive = "Tg", mode = "everything")
+
+#roc
+test_pred_prob <- predict(ranger_98_tune_100, features98Test, type = "prob")
+roc(features98Test$Label, test_pred_prob$Tg)
+
+mcc(TP = 888, FP = 46, TN = 950, FN = 108)
+
+cm <- confusionMatrix(test_pred, features98Test$Label, positive = "Tg", mode = "everything")
+as.data.frame(cm$table)
+```
+
+```{r tune_model, eval=FALSE}
+grid_for_98 <- expand.grid(sigma=seq(0.01,0.07,by=0.003), C=c(1:8))
+
+svm_Radial98_tuned <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="svmRadial",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = grid_for_98)
+```
+
+```{r}
+#recreate svm_radial98_tuned with optimal hyperparameters so the model size is smaller
+grid_for_98_finer <- expand.grid(sigma=seq(0.06,0.07,by=0.001), C=c(4:6))
+
+svm_Radial98_tuned_finer <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="svmRadial",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = grid_for_98_finer)
+
+#The final values used for the model svm_radial98_tuned_finer were sigma = 0.069 and C = 6.
+
+#The final values used for the model svm_radial98_tuned were sigma = 0.07 and C = 5.
+
+grid_for_final_svmradial98 <- expand.grid(sigma=0.07, C=5)
+
+svm_Radial98_final <- train(Label~.,
+                    data = features98Train[,-c(1,27:45)], #without names and lamda values
+                    method="svmRadial",
+                    trControl = trctrl_prob,
+                    preProcess = c("center", "scale"),
+                    tuneGrid = grid_for_final_svmradial98)
+
+
+```
+
+```{r test_model, eval=FALSE}
+test_pred <- predict(svm_Radial, features98Test)
+confusionMatrix(test_pred, features98Test$Label, positive = "Tg")
+
+#roc-auc
+test_pred_prob <- predict(svm_Radial, features98Test, type = "prob")
+roc(features98Test$Label, test_pred_prob$Tg)
+
+#test tuned svmmodel
+test_pred <- predict(svm_Radial98_tuned, features98Test)
+test_pred <- predict(svm_Radial98_final, features98Test) #final model uses same hyperparameters are svm_radial98_tuned
+confusionMatrix(test_pred, features98Test$Label, positive = "Tg", mode = "everything")
+#roc
+test_pred_prob <- predict(svm_Radial98_tuned, features98Test, type = "prob")
+roc(features98Test$Label, test_pred_prob$Tg)
+#mcc
+mcc(TP = 901, FP = 54, TN = 942, FN = 95)
+
+
+#test fine tuned svmmodel
+test_pred <- predict(svm_Radial98_tuned_finer, features98Test)
+confusionMatrix(test_pred, features98Test$Label, positive = "Tg", mode = "everything")
+#roc
+test_pred_prob <- predict(svm_Radial98_tuned, features98Test, type = "prob")
+roc(features98Test$Label, test_pred_prob$Tg)
+#mcc
+mcc(TP = 942, FP = 95, TN = 901, FN = 54)
+
+
+#rf model
+test_pred <- predict(rf_98, features98Test)
+confusionMatrix(test_pred, features98Test$Label, positive = "Tg", mode = "everything")
+
+
+```
+
+
+```{r extract_rates}
+#test_pred_prob <- predict(svm_Radial98_tuned, features98Test, type = "prob")
+test_pred_prob <- readRDS("tmpdata/test_pred_prob_svmtuned98.rds")
+features98Test <- readRDS("tmpdata/features98Test.rds")
+
+actual <- as.data.frame(features98Test$Label)
+names(actual) <- "actual"
+prob_curve_prep <- cbind(test_pred_prob, actual)
+
+p_threshold <- seq(0, 0.95, 0.05)
+
+#True positive
+TP <- vector("integer")
+for (i in p_threshold) {
+  TP <- c(TP, prob_curve_prep %>% filter((actual=="Tg")) %>% filter(Tg > i) %>% n_distinct())
+}
+TP
+
+#False positive
+FP <- vector("integer")
+for (i in p_threshold) {
+  FP <- c(FP, prob_curve_prep %>% filter((actual=="Bg")) %>% filter(Tg > i) %>% n_distinct())
+}
+FP
+
+#True negative
+TN <- vector("integer")
+for (i in p_threshold) {
+  TN <- c(TN, prob_curve_prep %>% filter((actual=="Bg")) %>% filter(Tg < i) %>% n_distinct())
+}
+TN
+
+#False negative
+FN <- vector("integer")
+for (i in p_threshold) {
+  FN <- c(FN, prob_curve_prep %>% filter((actual=="Tg")) %>% filter(Tg < i) %>% n_distinct())
+}
+FN
+
+roc_data <- data.frame(TP, FP, TN, FN, p_threshold)
+
+```
+
+```{r plotting}
+#convert to long format
+roc_data_long <- roc_data %>% tidyr::gather("type", "value", 1:4)
+
+ggplot(roc_data_long, aes(x=p_threshold, y=value)) + geom_point(aes(color = type)) 
+ggplot(roc_data_long, aes(x=p_threshold, y=value)) + geom_line(aes(color = type)) 
+
+ggplot(roc_data_long, aes(p_threshold,value)) + 
+  geom_point(aes(color = type)) + 
+  stat_smooth() +
+  facet_wrap(~type)
+
+```
+
+
+
+```{r}
+calc_prob_cm <- function(p_threshold, df) {
+  TP <- df %>% filter((actual=="Tg")) %>% filter(Tg > p_threshold) %>% n_distinct()
+  FP <- df %>% filter((actual=="Bg")) %>% filter(Tg > p_threshold) %>% n_distinct()
+  TN <- df %>% filter((actual=="Bg")) %>% filter(Tg < p_threshold) %>% n_distinct()
+  FN <- df %>% filter((actual=="Tg")) %>% filter(Tg < p_threshold) %>% n_distinct()
+  
+  cm <- c(TN, FP, TN, FN, p_threshold)
+  names(cm) <-c("TP", "FP", "TN", "FN", "p_threshold") 
+  cm
+
+}
+
+calc_prob_cm(p_threshold = 0.5, df = prob_curve_prep)
+
+tst <- as.data.frame(t(sapply(seq(0,0.95,0.05), calc_prob_cm, prob_curve_prep)))
+
+
+```
+
+```{r}
+cm_prob <- as.data.frame(t(sapply(seq(0,0.95,0.05), calc_prob_cm, prob_curve_prep)))
+
+TP <- prob_curve_prep %>% filter((actual=="Tg")) %>% filter(Tg > 0.5) %>% n_distinct()
+
+
+  # put in loop function 
+sensitivity_for_0.5 <- TP / prob_curve_prep %>% filter((actual=="Tg")) %>% n_distinct()
+
+#TP_rate = sensitivity = TP/actual TP
+```
+
+```{r do_not_run, eval=FALSE}
+# first loop attempts which do not work, why
+TP <- vector("integer", length(p_threshold))
+for (p_threshold in seq(0, 0.95, 0.05)) {
+  TP <- prob_curve_prep %>% filter((actual=="Tg")) %>% filter(Tg > p_threshold) %>% n_distinct()
+  TP_column <- c(TP_column, TP) %>% as.data.frame() }
+
+
+TP <- vector("integer", length(p_threshold))
+for (p_threshold in seq(0, 0.95, 0.05)) {
+  print(p_threshold)
+  TP <- prob_curve_prep %>% filter((actual=="Tg")) %>% filter(Tg > p_threshold) %>% n_distinct()
+  print(TP)
+  TP[p_threshold]
+  }
+TP
+
+output <- vector("double", length(p_threshold))
+for (p_threshold in seq(0, 0.95, 0.05)) {
+  output <- prob_curve_prep %>% filter((actual=="Tg")) %>% filter(Tg > p_threshold) %>% n_distinct()
+}
+
+output <- vector("integer")
+for (i in p_threshold) {
+  output <- c(output,prob_curve_prep %>% filter((actual=="Tg")) %>% filter(Tg > i) %>% n_distinct())
+}
+output
+```
+
+
+
