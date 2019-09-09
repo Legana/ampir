@@ -1,0 +1,46 @@
+---
+title: "benchmark_ampscanner"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+library(caret)
+library(mltools)
+library(pROC)
+```
+
+```{r}
+#read in feature set from the test set used to get the actual true labels
+featuresTest_1000 <- readRDS("tmpdata/1000_test_features.rds")
+
+#read in amp scanner prediction results from the test set 
+amp_scanner1000_results <- read.csv("tmpdata/amp_scanner2019/amp_scanner_results/1567467339739_Prediction_Summary.csv")
+```
+
+```{r}
+#create empty column
+amp_scanner1000_results$Label <- NA
+#set non-AMPs to Bg in Label
+amp_scanner1000_results$Label[grep("Non-AMP", amp_scanner1000_results$Prediction_Class)] = "Bg"
+#set AMPs to Tg (use reg ex so it only contains the word "AMP" so it excludes "non-AMPs")
+amp_scanner1000_results$Label[grep("^AMP$", amp_scanner1000_results$Prediction_Class)] = "Tg"
+#convert to factor for the confusionmatrix function
+amp_scanner1000_results$Label <- as.factor(amp_scanner1000_results$Label)
+```
+
+```{r}
+#predicted against reference (true results)
+confusionMatrix(amp_scanner1000_results$Label, featuresTest_1000$Label, mode = "everything")
+
+mcc(TP = 305, FP = 67, TN = 434, FN = 194)
+
+
+roc(featuresTest_1000$Label, amp_scanner1000_results$Prediction_Probability)
+
+```
+
