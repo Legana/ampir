@@ -127,7 +127,7 @@ roc_out <- roc(featuresPEP31Test$Label, test_pred_prob$Tg)
 
 ```{r}
 
-tst <- readRDS("tmpdata/1000_test_features.rds")
+featuresTest_1000 <- readRDS("tmpdata/1000_test_features.rds")
 
 #test with 1000 sp proteins
 test_PEP1000 <- predict(svm_PEPtgbg, newdata = featuresTest_1000)
@@ -188,7 +188,7 @@ ampep_1000_results$Bg_prob <- 1 - ampep_1000_results$Tg_prob
 ```{r}
 #predicted against reference (true results)
 library(caret)
-confusionMatrix(ampep_1000_results$Label, featuresTest_1000$Label)
+confusionMatrix(ampep_1000_results$Label, featuresTest_1000$Label, mode = "everything")
 
 library(mltools)
 mcc(TP = 260, FP = 241, TN = 354, FN = 145)

@@ -121,11 +121,14 @@ length(grep("Tg", amppred_1000$Label)) #933 #873 antibac only
 ```{r}
 #predicted against reference (true results)
 library(caret)
-confusionMatrix(amppred_1000$Label, featuresTest_1000$Label)
+confusionMatrix(amppred_1000$Label, featuresTest_1000$Label, mode = "everything")
 
 library(mltools)
-mcc(TP = 417, FP = 84, TN = 43, FN = 456)
+#mcc(TP = 417, FP = 84, TN = 43, FN = 456)
 
+mcc(TP = 428, FP = 73, TN = 37, FN = 462)
+
+mcc(TP = 37, FP = 73, TN = 428, FN = 462)
 
 library(pROC)
 

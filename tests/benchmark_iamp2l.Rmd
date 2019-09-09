@@ -125,7 +125,7 @@ iamp2l_results$Label[which(is.na(iamp2l_results$Label)==T)] = "Tg"
 iamp2l_results$Label <- as.factor(iamp2l_results$Label)
 
 #predicted against reference (true results)
-confusionMatrix(iamp2l_results$Label, featuresTest_1000$Label)
+confusionMatrix(iamp2l_results$Label, featuresTest_1000$Label, mode = "everything")
 
 
 mcc(TP = 234, FP = 267, TN = 492, FN = 7)
