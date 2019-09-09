@@ -4,97 +4,63 @@ library(caret)
 # read and prepare data
 
 set.seed(396)
-
-tg <- read_faa("data-raw/tmpdata/amps_sp_ampdbs98.fasta")
-tg$Label <- "Tg"
-bg <- read_faa("data-raw/tmpdata/bg70g.fasta")
-bg$Label <- "Bg"
+#read data
+tg98 <- read_faa("tmpdata/amps_sp_ampdbs98.fasta")
+tg98$Label <- "Tg"
+bg98 <- read_faa("tmpdata/swissprot_all_MAY98.fasta")
+bg98$Label <- "Bg"
 #remove rows in bg that are in tg
-bg <- bg[!bg$seq.aa %in% tg$seq.aa,]
+bg98 <- bg98[!bg98$seq.aa %in% tg98$seq.aa,]
 #remove nonstandard amino acids
-tg <- remove_nonstandard_aa(tg)
-bg <- remove_nonstandard_aa(bg)
+tg98 <- remove_nonstandard_aa(tg98)
+bg98 <- remove_nonstandard_aa(bg98)
 #remove sequences shorter than 20 amino acids
-tg <- tg[nchar(tg$seq.aa) >=20,]
-bg <- bg[nchar(bg$seq.aa) >=20,]
+tg98 <- tg98[nchar(tg98$seq.aa) >=20,]
+bg98 <- bg98[nchar(bg98$seq.aa) >=20,]
 #select the same number of rows as tg so databases are 1:1
-bg <- bg[sample(nrow(bg),4981),]
+bg98 <- bg98[sample(nrow(bg98),4981),]
 #bind target and background datasets
-bg_tg <- rbind(bg, tg)
+bg_tg98 <- rbind(bg98, tg98)
 #remove rownames
-rownames(bg_tg) <- NULL
+rownames(bg_tg98) <- NULL
 #calculate features
-features <- calculate_features(bg_tg)
+features98 <- calculate_features(bg_tg98)
 #add Label column for y variable
-features$Label <- bg_tg$Label
+features98$Label <- bg_tg98$Label
 #convert to factor
-features[["Label"]] <- factor(features[["Label"]])
+features98[["Label"]] <- factor(features98[["Label"]])
 
-# Use features to train the model
+#split feature set data 80/20 and create train and test set
+trainIndex <-createDataPartition(y=features98$Label, p=.8, list = FALSE)
+features98Train <-features98[trainIndex,]
+features98Test <-features98[-trainIndex,]
 
-#split the data 80/20 and create train and test set from features
-trainIndex <-createDataPartition(y=features$Label, p=.8, list = FALSE)
-featuresTrain <-features[trainIndex,]
-featuresTest <-features[-trainIndex,]
-
-#resample method using repeated cross validation and adding in and adding in a probability calculation to use later when predicting
+#resample method using repeated cross validation and adding in a probability calculation
 trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
 
-# train model
+# TRAIN MODEL
 
-svm_Radial <- train(Label~.,
-                    data = featuresTrain[,-c(1,27:45)], #without names and lamda values
-                    method="svmRadial",
-                    trControl = trctrl_prob,
-                    preProcess = c("center", "scale"),
-                    tuneLength = 10)
+# An svm radial model was used using sigma=seq(0.01,0.07,by=0.003), C=c(1:8)
+# The final values used for the model svm_radial98_tuned were sigma = 0.07 and C = 5.
+# These values were used to recreate the model to minimise model file size
 
-# test model
+
+grid_for_final_svmradial98 <- expand.grid(sigma=0.07, C=5)
+
+svm_Radial98_final <- train(Label~.,
+                            data = features98Train[,-c(1,27:45)], #without names and lamda values
+                            method="svmRadial",
+                            trControl = trctrl_prob,
+                            preProcess = c("center", "scale"),
+                            tuneGrid = grid_for_final_svmradial98)
+
+# TEST MODEL
 test_pred <- predict(svm_Radial, featuresTest)
 confusionMatrix(test_pred, featuresTest$Label)
 #mcc
 mcc(TP = 893, FP = 103, TN = 911, FN = 85)
 #roc-auc
 test_pred_prob <- predict(svm_Radial, featuresTest, type = "prob")
-roc(featuresTest$Label, test_pred_prob$Tg)
-
-#make grids for tuning
-grid3 <- expand.grid(sigma=seq(0.05,0.06,by=0.003), C=c(1:9))
-grid4 <- expand.grid(sigma=seq(0.05,0.06,by=0.001), C=c(5:8))
-grid5 <- expand.grid(sigma=seq(0.01,0.07,by=0.003), C=c(1:8))
-
-
-
-svm_Radial_tuned_fine <- train(Label~.,
-                               data = featuresTrain[,-c(1,27:45)], #without names and lamda values
-                               method="svmRadial",
-                               trControl = trctrl_prob,
-                               preProcess = c("center", "scale"),
-                               tuneGrid = grid4)
-
-svm_Radial_wide_tune_range <- train(Label~.,
-                               data = featuresTrain[,-c(1,27:45)], #without names and lamda values
-                               method="svmRadial",
-                               trControl = trctrl_prob,
-                               preProcess = c("center", "scale"),
-                               tuneGrid = grid5)
-# Test model
-
-test_pred <- predict(svm_Radial_tuned_fine, featuresTest)
-confusionMatrix(test_pred, featuresTest$Label)
-#mcc
-mcc(TP = 916, FP = 96, TN = 916, FN = 80)
-#roc-auc
-test_pred_prob <- predict(svm_Radial_tuned_fine, featuresTest, type = "prob")
-roc_out <- roc(featuresTest$Label, test_pred_prob$Tg)
-
-# wide tune
-test_pred <- predict(svm_Radial_wide_tune_range, featuresTest)
-confusionMatrix(test_pred, featuresTest$Label)
-#mcc
-mcc(TP = 898, FP = 98, TN = 916, FN = 80)
-#roc-auc
-test_pred_prob <- predict(svm_Radial_wide_tune_range, featuresTest, type = "prob")
 roc(featuresTest$Label, test_pred_prob$Tg)
 
 
@@ -118,7 +84,7 @@ tmp <- data.frame(
 AAidx <- rbind(AAidx, tmp)
 
 
-ampir_package_data <- list('svm_Radial'=svm_Radial_tuned_fine,
+ampir_package_data <- list('svm_Radial'=svm_Radial98_final,
                            'AAidx'=AAidx)
 
 
