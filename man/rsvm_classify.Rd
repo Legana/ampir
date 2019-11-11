@@ -11,18 +11,18 @@ rsvm_classify(df)
 }
 \value{
 A dataframe containing a single column with probability values
+
+# example
+
+# my_protein_features <- readRDS(system.file("extdata/my_protein_features.rds", package = "ampir"))
+
+rsvm_classify(my_protein_features)
+#       seq_name    prob_AMP
+# [1] G1P6H5_MYOLU  0.9723796
 }
 \description{
 This function predicts the probability of a protein to be an antimicrobial peptide based on feature calculations (as obtained from \code{calculate_features})
 }
 \note{
 The predictive model within this function was created via the caret package (https://github.com/topepo/caret/)
-}
-\examples{
-
-my_protein_features <- readRDS(system.file("extdata/my_protein_features.rds", package = "ampir"))
-
-predict_AMP_prob(my_protein_features)
-#       seq.name    prob_AMP
-# [1] G1P6H5_MYOLU  0.9723796
 }

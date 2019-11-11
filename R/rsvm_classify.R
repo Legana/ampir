@@ -10,9 +10,9 @@
 #'
 #' @return A dataframe containing a single column with probability values
 #'
-#' @examples
+#' # example
 #'
-#' my_protein_features <- readRDS(system.file("extdata/my_protein_features.rds", package = "ampir"))
+#' # my_protein_features <- readRDS(system.file("extdata/my_protein_features.rds", package = "ampir"))
 #'
 #' rsvm_classify(my_protein_features)
 #' #       seq_name    prob_AMP

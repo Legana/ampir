@@ -7,7 +7,7 @@
 predict_amps(faa_df)
 }
 \arguments{
-\item{faa_df}{A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq.name) and amino acid sequence (seq.aa)}
+\item{faa_df}{A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)}
 }
 \value{
 A dataframe containing a column with the sequence name and probability of that sequence to be an antimicrobial peptide
@@ -20,6 +20,6 @@ This function predicts the probability of a protein to be an antimicrobial pepti
 my_bat_faa_df <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 
 predict_amps(my_bat_faa_df)
-#       seq.name    prob_AMP
+#       seq_name    prob_AMP
 # [1] G1P6H5_MYOLU  0.9723796
 }

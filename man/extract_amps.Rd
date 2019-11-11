@@ -11,7 +11,7 @@ extract_amps(df_w_seq, df_w_prob, prob = 0.5)
 (output from  \code{read_faa})}
 
 \item{df_w_prob}{a dataframe containing two columns (sequence name and AMP probability)
-(output from \code{predict_AMP_prob})}
+(output from \code{predict_amps})}
 
 \item{prob}{The greater than or equal to probability value AMP identification should be set at
 default is 0.50}
@@ -21,7 +21,7 @@ A FASTA file where protein sequences are represented in two lines: The protein n
         and a new second line that contains the protein sequence
 }
 \description{
-This function extracts the protein sequences predicted to be AMPs from \code{predict_AMP_prob}
+This function extracts the protein sequences predicted to be AMPs from \code{predict_amps}
 }
 \examples{
 
@@ -31,6 +31,6 @@ my_prediction <- readRDS(system.file("extdata/my_protein_pred.rds", package = "a
 extract_amps(my_protein, my_prediction, prob = 0.55)
 
 #' ## Output
-#         seq.name              seq.aa
+#         seq_name              seq_aa
 # [1] G1P6H5_MYOLU  MALTVRIQAACLLLLLLASLTSYSL....
 }

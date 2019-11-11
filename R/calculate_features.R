@@ -2,7 +2,6 @@
 #'
 #' This function calculates set physicochemical and compositional features from protein sequences
 #'
-#'
 #' @note This function depends on the Peptides package
 #' @references Osorio, D., Rondon-Villarreal, P. & Torres, R. Peptides: A package for data mining of antimicrobial peptides. The R Journal. 7(1), 4–14 (2015).
 #'
@@ -10,13 +9,13 @@
 #'
 #' @return A dataframe containing numerical values related to the protein features of each given protein
 #'
-#' @examples
+#' # example
 #'
-#' my_protein <- readRDS(system.file("extdata/my_protein_df.rds", package = "ampir"))
+#' # my_protein <- readRDS(system.file("extdata/my_protein_df.rds", package = "ampir"))
 #'
 #' # Calculate features from Hepcidin AMP from \emph{Myotis lucifugus} (UniProt ID G1P6H5)
 #'
-#' calculate_features(my_protein)
+#' # calculate_features(my_protein)
 #'
 #' ## Output (showing the first six output columns)
 #' #      seq_name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....

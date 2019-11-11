@@ -25,10 +25,10 @@
 
 df_to_faa <- function(df, file = "") {
 
-  seq.name <- as.character(df$seq.name)
-  seq.aa <- as.character(df$seq.aa)
+  seq_name <- as.character(df$seq_name)
+  seq_aa <- as.character(df$seq_aa)
 
-  writeLines(paste(">", seq.name, "\n", seq.aa, sep = ""), file)
+  writeLines(paste(">", seq_name, "\n", seq_aa, sep = ""), file)
 
 
 }
