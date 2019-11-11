@@ -2,8 +2,6 @@
 #'
 #' This function predicts the probability of a protein to be an antimicrobial peptide based on feature calculations (as obtained from \code{calculate_features})
 #'
-#' @export predict_AMP_prob
-#'
 #' @importFrom caret predict.train
 #'
 #' @note The predictive model within this function was created via the caret package (https://github.com/topepo/caret/)
@@ -16,13 +14,13 @@
 #'
 #' my_protein_features <- readRDS(system.file("extdata/my_protein_features.rds", package = "ampir"))
 #'
-#' predict_AMP_prob(my_protein_features)
-#' #       seq.name    prob_AMP
+#' rsvm_classify(my_protein_features)
+#' #       seq_name    prob_AMP
 #' # [1] G1P6H5_MYOLU  0.9723796
 
-predict_AMP_prob <- function(df) {
+rsvm_classify <- function(df) {
 
-  seq.name <- df[,1]
+  seq_name <- df[,1]
   df <- df[,-1]
 
   svm_Radial <- ampir_package_data[["svm_Radial"]]
@@ -33,7 +31,7 @@ predict_AMP_prob <- function(df) {
 
   p_AMP_df <- as.data.frame(p_AMP)[2]
 
-  cbind(seq.name, p_AMP_df)
+  cbind(seq_name, p_AMP_df)
 
 }
 

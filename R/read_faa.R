@@ -15,30 +15,30 @@
 #' read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 #'
 #' ## Output
-#' #         seq.name              seq.aa
+#' #         seq_name              seq_aa
 #' # [1] G1P6H5_MYOLU  MALTVRIQAACLLLLLLASLTSYSL....
 
 read_faa <- function (file = NULL) {
-  faa.lines <- readLines(file)
+  faa_lines <- readLines(file)
 
   ### get sequence names
-  seq.name.index <- grep(">", faa.lines)
-  seq.name <- gsub(">", "", faa.lines[seq.name.index])
+  seq_name_index <- grep(">", faa_lines)
+  seq_name <- gsub(">", "", faa_lines[seq_name_index])
 
   ### get sequence
-  seq.aa.start.index <- seq.name.index + 1
-  seq.aa.end.index <- c(seq.name.index, length(faa.lines)+1)[-1]-1
+  seq_aa_start_index <- seq_name_index + 1
+  seq_aa_end_index <- c(seq_name_index, length(faa_lines)+1)[-1]-1
 
-  seq.aa <- rep(NA, length(seq.name.index))
+  seq_aa <- rep(NA, length(seq_name_index))
 
   ### replace NA content with actual sequence content, and concatenate the lines
-  for(i in seq_along(seq.name.index)){
-    seq.aa.start <- seq.aa.start.index[i]
-    seq.aa.end   <- seq.aa.end.index[i]
-    seq.aa[i] <- gsub("[[:space:]]", "",
-                      paste(faa.lines[seq.aa.start:seq.aa.end],
+  for(i in seq_along(seq_name_index)){
+    seq_aa_start <- seq_aa_start_index[i]
+    seq_aa_end   <- seq_aa_end_index[i]
+    seq_aa[i] <- gsub("[[:space:]]", "",
+                      paste(faa_lines[seq_aa_start:seq_aa_end],
                             collapse = ""))
   }
 
-  data.frame(seq.name, seq.aa, stringsAsFactors = FALSE)
+  data.frame(seq_name, seq_aa, stringsAsFactors = FALSE)
 }

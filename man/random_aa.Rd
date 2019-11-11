@@ -13,5 +13,5 @@ random_aa(x)
 A character vector of given sequence length
 }
 \description{
-This functuon results in a single sequence of any given length. It is also a helper function for \code{random_aas}.
+This function results in a single sequence of any given length. It is also a helper function for \code{random_aas}.
 }
