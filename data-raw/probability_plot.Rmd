@@ -282,6 +282,7 @@ pr_alpha1_long_plot <- ggplot(pr_alpha1_long, aes(x=p_threshold, y=value)) +
   scale_x_continuous(breaks=c(0, 0.10, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.80, 0.90, 1.00)) +
   theme(legend.position = "bottom") + theme(legend.title = element_blank())
 
+
 ```
 
 ```{r}
