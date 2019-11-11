@@ -40,6 +40,5 @@ read_faa <- function (file = NULL) {
                             collapse = ""))
   }
 
-  res <- data.frame(seq.name, seq.aa, stringsAsFactors = FALSE)
-  return(res)
+  data.frame(seq.name, seq.aa, stringsAsFactors = FALSE)
 }
