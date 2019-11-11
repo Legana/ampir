@@ -24,13 +24,12 @@ knitr::opts_chunk$set(
 #[![Travis build status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
 ```
 
-The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r** ) package was designed to be an open and user-friendly method to predict AMPs (antimicrobial peptides) from any given size protein dataset. **ampir** uses four sequential functions to create a four step approach to predict AMPs.
-
 ## Installation
 
 You can install the development version of ampir from [GitHub](https://github.com/) with:
 
 Note: this does not yet work as the repository is private.
+
 ```r
 # install.packages("devtools")
 devtools::install_github("Legana/ampir")
@@ -40,23 +39,27 @@ devtools::install_github("Legana/ampir")
 #devtools::install_github("Legana/ampir",auth_token = "07d66396f0c3f7a5ac675b8e7312b9eda55d1d8b")
 ```
 
-## Brief background
+# Brief background
 
-**ampir** uses a *supervised statistical machine learning* approach to predict AMPs. Basically this involves making a statistical model based on *input* data to predict *output* data [James, Witten, Hastie & Tibshirani 2013](http://www-bcf.usc.edu/~gareth/ISL/). The input data are also known as *features* which are used to describe the data. To predict AMPs, physicochemical and compositional properties of protein sequences are used as features [Osorio, Rondón-Villarreal & Torres 2015](https://journal.r-project.org/archive/2015/RJ-2015-001/RJ-2015-001.pdf). Therefore, within this package, it is important to ***follow an order of functions***.
+The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r** ) package was designed to be a fast and user-friendly method to predict AMPs (antimicrobial peptides) from any given size protein dataset. **ampir** uses a *supervised statistical machine learning* approach to predict antimicrobial peptides (AMPs).
 
-### Order of functions to follow
+Basically this involves making a statistical model based on *input* data to predict *output* data [James, Witten, Hastie & Tibshirani 2013](http://www-bcf.usc.edu/~gareth/ISL/). 
+
+**ampir** uses protein sequences as input and produces a table with the sequence names and the probability of that sequence to be an AMP as output. 
+
+## Functions in **ampir**
 
 1. `read_faa()` to read FASTA amino acid files.
-2. `remove_nonstandard_aa()` to remove non standard amino acid sequences.
-3. `calculate_features()` to calculate data descriptors used by the predictive model.
-4. `predict_AMP_prob()` to predict the AMP probability of a protein.
 
-### Additional optional functions
+2. `predict_amps()` to predict the AMP probability of a protein.
 
-5. `extract_amps()` to extract predicted AMP sequences based on a set probability.
-6. `df_to_faa()` to write a dataframe of sequences as a local FASTA file.
+### Helpful optional functions
 
-## Example workflow
+3. `extract_amps()` to extract predicted AMP sequences based on a set probability.
+
+4. `df_to_faa()` to write a dataframe of sequences as a local FASTA file.
+
+# Example workflow
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(ampir)
@@ -72,67 +75,24 @@ my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir
 
 ```{r, echo=FALSE}
 #sapply to shorten words in df and use data.frame(as.list) to tidy up kable output
-#knitr::kable(as.data.frame(as.list(sapply(my_protein, strtrim, 35))), caption = "My protein")
-
-knitr::kable(my_protein, caption = "My protein")
+knitr::kable(as.data.frame(as.list(sapply(my_protein, strtrim, 35))), caption = "My protein")
 ```
 
-### Step 2: Remove non standard amino acids with `remove_nonstandard_aa()`
+### Step 2: Predict antimicrobial peptide probability with `predict_amps()` 
 
-`remove_nonstandard_aa()` is used to remove sequences that contain anything other than the 20 standard amino acids. These sequences are removed to circumvent potential complications with calculations.
-
-
-```{r, echo=FALSE}
-nonstandard_example_df <- readRDS(system.file("extdata/non_standard_df.rds", package = "ampir"))
-
-#knitr::kable(sapply(nonstandard_example_df, strtrim, 35), caption = "Example dataframe with a nonsense protein")
-
-knitr::kable(nonstandard_example_df, caption = "Example dataframe with a nonsense protein")
-```
-
-The table above shows a dataframe with protein sequences in it. The second row contains a made up sequence to serve as an example. This made up sequence will be removed with `remove_nonstandard_aa()`.
+`predict_amps()` predicts the probability of a protein to be an antimicrobial peptide.
 
 ```{r}
-my_clean_protein <- remove_nonstandard_aa(df = nonstandard_example_df)
+my_prediction <- predict_amps(my_protein)
 ```
 
 ```{r, echo=FALSE}
-#knitr::kable(as.data.frame(as.list(sapply(my_clean_protein, strtrim, 35))), caption = "My clean protein")
-
-knitr::kable(my_clean_protein, caption = "My clean protein")
+knitr::kable(my_prediction, digits = 3, caption = "My prediction")
 ```
 
+### Optional step: Extract AMP sequences using a set probability threshold (default >= 0.50)
 
-### Step 3: Calculate features with `calculate_features()`
-
-`calculate_features()` calculates a range of physicochemical properties that are used by the predictive model within `predict_AMP_prob()` to make its predictions (step 4). It removes sequences less than 20 amino acids long and reports the quantity of these.
-
-```{r}
-my_protein_features <- calculate_features(df = my_clean_protein)
-```
-
-```{r, echo=FALSE}
-#knitr::kable(my_protein_features[1:6], digits = 3, caption = "My protein features ( first six columns )")
-
-knitr::kable(my_protein_features, digits = 3, caption = "My protein features")
-
-```
-
-### Step 4: Predict antimicrobial peptide probability with `predict_AMP_prob()` 
-
-`predict_AMP_prob()` uses the output from `calculate_features()` as a parameter to predict the probability of a protein to be an antimicrobial peptide.
-
-```{r}
-my_prediction <- predict_AMP_prob(df = my_protein_features)
-```
-
-```{r, echo=FALSE}
-knitr::kable(my_prediction, digits = 3, caption = "My protein prediction")
-```
-
-### Optional step 5: Extract AMP sequences using a set probability threshold (default >= 0.50)
-
-`extract_amps()` uses the output from `read_faa()` and `predict_AMP_prob()` as parameters to create a new dataframe which contains the sequence name and sequence of the identified antimicrobial peptides at a set probability threshold of >= 0.50. The default threshold of >= 0.50 can be changed with the "prob" parameter.
+`extract_amps()` uses the output from `read_faa()` and `predict_amps()` as parameters to create a new dataframe which contains the sequence name and sequence of the identified antimicrobial peptides at a set probability threshold of >= 0.50. The default threshold of >= 0.50 can be changed with the "prob" parameter.
 
 ```{r}
 my_predicted_amps <- extract_amps(df_w_seq = my_protein, df_w_prob = my_prediction, prob = 0.55)
@@ -142,11 +102,10 @@ my_predicted_amps <- extract_amps(df_w_seq = my_protein, df_w_prob = my_predicti
 knitr::kable(as.data.frame(as.list(sapply(my_predicted_amps, strtrim, 35))), caption = "My predicted AMPs")
 ```
 
-### Optional step 6: Save sequences as FASTA format file
+### Optional step: Save sequences as FASTA format file
 
 `df_to_faa()` writes a dataframe containing the sequence and corresponding sequence name to a FASTA file.
 
 ```{r,eval=FALSE}
 df_to_faa(my_predicted_amps, "my_predicted_amps.fasta")
 ```
-
