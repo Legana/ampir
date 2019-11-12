@@ -5,13 +5,18 @@ library(ampir)
 
 little_seqs <- read_faa("inst/extdata/little_test.fasta")
 
-little_seqs_features <- calculate_features(little_seqs$seq.aa)
-little_seqs_features <- cbind(little_seqs$seq.name,little_seqs_features)
+little_seqs_features <- ampir:::calculate_features(little_seqs)
 
-saveRDS(little_seqs_features,"tests/little_seqs_features.rds")
+#saveRDS(little_seqs_features,"tests/little_seqs_features.rds")
 
 
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
-hepcidin_paac <- calc_pseudo_comp(hepseq)
+hepcidin_paac <- ampir:::calc_pseudo_comp(hepseq)
 
 saveRDS(hepcidin_paac,"tests/hepcidin_paac.rds")
+
+hepseq_pieces <- c(hepseq,substring(hepseq,1,11), substring(hepseq,1,3))
+
+source("R/calc_pseudo_comp.R")
+
+calc_pseudo_comp(hepseq_pieces)

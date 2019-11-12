@@ -3,21 +3,26 @@
 #' This function is adapted from the extractPAAC function from the protr package (https://github.com/nanxstats/protr)
 #' @references Nan Xiao, Dong-Sheng Cao, Min-Feng Zhu, and Qing-Song Xu. (2015). protr/ProtrWeb: R package and web server for generating various numerical representation schemes of protein sequences. Bioinformatics 31 (11), 1857-1859.
 #'
-#' @param seq A protein sequence
-#' @param lambda lambda value (determined within the function)
+#' @param seq A vector of protein sequences as character strings
+#' @param lambda_min Minimum allowable lambda. It is an error to provide a protein sequence shorter than lambda_min
+#' @param lambda_max For each sequence lambda will be set to one less than the sequence length or lambda_max, whichever is smaller
 #'
-calc_pseudo_comp <- function(seq,lambda = NULL) {
+calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=20) {
 
   if ( is.factor(seq)){
     message("Coercing factor to character")
     seq <- as.character(seq)
   }
 
+  if ( min(nchar(seq)) <= lambda_min ){
+
+  }
+
   # Prepare H matrix
   # Note that this is probably the slowest part of this function now.
   # Further performance gains could be obtained by caching this result (via memoize)
   #
-  AAidx <- ampir_package_data[["AAidx"]]
+  AAidx <- ampir:::ampir_package_data[["AAidx"]]
   aaidx <- AAidx[, -1]
   row.names(aaidx) <- AAidx[, 1]
   props <- c('Hydrophobicity', 'Hydrophilicity', 'SideChainMass')
@@ -36,21 +41,22 @@ calc_pseudo_comp <- function(seq,lambda = NULL) {
   dimnames(H) = list(props, AADict)
 
 
-  if (is.null(lambda)){
-    max_lambda <- max(sapply(seq, nchar))
-    lambda <- min(19, max_lambda)
-  }
+  output_width <- min(lambda_max,max(nchar(seq)))
 
 
   pseudo_comp = NULL
-  pseudo_comp_names <- c(paste('Xc1.', AADict, sep = ''),paste('Xc2.lambda.', 1:lambda, sep = ''))
+  pseudo_comp_names <- c(paste('Xc1.', AADict, sep = ''),paste('Xc2.lambda.', 1:output_width, sep = ''))
 
 
   for (i in 1:length(seq)){
 
     tseq <- strsplit(seq[i],"")[[1]]
 
-    pseaac <- rcpp_paac(tseq,H,lambda,0.05)
+    lambda <- min(lambda_max,length(tseq)-1)
+
+    raw_pseaac <- ampir:::rcpp_paac(tseq,H,lambda,0.05)
+
+    pseaac <- c(raw_pseaac,rep(NA,length(pseudo_comp_names)-length(raw_pseaac)))
 
     names(pseaac) <- pseudo_comp_names
 
@@ -60,4 +66,6 @@ calc_pseudo_comp <- function(seq,lambda = NULL) {
   }
   pseudo_comp
 }
+
+
 
