@@ -7,7 +7,7 @@
 #' @param lambda_min Minimum allowable lambda. It is an error to provide a protein sequence shorter than lambda_min
 #' @param lambda_max For each sequence lambda will be set to one less than the sequence length or lambda_max, whichever is smaller
 #'
-calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=20) {
+calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=19) {
 
   if ( is.factor(seq)){
     message("Coercing factor to character")

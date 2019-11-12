@@ -94,7 +94,7 @@ test_that("Hepcidin gives correct Pseudo Amino Acid Composition", {
 
   expected_result <- readRDS("../hepcidin_paac.rds")
 
-  result <- calc_pseudo_comp(hepseq,lambda=4)
+  result <- calc_pseudo_comp(hepseq)
 
   expect_is(result,"data.frame")
 
@@ -105,17 +105,19 @@ test_that("Hepcidin gives correct Pseudo Amino Acid Composition", {
 })
 
 
-test_that("calc_pseudo_comp works with ", {
+test_that("calc_pseudo_comp works with mixed length sequences", {
 
-  expected_result <- readRDS("../hepcidin_paac.rds")
+  hepseq_pieces <- c(hepseq,substring(hepseq,1,11), substring(hepseq,1,8))
 
-  result <- calc_pseudo_comp(hepseq,lambda=4)
+  result <- calc_pseudo_comp(hepseq_pieces)
 
   expect_is(result,"data.frame")
 
+  # Result should have rows with 0, 9 and 12 NA's respectively
+
   expect_equal(
-    result,
-    expected_result, tolerance=1e-5)
+    rowSums(is.na(result)),
+    c(0,9,12))
 
 })
 
