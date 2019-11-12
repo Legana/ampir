@@ -15,7 +15,7 @@ calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=19) {
   }
 
   if ( min(nchar(seq)) <= lambda_min ){
-
+    stop("One or more sequence is shorter than lambda_min")
   }
 
   # Prepare H matrix
