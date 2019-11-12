@@ -21,15 +21,13 @@
 #' #      seq_name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
 #' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
-calculate_features <- function(df) {
+calculate_features <- function(df, min_len=20) {
 
-  longer_proteins_index <- nchar(df[,2]) >=20
-  df_cut <- df[longer_proteins_index,]
-
-  short_proteins_index <- nchar(df[,2]) <20
-
-  message("Proteins less than twenty amino acids long were removed and totalled at: ", sum(short_proteins_index))
-
+  short_proteins_index <- nchar(df[,2]) < min_len
+  df_cut <- df[!short_proteins_index,]
+  if ( sum(short_proteins_index) > 0){
+    message("Proteins less than twenty amino acids long were removed and totalled at: ", sum(short_proteins_index))
+  }
 
   seq <- df_cut[,2]
   seq_name <- df_cut[,1]
