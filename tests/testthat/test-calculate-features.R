@@ -89,19 +89,3 @@ test_that("Hepcidin gives correct Net charge", {
 
 })
 
-
-test_that("Hepcidin gives correct Pseudo Amino Acid Composition", {
-
-  expected_result <- readRDS("../hepcidin_paac.rds")
-
-  result <- calc_pseudo_comp(hepseq,lambda=4)
-
-  expect_is(result,"data.frame")
-
-  expect_equal(
-    result,
-    expected_result, tolerance=1e-5)
-
-})
-
-
