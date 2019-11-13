@@ -21,46 +21,28 @@ Note: this does not yet work as the repository is private.
 devtools::install_github("Legana/ampir")
 ```
 
-# Brief background
+# Background
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
 **i**n **r** ) package was designed to be a fast and user-friendly
 method to predict AMPs (antimicrobial peptides) from any given size
 protein dataset. **ampir** uses a *supervised statistical machine
-learning* approach to predict antimicrobial peptides (AMPs).
-
-Basically this involves making a statistical model based on *input* data
-to predict *output* data [James, Witten, Hastie &
-Tibshirani 2013](http://www-bcf.usc.edu/~gareth/ISL/).
+learning* approach to predict antimicrobial peptides (AMPs). It
+incorporates a model that has been trained on publicly available
+antimicrobial peptide data.
 
 **ampir** uses protein sequences as input and produces a table with the
 sequence names and the probability of that sequence to be an AMP as
 output.
 
-## Functions in **ampir**
-
-1.  `read_faa()` to read FASTA amino acid files.
-
-2.  `predict_amps()` to predict the AMP probability of a protein.
-
-### Helpful optional functions
-
-3.  `extract_amps()` to extract predicted AMP sequences based on a set
-    probability.
-
-4.  `df_to_faa()` to write a dataframe of sequences as a local FASTA
-    file.
-
-# Example workflow
+## Usage
 
 ``` r
 library(ampir)
 ```
 
-### Step 1: Read FASTA amino acid files with `read_faa()`
-
-`read_faa()` reads FASTA amino acid files as a
-dataframe.
+Read protein sequences from a FASTA formatted file with the function
+`read_faa()`.
 
 ``` r
 my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
@@ -70,13 +52,10 @@ my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir
 | :------------ | :---------------------------------- |
 | G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLAD |
 
-My
-protein
+My protein
 
-### Step 2: Predict antimicrobial peptide probability with `predict_amps()`
-
-`predict_amps()` predicts the probability of a protein to be an
-antimicrobial peptide.
+Calculate the probability that each protein is an antimicrobial peptide
+with `predict_amps()`
 
 ``` r
 my_prediction <- predict_amps(my_protein)
