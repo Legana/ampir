@@ -26,7 +26,7 @@ calculate_features <- function(df, min_len=20) {
   short_proteins_index <- nchar(df[,2]) < min_len
   df_cut <- df[!short_proteins_index,]
   if ( sum(short_proteins_index) > 0){
-    message("Proteins less than twenty amino acids long were removed and totalled at: ", sum(short_proteins_index))
+    stop("calculate_features was called on one or more sequences shorter than the specified min_len ")
   }
 
   seq <- df_cut[,2]
@@ -37,7 +37,7 @@ calculate_features <- function(df, min_len=20) {
   Isoelectric_point <- calc_pI(seq)
   Mol_weight        <- calc_mw(seq)
   Net_charge        <- calc_net_charge(seq)
-  Pseudo_composition<- calc_pseudo_comp(seq)
+  Pseudo_composition<- calc_pseudo_comp(seq, lambda_min = min_len)
 
   cbind(seq_name, Amphiphilicity, Hydrophobicity, Isoelectric_point, Mol_weight, Net_charge, Pseudo_composition)
 }

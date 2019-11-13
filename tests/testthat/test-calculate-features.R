@@ -33,17 +33,11 @@ test_that("calculate_features results accepts multi-row input", {
 
 })
 
-test_that("calculate_features results rejects sequences less than min_len", {
+test_that("calculate_features results thorws an error on sequences less than min_len", {
 
   multirow_test <- data.frame(c("A","B"), c(hepseq,substring(hepseq,1,19)), stringsAsFactors = FALSE)
 
-  result <- calculate_features(multirow_test, min_len=30)
-
-  expect_is(result,"data.frame")
-
-  expect_equal(
-    dim(result),
-    c(1,45))
+  expect_error(calculate_features(multirow_test, min_len=30))
 
 })
 

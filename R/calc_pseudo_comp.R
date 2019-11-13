@@ -22,7 +22,7 @@ calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=19) {
   # Note that this is probably the slowest part of this function now.
   # Further performance gains could be obtained by caching this result (via memoize)
   #
-  AAidx <- ampir:::ampir_package_data[["AAidx"]]
+  AAidx <- ampir_package_data[["AAidx"]]
   aaidx <- AAidx[, -1]
   row.names(aaidx) <- AAidx[, 1]
   props <- c('Hydrophobicity', 'Hydrophilicity', 'SideChainMass')
@@ -54,7 +54,7 @@ calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=19) {
 
     lambda <- min(lambda_max,length(tseq)-1)
 
-    raw_pseaac <- ampir:::rcpp_paac(tseq,H,lambda,0.05)
+    raw_pseaac <- rcpp_paac(tseq,H,lambda,0.05)
 
     pseaac <- c(raw_pseaac,rep(NA,length(pseudo_comp_names)-length(raw_pseaac)))
 

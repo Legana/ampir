@@ -17,8 +17,24 @@
 #' # [1] G1P6H5_MYOLU  0.9723796
 
 
-predict_amps <- function(faa_df) {
-  clean_faa_df <- remove_nonstandard_aa(faa_df)
-  features_faa_df <- calculate_features(clean_faa_df)
-  rsvm_classify(features_faa_df)
+predict_amps <- function(faa_df, min_len = 20) {
+
+  output <- faa_df
+
+  valid_seqs <- aaseq_is_valid(faa_df[,2])
+  long_enough_seqs <- nchar(faa_df[,2])>=min_len
+
+  predictable_rows <- valid_seqs & long_enough_seqs
+
+  svm_Radial <- ampir_package_data[["svm_Radial"]]
+
+  df <- faa_df[predictable_rows,]
+
+  df_features <- calculate_features(df)
+
+  p_AMP <- caret:::predict.train(svm_Radial, df_features, type = "prob")
+
+  output$prob_AMP[predictable_rows] <- p_AMP$Tg
+
+  output
 }
