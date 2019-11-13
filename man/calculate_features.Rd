@@ -4,10 +4,12 @@
 \alias{calculate_features}
 \title{Calculate a set of numerical features from protein sequences}
 \usage{
-calculate_features(df)
+calculate_features(df, min_len = 20)
 }
 \arguments{
 \item{df}{A dataframe which contains protein sequence names as the first column and amino acid sequence as the second column}
+
+\item{min_len}{Minimum length sequence for which features can be calculated. It is an error to provide sequences with length shorter than this}
 }
 \value{
 A dataframe containing numerical values related to the protein features of each given protein

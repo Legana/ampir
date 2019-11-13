@@ -4,13 +4,15 @@
 \alias{predict_amps}
 \title{Predict the antimicrobial peptide probability of a protein}
 \usage{
-predict_amps(faa_df)
+predict_amps(faa_df, min_len = 20)
 }
 \arguments{
 \item{faa_df}{A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)}
+
+\item{min_len}{The minimum protein length for which predictions will be generated}
 }
 \value{
-A dataframe containing a column with the sequence name and probability of that sequence to be an antimicrobial peptide
+The original input data.frame with a new column added called \code{prob_AMP} with the probability of that sequence to be an antimicrobial peptide. Any sequences that are too short or which contain invalid amin acids will have NA in this column
 }
 \description{
 This function predicts the probability of a protein to be an antimicrobial peptide

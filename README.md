@@ -3,6 +3,18 @@
 
 # Introduction to ampir
 
+The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
+**i**n **r** ) package was designed to be a fast and user-friendly
+method to predict AMPs (antimicrobial peptides) from large protein
+dataset. **ampir** uses a *supervised statistical machine learning*
+approach to predict antimicrobial peptides (AMPs). It comes with a
+statistical model that has been trained using publicly available
+sequence data for known antimicrobial peptides.
+
+**ampir** uses protein sequences as input and produces a table with the
+sequence names and the probability of that sequence to be an AMP as
+output.
+
 <!-- badges: start -->
 
 [![Build
@@ -14,106 +26,39 @@ Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch
 You can install the development version of ampir from
 [GitHub](https://github.com/) with:
 
-Note: this does not yet work as the repository is private.
-
 ``` r
 # install.packages("devtools")
 devtools::install_github("Legana/ampir")
 ```
 
-# Brief background
-
-The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
-**i**n **r** ) package was designed to be a fast and user-friendly
-method to predict AMPs (antimicrobial peptides) from any given size
-protein dataset. **ampir** uses a *supervised statistical machine
-learning* approach to predict antimicrobial peptides (AMPs).
-
-Basically this involves making a statistical model based on *input* data
-to predict *output* data [James, Witten, Hastie &
-Tibshirani 2013](http://www-bcf.usc.edu/~gareth/ISL/).
-
-**ampir** uses protein sequences as input and produces a table with the
-sequence names and the probability of that sequence to be an AMP as
-output.
-
-## Functions in **ampir**
-
-1.  `read_faa()` to read FASTA amino acid files.
-
-2.  `predict_amps()` to predict the AMP probability of a protein.
-
-### Helpful optional functions
-
-3.  `extract_amps()` to extract predicted AMP sequences based on a set
-    probability.
-
-4.  `df_to_faa()` to write a dataframe of sequences as a local FASTA
-    file.
-
-# Example workflow
+## Usage
 
 ``` r
 library(ampir)
 ```
 
-### Step 1: Read FASTA amino acid files with `read_faa()`
-
-`read_faa()` reads FASTA amino acid files as a
-dataframe.
-
-``` r
-my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
-```
-
-| seq\_name     | seq\_aa                             |
-| :------------ | :---------------------------------- |
-| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLAD |
-
-My
-protein
-
-### Step 2: Predict antimicrobial peptide probability with `predict_amps()`
-
-`predict_amps()` predicts the probability of a protein to be an
-antimicrobial peptide.
+Standard input to **ampir** is a `data.frame` with sequence names in the
+first column and protein sequences in the second column. A convenience
+function `read_faa()` is provided to create input data by reading a
+FASTA formatted
+file.
 
 ``` r
-my_prediction <- predict_amps(my_protein)
-#> Proteins less than twenty amino acids long were removed and totalled at: 0
+my_protein_df <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 ```
 
-| seq\_name     | prob\_AMP |
-| :------------ | --------: |
-| G1P6H5\_MYOLU |     0.895 |
+| seq\_name     | seq\_aa                                        |
+| :------------ | :--------------------------------------------- |
+| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |
 
-My
-prediction
-
-### Optional step: Extract AMP sequences using a set probability threshold (default \>= 0.50)
-
-`extract_amps()` uses the output from `read_faa()` and `predict_amps()`
-as parameters to create a new dataframe which contains the sequence name
-and sequence of the identified antimicrobial peptides at a set
-probability threshold of \>= 0.50. The default threshold of \>= 0.50 can
-be changed with the “prob”
-parameter.
+Calculate the probability that each protein is an antimicrobial peptide
+with
+`predict_amps()`
 
 ``` r
-my_predicted_amps <- extract_amps(df_w_seq = my_protein, df_w_prob = my_prediction, prob = 0.55)
+my_prediction <- predict_amps(my_protein_df)
 ```
 
-| seq\_name     | seq\_aa                             |
-| :------------ | :---------------------------------- |
-| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLAD |
-
-My predicted AMPs
-
-### Optional step: Save sequences as FASTA format file
-
-`df_to_faa()` writes a dataframe containing the sequence and
-corresponding sequence name to a FASTA file.
-
-``` r
-df_to_faa(my_predicted_amps, "my_predicted_amps.fasta")
-```
+| seq\_name     | seq\_aa                                        | prob\_AMP |
+| :------------ | :--------------------------------------------- | --------: |
+| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |     0.895 |

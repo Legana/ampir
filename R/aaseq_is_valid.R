@@ -3,7 +3,7 @@
 #' Any proteins that contains an amino acid that is not one of the 20 standard amino acids is flagged as invalid
 #'
 #'
-#' @param seqs A vector of protein sequences
+#' @param seq A vector of protein sequences
 #'
 #' @return A logical vector where TRUE indicates a valid protein sequence and FALSE indicates a sequence with invalid amino acids
 #'

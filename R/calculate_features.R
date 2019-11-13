@@ -6,6 +6,7 @@
 #' @references Osorio, D., Rondon-Villarreal, P. & Torres, R. Peptides: A package for data mining of antimicrobial peptides. The R Journal. 7(1), 4–14 (2015).
 #'
 #' @param df A dataframe which contains protein sequence names as the first column and amino acid sequence as the second column
+#' @param min_len Minimum length sequence for which features can be calculated. It is an error to provide sequences with length shorter than this
 #'
 #' @return A dataframe containing numerical values related to the protein features of each given protein
 #'

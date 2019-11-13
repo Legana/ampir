@@ -4,12 +4,14 @@
 \alias{calc_pseudo_comp}
 \title{Calculate the pseudo amino acid composition}
 \usage{
-calc_pseudo_comp(seq, lambda = NULL)
+calc_pseudo_comp(seq, lambda_min = 4, lambda_max = 19)
 }
 \arguments{
-\item{seq}{A protein sequence}
+\item{seq}{A vector of protein sequences as character strings}
 
-\item{lambda}{lambda value (determined within the function)}
+\item{lambda_min}{Minimum allowable lambda. It is an error to provide a protein sequence shorter than lambda_min}
+
+\item{lambda_max}{For each sequence lambda will be set to one less than the sequence length or lambda_max, whichever is smaller}
 }
 \description{
 This function is adapted from the extractPAAC function from the protr package (https://github.com/nanxstats/protr)

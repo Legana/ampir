@@ -2,11 +2,14 @@
 #'
 #' This function predicts the probability of a protein to be an antimicrobial peptide
 #'
+#'@importFrom caret predict.train
+#'
 #' @export predict_amps
 #'
 #' @param faa_df A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)
+#' @param min_len The minimum protein length for which predictions will be generated
 #'
-#' @return A dataframe containing a column with the sequence name and probability of that sequence to be an antimicrobial peptide
+#' @return The original input data.frame with a new column added called \code{prob_AMP} with the probability of that sequence to be an antimicrobial peptide. Any sequences that are too short or which contain invalid amin acids will have NA in this column
 #'
 #' @examples
 #'
@@ -32,7 +35,7 @@ predict_amps <- function(faa_df, min_len = 20) {
 
   df_features <- calculate_features(df)
 
-  p_AMP <- caret:::predict.train(svm_Radial, df_features, type = "prob")
+  p_AMP <- predict.train(svm_Radial, df_features, type = "prob")
 
   output$prob_AMP[predictable_rows] <- p_AMP$Tg
 
