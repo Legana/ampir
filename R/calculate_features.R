@@ -22,13 +22,13 @@
 #' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
 calculate_features <- function(df) {
-
-  longer_proteins_index <- nchar(df[,2]) >=20
+  # remove protein sequences less than 5 amino acids long
+  longer_proteins_index <- nchar(df[,2]) >=5
   df_cut <- df[longer_proteins_index,]
 
-  short_proteins_index <- nchar(df[,2]) <20
+  short_proteins_index <- nchar(df[,2]) <5
 
-  message("Proteins less than twenty amino acids long were removed and totalled at: ", sum(short_proteins_index))
+  message("Proteins less than five amino acids long were removed and totalled at: ", sum(short_proteins_index))
 
 
   seq <- df_cut[,2]
