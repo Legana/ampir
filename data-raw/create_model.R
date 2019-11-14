@@ -1,7 +1,5 @@
 library(usethis)
 library(caret)
-library(mltools)
-library(pROC)
 
 # read and prepare data
 
@@ -61,16 +59,6 @@ rsvm98_final <- train(Label~.,
                        trControl = trctrl_prob,
                        preProcess = c("center", "scale"),
                        tuneLength = 10)
-
-
-# TEST MODEL
-test_pred <- predict(rsvm98_final, features98Test)
-confusionMatrix(test_pred, features98Test$Label)
-#mcc
-mcc(TP = 907, FP = 89, TN = 918, FN = 78)
-#roc-auc
-test_pred_prob <- predict(rsvm98_final, features98Test, type = "prob")
-roc(features98Test$Label, test_pred_prob$Tg)
 
 # FULL MODEL
 
