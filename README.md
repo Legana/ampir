@@ -14,8 +14,6 @@ Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch
 You can install the development version of ampir from
 [GitHub](https://github.com/) with:
 
-Note: this does not yet work as the repository is private.
-
 ``` r
 # install.packages("devtools")
 devtools::install_github("Legana/ampir")
@@ -59,12 +57,12 @@ with `predict_amps()`
 
 ``` r
 my_prediction <- predict_amps(my_protein)
-#> Proteins less than twenty amino acids long were removed and totalled at: 0
+#> Proteins less than five amino acids long were removed and totalled at: 0
 ```
 
 | seq\_name     | prob\_AMP |
 | :------------ | --------: |
-| G1P6H5\_MYOLU |     0.895 |
+| G1P6H5\_MYOLU |     0.934 |
 
 My
 prediction
