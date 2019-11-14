@@ -7,8 +7,7 @@
 #'
 #' @return a dataframe like the input dataframe but with removed proteins that contained non standard amino acids
 #'
-#' @examples
-#'
+#' # Example
 #' # non_standard_df <- readRDS(system.file("extdata/non_standard_df.rds", package = "ampir"))
 #'
 #' ## Example dataframe (non_standard_df)
