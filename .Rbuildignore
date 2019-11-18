@@ -5,3 +5,4 @@
 ^\.travis\.yml$
 tests/tmpdata
 inst/rmd
+cran-comments.md

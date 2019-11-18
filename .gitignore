@@ -4,3 +4,4 @@
 .Ruserdata
 data-raw/tmpdata
 tests/tmpdata
+.DS_Store
