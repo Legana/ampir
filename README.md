@@ -3,6 +3,18 @@
 
 # Introduction to ampir
 
+The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
+**i**n **r** ) package was designed to be a fast and user-friendly
+method to predict AMPs (antimicrobial peptides) from large protein
+dataset. **ampir** uses a *supervised statistical machine learning*
+approach to predict antimicrobial peptides (AMPs). It comes with a
+statistical model that has been trained using publicly available
+sequence data for known antimicrobial peptides.
+
+**ampir** uses protein sequences as input and produces a table with the
+sequence names and the probability of that sequence to be an AMP as
+output.
+
 <!-- badges: start -->
 
 [![Build
@@ -19,8 +31,6 @@ You can install the development version of ampir from
 devtools::install_github("Legana/ampir")
 ```
 
-## Usage
-
 ``` r
 library(ampir)
 ```
@@ -32,6 +42,7 @@ FASTA formatted
 file.
 
 ``` r
+my_protein_df <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 ```
 
 | seq\_name     | seq\_aa                                        |
@@ -48,4 +59,4 @@ my_prediction <- predict_amps(my_protein_df)
 
 | seq\_name     | seq\_aa                                        | prob\_AMP |
 | :------------ | :--------------------------------------------- | --------: |
-| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |     0.895 |
+| G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |     0.934 |

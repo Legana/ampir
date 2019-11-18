@@ -14,10 +14,7 @@ knitr::opts_chunk$set(
 ```
 # Introduction to ampir
 
-The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r** ) package was designed to be a fast and user-friendly method to predict AMPs (antimicrobial peptides) from large protein dataset. **ampir** uses a *supervised statistical machine learning* approach to predict antimicrobial peptides (AMPs).  It comes with a statistical model that has been trained using publicly available sequence data for known antimicrobial peptides. 
-
-**ampir** uses protein sequences as input and produces a table with the sequence names and the probability of that sequence to be an AMP as output. 
-
+The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r** ) package was designed to be a fast and user-friendly method to predict AMPs (antimicrobial peptides) from large protein dataset. **ampir** uses a *supervised statistical machine learning* approach to predict AMPs. It incorporates a support vector machine classification model that has been trained on publicly available antimicrobial peptide data. 
 
 <!-- badges: start -->
 [![Build Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch=master)](https://travis-ci.com/Legana/ampir)
@@ -41,17 +38,26 @@ devtools::install_github("Legana/ampir")
 library(ampir)
 ```
 
+Standard input to **ampir** is a `data.frame` with sequence names in the first column and protein sequences in the second column.  A convenience function `read_faa()` is provided to create input data by reading a FASTA formatted file. 
 
+```{r, warning=FALSE, message=FALSE}
+my_protein_df <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 ```
 
 ```{r, echo=FALSE}
+display_df <- my_protein_df
+display_df$seq_aa <- paste(substring(display_df$seq_aa,1,45),"...",sep="")
+knitr::kable(display_df)
 ```
 
 
+Calculate the probability that each protein is an antimicrobial peptide with `predict_amps()` 
 
 ```{r}
+my_prediction <- predict_amps(my_protein_df)
 ```
 
 ```{r, echo=FALSE}
+my_prediction$seq_aa <- paste(substring(my_prediction$seq_aa,1,45),"...",sep="")
+knitr::kable(my_prediction, digits = 3)
 ```
-

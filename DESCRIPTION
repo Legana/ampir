@@ -15,7 +15,7 @@ Imports:
     caret (>= 6.0.0),
     kernlab,
     Rcpp
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 Suggests: 
     testthat,
     knitr,
