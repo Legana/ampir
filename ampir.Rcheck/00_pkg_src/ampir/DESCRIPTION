@@ -1,0 +1,19 @@
+Package: ampir
+Type: Package
+Title: Predict Antimicrobial Peptides
+Version: 0.1.0
+Author: Legana Fingerhut
+Maintainer: Legana Fingerhut <legana.fingerhut@my.jcu.edu.au>
+Description: A toolkit to predict Antimicrobial Peptides from protein sequences.
+URL: https://github.com/Legana/ampir
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+Depends: R (>= 3.5.0)
+Imports: Peptides, caret (>= 6.0.0), kernlab, Rcpp
+RoxygenNote: 6.1.1
+Suggests: testthat, knitr, rmarkdown
+VignetteBuilder: knitr
+LinkingTo: Rcpp
+NeedsCompilation: yes
+Packaged: 2019-11-14 07:15:53 UTC; legana

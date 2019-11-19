@@ -1,0 +1,6 @@
+name	user	system	elapsed
+df_to_faa	0.003	0.001	0.005	
+extract_amps	0.005	0.001	0.008	
+predict_amps	0.375	0.032	0.420	
+read_faa	0.002	0.001	0.002	
+remove_nonstandard_aa	0.000	0.000	0.001	
