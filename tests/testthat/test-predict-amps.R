@@ -1,0 +1,55 @@
+context("predict_amps")
+
+hepseq_name <- "Hepcidin"
+hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
+hepseq_df <- data.frame(hepseq_name, hepseq, stringsAsFactors = FALSE)
+
+test_that("predict_amps gives a data frame with correct dimensions", {
+
+  result <- predict_amps(hepseq_df)
+
+  expect_is(result,"data.frame")
+
+  expect_equal(
+    dim(result),
+    c(1,3))
+
+})
+
+
+test_that("predict_amps works when input contains invalid aa sequences", {
+
+  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,paste(hepseq,"%",sep=""),substring(hepseq,1,30)), stringsAsFactors = FALSE)
+
+  result <- predict_amps(test_df)
+
+  expect_is(result,"data.frame")
+
+  expect_equal(
+    dim(result),
+    c(3,3))
+
+  expect_equal(
+    rowSums(is.na(result)),
+    c(0,1,0))
+
+})
+
+
+test_that("predict_amps works when input contains invalid aa sequences and short sequences", {
+
+  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,paste(hepseq,"%",sep=""),substring(hepseq,1,3)), stringsAsFactors = FALSE)
+
+  result <- predict_amps(test_df)
+
+  expect_is(result,"data.frame")
+
+  expect_equal(
+    dim(result),
+    c(3,3))
+
+  expect_equal(
+    rowSums(is.na(result)),
+    c(0,1,1))
+
+})

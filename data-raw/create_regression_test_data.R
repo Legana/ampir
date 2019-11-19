@@ -15,8 +15,8 @@ hepcidin_paac <- ampir:::calc_pseudo_comp(hepseq, lambda_max = 4)
 #saveRDS(hepcidin_paac,"tests/hepcidin_paac_lambda4.rds")
 
 hepcidin_paac <- ampir:::calc_pseudo_comp(hepseq)
-#saveRDS(hepcidin_paac,"tests/hepcidin_paac.rds")
 
+saveRDS(hepcidin_paac,"tests/hepcidin_paac.rds")
 
 hepseq_pieces <- c(hepseq,substring(hepseq,1,11), substring(hepseq,1,8))
 

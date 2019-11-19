@@ -6,6 +6,7 @@
 #' @references Osorio, D., Rondon-Villarreal, P. & Torres, R. Peptides: A package for data mining of antimicrobial peptides. The R Journal. 7(1), 4–14 (2015).
 #'
 #' @param df A dataframe which contains protein sequence names as the first column and amino acid sequence as the second column
+#' @param min_len Minimum length sequence for which features can be calculated. It is an error to provide sequences with length shorter than this
 #'
 #' @return A dataframe containing numerical values related to the protein features of each given protein
 #'
@@ -21,15 +22,13 @@
 #' #      seq_name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
 #' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
-calculate_features <- function(df) {
-  # remove protein sequences less than 5 amino acids long
-  longer_proteins_index <- nchar(df[,2]) >=5
-  df_cut <- df[longer_proteins_index,]
+calculate_features <- function(df, min_len=20) {
 
-  short_proteins_index <- nchar(df[,2]) <5
-
-  message("Proteins less than five amino acids long were removed and totalled at: ", sum(short_proteins_index))
-
+  short_proteins_index <- nchar(df[,2]) < min_len
+  df_cut <- df[!short_proteins_index,]
+  if ( sum(short_proteins_index) > 0){
+    stop("calculate_features was called on one or more sequences shorter than the specified min_len ")
+  }
 
   seq <- df_cut[,2]
   seq_name <- df_cut[,1]
@@ -39,7 +38,7 @@ calculate_features <- function(df) {
   Isoelectric_point <- calc_pI(seq)
   Mol_weight        <- calc_mw(seq)
   Net_charge        <- calc_net_charge(seq)
-  Pseudo_composition<- calc_pseudo_comp(seq)
+  Pseudo_composition<- calc_pseudo_comp(seq, lambda_min = min_len)
 
   cbind(seq_name, Amphiphilicity, Hydrophobicity, Isoelectric_point, Mol_weight, Net_charge, Pseudo_composition)
 }

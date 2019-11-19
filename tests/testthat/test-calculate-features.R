@@ -1,18 +1,12 @@
-context("Calculate features")
-
-# Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
-#' calculate_features(my_protein)
-#'
-#' ## Output (showing the first six output columns)
-#' #      seq.name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
-#' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
-
+context("calculate_features")
 
 hepseq_name <- "Hepcidin"
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
-my_protein_test <- data.frame(hepseq_name, hepseq, stringsAsFactors = FALSE)
 
-test_that("Calculate_features results in 45 columns", {
+
+test_that("calculate_features results in a 45 column data frame", {
+
+  my_protein_test <- data.frame(hepseq_name, hepseq, stringsAsFactors = FALSE)
 
   result <- calculate_features(my_protein_test)
 
@@ -23,6 +17,40 @@ test_that("Calculate_features results in 45 columns", {
     45)
 
 })
+
+
+test_that("calculate_features results accepts multi-row input", {
+
+  multirow_test <- data.frame(c("A","B"), c(hepseq,hepseq), stringsAsFactors = FALSE)
+
+  result <- calculate_features(multirow_test)
+
+  expect_is(result,"data.frame")
+
+  expect_equal(
+    dim(result),
+    c(2,45))
+
+})
+
+test_that("calculate_features results thorws an error on sequences less than min_len", {
+
+  multirow_test <- data.frame(c("A","B"), c(hepseq,substring(hepseq,1,19)), stringsAsFactors = FALSE)
+
+  expect_error(calculate_features(multirow_test, min_len=30))
+
+})
+
+
+context("calculate_features for Hepcidin")
+
+# Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
+#' calculate_features(my_protein)
+#'
+#' ## Output (showing the first six output columns)
+#' #      seq.name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
+#' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
+
 
 test_that("Hepcidin gives correct Amphiphilicity", {
 
