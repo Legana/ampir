@@ -7,18 +7,14 @@ The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
 **i**n **r** ) package was designed to be a fast and user-friendly
 method to predict AMPs (antimicrobial peptides) from large protein
 dataset. **ampir** uses a *supervised statistical machine learning*
-approach to predict antimicrobial peptides (AMPs). It comes with a
-statistical model that has been trained using publicly available
-sequence data for known antimicrobial peptides.
-
-**ampir** uses protein sequences as input and produces a table with the
-sequence names and the probability of that sequence to be an AMP as
-output.
+approach to predict AMPs. It incorporates a support vector machine
+classification model that has been trained on publicly available
+antimicrobial peptide data.
 
 <!-- badges: start -->
 
-[![Build
-Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch=master)](https://travis-ci.com/Legana/ampir)
+\#[![Travis build
+status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
 <!-- badges: end -->
 
 ## Installation
