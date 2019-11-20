@@ -63,7 +63,7 @@ my_protein_df <- read_faa(system.file("extdata/bat_protein.fasta", package = "am
 Calculate the probability that each protein is an antimicrobial peptide
 with `predict_amps()`
 
-*Note that amino acid sequences that are shorter than 5 amino acid bases
+*Note that amino acid sequences that are shorter than five amino acids
 long and/or contain anything other than the standard 20 amino acids are
 not evaluated and will contain an `NA` as their `prob_AMP`
 value.*
@@ -77,7 +77,7 @@ my_prediction <- predict_amps(my_protein_df)
 | G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |     0.934 |
 
 Predicted proteins with a specified predicted probability value could
-then be extracted and written to a FASTA file.
+then be extracted and written to a FASTA file:
 
 ``` r
 my_predicted_amps <- my_protein_df[my_prediction[,3] >= 0.9,]
@@ -87,8 +87,8 @@ my_predicted_amps <- my_protein_df[my_prediction[,3] >= 0.9,]
 | :------------ | :--------------------------------------------- |
 | G1P6H5\_MYOLU | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |
 
-The `data.frame` with sequence names in the first column and protein
-sequences in the second column to a FASTA formatted file with
+Write the `data.frame` with sequence names in the first column and
+protein sequences in the second column to a FASTA formatted file with
 `df_to_faa()`
 
 ``` r

@@ -41,7 +41,7 @@ knitr::kable(display_df)
 
 Calculate the probability that each protein is an antimicrobial peptide with `predict_amps()` 
 
-*Note that amino acid sequences that are shorter than 5 amino acid bases long and/or contain anything other than the standard 20 amino acids are not evaluated and will contain an `NA` as their `prob_AMP` value.*
+*Note that amino acid sequences that are shorter than five amino acids long and/or contain anything other than the standard 20 amino acids are not evaluated and will contain an `NA` as their `prob_AMP` value.*
 
 ```{r}
 my_prediction <- predict_amps(my_protein_df)
@@ -52,7 +52,7 @@ my_prediction$seq_aa <- paste(substring(my_prediction$seq_aa,1,45),"...",sep="")
 knitr::kable(my_prediction, digits = 3)
 ```
 
-Predicted proteins with a specified predicted probability value could then be extracted and written to a FASTA file.
+Predicted proteins with a specified predicted probability value could then be extracted and written to a FASTA file:
 
 ```{r}
 my_predicted_amps <- my_protein_df[my_prediction[,3] >= 0.9,]
@@ -63,7 +63,7 @@ my_predicted_amps$seq_aa <- paste(substring(my_predicted_amps$seq_aa,1,45),"..."
 knitr::kable(my_predicted_amps)
 ```
 
-The `data.frame` with sequence names in the first column and protein sequences in the second column to a FASTA formatted file with `df_to_faa()`
+Write the `data.frame` with sequence names in the first column and protein sequences in the second column to a FASTA formatted file with `df_to_faa()`
 
 ```{r, eval=FALSE}
 df_to_faa(my_predicted_amps, "my_predicted_amps.fasta")
