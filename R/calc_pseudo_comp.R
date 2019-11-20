@@ -4,7 +4,7 @@
 #' @references Nan Xiao, Dong-Sheng Cao, Min-Feng Zhu, and Qing-Song Xu. (2015). protr/ProtrWeb: R package and web server for generating various numerical representation schemes of protein sequences. Bioinformatics 31 (11), 1857-1859.
 #'
 #' @param seq A vector of protein sequences as character strings
-#' @param lambda_min Minimum allowable lambda. It is an error to provide a protein sequence shorter than lambda_min
+#' @param lambda_min Minimum allowable lambda. It is an error to provide a protein sequence shorter than lambda_min+1
 #' @param lambda_max For each sequence lambda will be set to one less than the sequence length or lambda_max, whichever is smaller
 #'
 calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=19) {
@@ -14,8 +14,8 @@ calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=19) {
     seq <- as.character(seq)
   }
 
-  if ( min(nchar(seq)) <= lambda_min ){
-    stop("One or more sequence is shorter than lambda_min")
+  if ( min(nchar(seq)) < (lambda_min + 1) ){
+    stop("One or more sequence is shorter than lambda_min +1 ")
   }
 
   # Prepare H matrix

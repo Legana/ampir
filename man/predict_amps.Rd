@@ -4,7 +4,7 @@
 \alias{predict_amps}
 \title{Predict the antimicrobial peptide probability of a protein}
 \usage{
-predict_amps(faa_df, min_len = 20)
+predict_amps(faa_df, min_len = 5)
 }
 \arguments{
 \item{faa_df}{A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)}

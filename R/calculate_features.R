@@ -22,7 +22,7 @@
 #' #      seq_name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
 #' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
-calculate_features <- function(df, min_len=20) {
+calculate_features <- function(df, min_len = 20) {
 
   short_proteins_index <- nchar(df[,2]) < min_len
   df_cut <- df[!short_proteins_index,]
@@ -38,7 +38,7 @@ calculate_features <- function(df, min_len=20) {
   Isoelectric_point <- calc_pI(seq)
   Mol_weight        <- calc_mw(seq)
   Net_charge        <- calc_net_charge(seq)
-  Pseudo_composition<- calc_pseudo_comp(seq, lambda_min = min_len)
+  Pseudo_composition<- calc_pseudo_comp(seq, lambda_min = (min_len-1))
 
   cbind(seq_name, Amphiphilicity, Hydrophobicity, Isoelectric_point, Mol_weight, Net_charge, Pseudo_composition)
 }
