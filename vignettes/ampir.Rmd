@@ -21,28 +21,55 @@ The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r
 
 ## Usage
 
-```{r setup, warning=FALSE, message=FALSE}
+Standard input to **ampir** is a `data.frame` with sequence names in the first column and protein sequences in the second column. 
+
+```{r}
 library(ampir)
 ```
 
-Read protein sequences from a FASTA formatted file with the function `read_faa()`. 
+Read in a FASTA formatted file as a `data.frame` with `read_faa()` 
 
 ```{r, warning=FALSE, message=FALSE}
-my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
+my_protein_df <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 ```
 
-```{r, echo = FALSE}
-knitr::kable(as.data.frame(as.list(sapply(my_protein, strtrim, 35))), caption = "My protein")
+```{r, echo=FALSE}
+display_df <- my_protein_df
+display_df$seq_aa <- paste(substring(display_df$seq_aa,1,45),"...",sep="")
+knitr::kable(display_df)
 ```
 
 Calculate the probability that each protein is an antimicrobial peptide with `predict_amps()` 
 
+*Note that amino acid sequences that are shorter than 5 amino acid bases long and/or contain anything other than the standard 20 amino acids are not evaluated and will contain an `NA` as their `prob_AMP` value.*
+
 ```{r}
-my_prediction <- predict_amps(my_protein)
+my_prediction <- predict_amps(my_protein_df)
 ```
 
 ```{r, echo=FALSE}
-knitr::kable(my_prediction, digits = 3, caption = "My prediction")
+my_prediction$seq_aa <- paste(substring(my_prediction$seq_aa,1,45),"...",sep="")
+knitr::kable(my_prediction, digits = 3)
 ```
+
+Predicted proteins with a specified predicted probability value could then be extracted and written to a FASTA file.
+
+```{r}
+my_predicted_amps <- my_protein_df[my_prediction[,3] >= 0.9,]
+```
+
+```{r, echo=FALSE}
+my_predicted_amps$seq_aa <- paste(substring(my_predicted_amps$seq_aa,1,45),"...",sep="")
+knitr::kable(my_predicted_amps)
+```
+
+The `data.frame` with sequence names in the first column and protein sequences in the second column to a FASTA formatted file with `df_to_faa()`
+
+```{r, eval=FALSE}
+df_to_faa(my_predicted_amps, "my_predicted_amps.fasta")
+```
+
+
+
 
 
