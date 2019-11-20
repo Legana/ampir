@@ -41,15 +41,12 @@ Possibly mis-spelled words in DESCRIPTION:
 
 - Builds fine on ***Ubuntu*** but gives 1 NOTE in regards to possible mis-spelled words, same as mentioned above.
 
-- Currently failing on ***Fedora Linux***. The failure is due to a dependency on the `ModelMetrics` which fails to build   on this platform. Unfortunately this is an essential dependency. Once the `ModelMetrics` package is updated `ampir` should also build on that platform
+- Currently failing on ***Fedora Linux***. The failure is due to a dependency on the `ModelMetrics` which fails to build on this platform. Unfortunately this is an essential dependency. Once the `ModelMetrics` package is updated `ampir` should also build on that platform
 
-- Builds fine on ***Windows Server 2008*** but gives 2 NOTES:
+- Currently failing on ***Windows Server 2008***:
 
-checking for non-standard things in the check directory ... NOTE
-Found the following files/directories:
-  'examples_x64' 'tests_i386' 'tests_x64'
-  'ampir-Ex_i386.Rout' 'ampir-Ex_x64.Rout' 'examples_i386'
+#> Warning message: package 'BiocManager' is not available (for R version 3.6.1) 
+#> Error in loadNamespace(name) : there is no package called 'BiocManager'
 
-- Note 1 is in regards to possible mis-spelled words, same as mentioned above.
-- Note 2 (in regards to non-standard things in the check directory) could be an R-hub issue as this note did not appear in any of the `check_win()` checks which also checks the package on a Windows operating systems.
+- This failure is due to the missing `BiocManager` package which could be an R-hub issue for the Windows OS. Once `BiocManager` is available for that platform, `ampir` is expected to build successfully.
 
