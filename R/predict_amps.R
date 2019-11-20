@@ -20,7 +20,7 @@
 #' # [1] G1P6H5_MYOLU  0.9723796
 
 
-predict_amps <- function(faa_df, min_len = 20) {
+predict_amps <- function(faa_df, min_len = 5) {
 
   output <- faa_df
 
