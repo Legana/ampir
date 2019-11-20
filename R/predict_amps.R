@@ -2,7 +2,7 @@
 #'
 #' This function predicts the probability of a protein to be an antimicrobial peptide
 #'
-#'@importFrom caret predict.train
+#' @importFrom caret predict.train
 #'
 #' @export predict_amps
 #'

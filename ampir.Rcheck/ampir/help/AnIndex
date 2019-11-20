@@ -1,0 +1,17 @@
+calculate_features	calculate_features
+calc_amphiphilicity	calc_amphiphilicity
+calc_composition	calc_composition
+calc_hydrophobicity	calc_hydrophobicity
+calc_length	calc_length
+calc_mw	calc_mw
+calc_net_charge	calc_net_charge
+calc_pI	calc_pI
+calc_pseudo_comp	calc_pseudo_comp
+df_to_faa	df_to_faa
+extract_amps	extract_amps
+predict_amps	predict_amps
+random_aa	random_aa
+random_aas	random_aas
+read_faa	read_faa
+remove_nonstandard_aa	remove_nonstandard_aa
+rsvm_classify	rsvm_classify
