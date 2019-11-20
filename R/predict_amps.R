@@ -29,15 +29,26 @@ predict_amps <- function(faa_df, min_len = 5) {
 
   predictable_rows <- valid_seqs & long_enough_seqs
 
+  if (sum(!predictable_rows) > 0){
+    message("Could not run prediction for ",sum(!predictable_rows)," proteins because they were either too short or contained invalid amino acids")
+  }
+
   svm_Radial <- ampir_package_data[["svm_Radial"]]
 
   df <- faa_df[predictable_rows,]
 
-  df_features <- calculate_features(df, min_len)
+  if ( nrow(df) == 0){
 
-  p_AMP <- predict.train(svm_Radial, df_features, type = "prob")
+    output$prob_AMP <- NA
 
-  output$prob_AMP[predictable_rows] <- p_AMP$Tg
+    } else {
+
+    df_features <- calculate_features(df, min_len)
+
+    p_AMP <- predict.train(svm_Radial, df_features, type = "prob")
+
+    output$prob_AMP[predictable_rows] <- p_AMP$Tg
+  }
 
   output
 }
