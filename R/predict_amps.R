@@ -33,7 +33,7 @@ predict_amps <- function(faa_df, min_len = 20) {
 
   df <- faa_df[predictable_rows,]
 
-  df_features <- calculate_features(df)
+  df_features <- calculate_features(df, min_len)
 
   p_AMP <- predict.train(svm_Radial, df_features, type = "prob")
 

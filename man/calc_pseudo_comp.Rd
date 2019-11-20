@@ -9,7 +9,7 @@ calc_pseudo_comp(seq, lambda_min = 4, lambda_max = 19)
 \arguments{
 \item{seq}{A vector of protein sequences as character strings}
 
-\item{lambda_min}{Minimum allowable lambda. It is an error to provide a protein sequence shorter than lambda_min}
+\item{lambda_min}{Minimum allowable lambda. It is an error to provide a protein sequence shorter than lambda_min+1}
 
 \item{lambda_max}{For each sequence lambda will be set to one less than the sequence length or lambda_max, whichever is smaller}
 }
