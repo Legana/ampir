@@ -6,3 +6,4 @@
 tests/tmpdata
 inst/rmd
 cran-comments.md
+^CRAN-RELEASE$
