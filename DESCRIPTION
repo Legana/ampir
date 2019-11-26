@@ -23,7 +23,7 @@ Description: A toolkit to predict antimicrobial peptides from protein sequences 
     It incorporates a support vector machine model trained on publicly available antimicrobial peptide data using calculated
     physico-chemical and compositional sequence properties described in Meher et al. (2017) <doi:10.1038/srep42362>.
     In order to support genome-wide analyses this model is designed to accept any type of protein as input
-    and calculation of physico-chemical properties has been optimised for high-throughput use.
+    and calculation of compositional properties has been optimised for high-throughput use.
 URL: https://github.com/Legana/ampir
 License: GPL-2
 Encoding: UTF-8
