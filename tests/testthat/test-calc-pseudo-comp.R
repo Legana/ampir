@@ -1,8 +1,6 @@
 context("calc_pseudo_comp")
 
 # Calculate pseudo amino acid composition from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
-#' calc_pseudo_comp(my_protein)
-#'
 
 hepseq_name <- "Hepcidin"
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
@@ -45,7 +43,7 @@ test_that("calc_pseudo_comp works with mixed length sequences", {
 
   expect_is(result,"data.frame")
 
-  # Result should have rows with 0, 9 and 12 NA's respectively
+  # Result should have rows with 0, 9 and 12 NAs respectively
 
   expect_equal(
     rowSums(is.na(result)),

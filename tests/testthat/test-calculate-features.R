@@ -44,12 +44,9 @@ test_that("calculate_features results thorws an error on sequences less than min
 
 context("calculate_features for Hepcidin")
 
-# Calculate features from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
-#' calculate_features(my_protein)
-#'
-#' ## Output (showing the first six output columns)
-#' #      seq.name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
-#' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
+# ## Output (showing the first six output columns)
+# #      seq_name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
+# # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
 
 test_that("Hepcidin gives correct Amphiphilicity", {
