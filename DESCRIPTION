@@ -2,9 +2,28 @@ Package: ampir
 Type: Package
 Title: Predict Antimicrobial Peptides
 Version: 0.1.0
+Date: 2019-11-26
+Authors@R: c(person("Legana","Fingerhut",
+                     email = "legana.fingerhut@my.jcu.edu.au",
+                     role = c("aut", "cre")),
+             person("Ira","Cooke",
+                     email = "ira.cooke@jcu.edu.au",
+                     role = c("aut")),
+             person("Jinlong","Zhang",
+                     email = "jinlongzhang01@gmail.com",
+                     role = c("ctb"),
+                     comment = c("R/read_faa.R")),
+             person("Nan","Xiao",
+                     email = "me@nanx.me",
+                     role = c("ctb"),
+                     comment = c("R/calc_pseudo_comp.R")))
 Author: Legana Fingerhut
 Maintainer: Legana Fingerhut <legana.fingerhut@my.jcu.edu.au>
 Description: A toolkit to predict antimicrobial peptides from protein sequences.
+    It incorporates a support vector machine model trained on publicly available antimicrobial peptide data using calculated physico-chemical 
+    and compositional sequence properties described in Meher et al. (2017) <doi:10.1038/srep42362> to produce a probability of the protein to be an antimicrobial peptide.
+    This is useful as it allows for fast protein prediction on large datasets to potentially discover novel antimicrobial peptides
+    on a genome-wide scale
 URL: https://github.com/Legana/ampir
 License: GPL-2
 Encoding: UTF-8
