@@ -1,3 +1,50 @@
+# Resubmission to **CRAN** for ampir 0.1.0
+CRAN reported the following after initial submission:
+
+*Please always add all authors and copyright holders in the Authors@R field with the appropriate roles.
+From CRAN policies you agreed to:
+"The ownership of copyright and intellectual property rights of all components of the package must be clear and unambiguous (including from the authors specification in the DESCRIPTION file). Where code is copied (or derived) from the work of others (including from R itself), care must be taken that any copyright/license statements are preserved and authorship is not misrepresented.
+Preferably, an ‘Authors@R’ would be used with ‘ctb’ roles for the authors of such code. Alternatively, the ‘Author’ field should list these authors as contributors.
+Where copyrights are held by an entity other than the package authors, this should preferably be indicated via ‘cph’ roles in the ‘Authors@R’ field, or using a ‘Copyright’ field (if necessary referring to an inst/COPYRIGHTS file)."
+e.g.: written by Jinlong Zhang
+Please explain in the submission comments what you did about this issue.*
+
+- code for `read_faa.R` and `calc_pseudo_comp.R` were derived from code written by Jinlong Zhang and Nan Xiao, respectively. Both Jinlong Zhang and Nan Xiao have been added to the ‘Authors@R’ section in the DESCRIPTION file and assigned "ctb" roles with a comment to indicate which specific file that person contributed to. An additional person (Ira Cooke) was added as an author as he made significant contributions to the ampir package. 
+
+*The Description field is intended to be a (one paragraph) description
+of what the package does and why it may be useful.
+Please elaborate.*
+
+*Please add references describing the methods in your package to the description field of your DESCRIPTION file in the form
+authors (year) <doi:...>
+authors (year) <arXiv:...>
+authors (year, ISBN:...)
+or only if none those are available:  <https:...>
+with no space after 'doi:', 'arXiv:', 'https:' and angle brackets for auto-linking.*
+
+- The Description field was expanded upon and includes methods used supported by the literature.
+
+*You have examples for unexported functions which cannot run in this way.
+Please either add ampir::: to the function calls in the examples, omit these examples or export these functions.
+e.g. aaseq_is_valid.Rd*
+
+*Some code lines in examples are commented out.
+Please never do that. Ideally find toy examples that can be regularly executed and checked. Lengthy examples (> 5 sec), can be wrapped in `\donttest{}`.*
+
+- Removed examples and commented out code lines from unexported functions `aaseq_is_valid()` and `calculate_features()` and updated their documentation. Also removed commented code in test files.
+
+*`\dontrun{}` should be only used if the example really cannot be executed (e.g. because of missing additional software, missing API keys, ...) by the user. That's why wrapping examples in `\dontrun{}` adds the comment ("# Not run:") as a warning for the user.
+Does not seem necessary.
+Please unwrap the examples if they are executable in < 5 sec, or create additionally small toy examples to allow automatic testing.*
+
+*Please ensure that your functions do not write by default or in your examples/vignettes/tests in the user's home filespace (including the package directory and getwd()). That is not allowed by CRAN policies. Please only write/save files if the user has specified a directory in the function themselves. Therefore please omit any default path = getwd() in writing functions.
+In your examples/vignettes/tests you can write to tempdir().
+e.g. df_to_faa()*
+
+- Removed `\dontrun{}` from the example in `df_to_faa()` and wrote to `tempdir()` in the examples/vignettes for this function. No other functions within ampir write to files, and no files are written within the tests.
+
+*Please fix and resubmit, and document what was changed in the submission comments.*
+
 # Initial **CRAN** submission for ampir 0.1.0
 
 ## Test environments
