@@ -20,10 +20,10 @@ This function writes a dataframe out as a FASTA format file
 }
 \examples{
 
-\dontrun{
+my_protein <- read_faa(system.file("extdata/bat_protein.fasta", package = "ampir"))
 
 # Write a dataframe to a FASTA file
-df_to_faa(my_protein, "my_protein.fasta")
+df_to_faa(my_protein, tempfile("my_protein.fasta", tempdir()))
 
-}
+
 }
