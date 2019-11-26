@@ -13,18 +13,6 @@ calculate_features(df, min_len = 20)
 }
 \value{
 A dataframe containing numerical values related to the protein features of each given protein
-
-# example
-
-# my_protein <- readRDS(system.file("extdata/my_protein_df.rds", package = "ampir"))
-
-# Calculate features from Hepcidin AMP from \emph{Myotis lucifugus} (UniProt ID G1P6H5)
-
-# calculate_features(my_protein)
-
-## Output (showing the first six output columns)
-#      seq_name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
-# [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 }
 \description{
 This function calculates set physicochemical and compositional features from protein sequences
