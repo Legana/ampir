@@ -1,4 +1,10 @@
 # Resubmission to **CRAN** for ampir 0.1.0
+
+- Fixed note that specified the author field differed from the derived Authors@R
+
+- All words within the DESCRIPTION are spelled correctly
+
+  
 CRAN reported the following after initial submission:
 
 *Please always add all authors and copyright holders in the Authors@R field with the appropriate roles.
