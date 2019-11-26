@@ -4,4 +4,4 @@
 .Ruserdata
 .DS_Store
 ampir.Rcheck
-^CRAN-RELEASE$
+CRAN-RELEASE
