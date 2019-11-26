@@ -17,7 +17,6 @@ Authors@R: c(person("Legana","Fingerhut",
                      email = "me@nanx.me",
                      role = c("ctb"),
                      comment = c("R/calc_pseudo_comp.R")))
-Maintainer: Legana Fingerhut <legana.fingerhut@my.jcu.edu.au>
 Description: A toolkit to predict antimicrobial peptides from protein sequences on a genome-wide scale.
     It incorporates a support vector machine model trained on publicly available antimicrobial peptide data using calculated
     physico-chemical and compositional sequence properties described in Meher et al. (2017) <doi:10.1038/srep42362>.
