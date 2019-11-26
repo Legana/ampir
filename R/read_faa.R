@@ -1,14 +1,14 @@
-#' Read FASTA amino acid file into a dataframe
+#' Read FASTA amino acids file into a dataframe
 #'
 #' This function reads a FASTA amino acids file into a dataframe
 #'
 #' @export read_faa
 #'
-#' @note This function was originally written by Jinlong Zhang (jinlongzhang01@@gmail.com) for the phylotools package (http://github.com/helixcn/phylotools)
+#' @note This function was adapted from `read.fasta.R` by Jinlong Zhang (jinlongzhang01@@gmail.com) for the phylotools package (http://github.com/helixcn/phylotools)
 #'
 #' @param file file path to the FASTA format file containing the protein sequences
 #'
-#' @return Dataframe containing the sequence name (seq.name) and sequence (seq.aa) columns
+#' @return Dataframe containing the sequence name (seq_name) and sequence (seq_aa) columns
 #'
 #' @examples
 #'
