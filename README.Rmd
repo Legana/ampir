@@ -19,20 +19,24 @@ The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r
 
 
 <!-- badges: start -->
-[![Build Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch=master)](https://travis-ci.com/Legana/ampir)
-
 [![Travis build status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
 <!-- badges: end -->
 
 
 ```{r, echo=FALSE, eval=FALSE}
-#[![Travis build status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
+#[![Build Status](https://travis-ci.com/Legana/ampir.svg?token=fesxqj9vWJzeRTtyzLHt&branch=master)](https://travis-ci.com/Legana/ampir)
 ```
 
 
 ## Installation
 
-You can install the development version of ampir from [GitHub](https://github.com/) with:
+Install from CRAN:
+
+```r
+install.packages("ampir")
+```
+
+Or install the development version from GitHub:
 
 ```r
 # install.packages("devtools")
