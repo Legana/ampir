@@ -32,7 +32,7 @@ Imports:
     caret (>= 6.0.0),
     kernlab,
     Rcpp
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2
 Suggests: 
     testthat,
     knitr,
