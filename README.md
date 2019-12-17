@@ -19,8 +19,13 @@ status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci
 
 ## Installation
 
-You can install the development version of ampir from
-[GitHub](https://github.com/) with:
+Install from CRAN:
+
+``` r
+install.packages("ampir")
+```
+
+Or install the development version from GitHub:
 
 ``` r
 # install.packages("devtools")
