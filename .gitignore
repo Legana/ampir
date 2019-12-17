@@ -3,6 +3,6 @@
 .RData
 .Ruserdata
 .DS_Store
-ampir.Rcheck
 CRAN-RELEASE
 TODO.md
+*.Rcheck
