@@ -15,6 +15,8 @@ antimicrobial peptide data.
 
 [![Travis build
 status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
+[![License: GPL
+v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 <!-- badges: end -->
 
 ## Installation
