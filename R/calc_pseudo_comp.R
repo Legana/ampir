@@ -47,7 +47,7 @@ calc_pseudo_comp <- function(seq,lambda_min = 4,lambda_max=19) {
   pseudo_comp = NULL
   pseudo_comp_names <- c(paste('Xc1.', AADict, sep = ''),paste('Xc2.lambda.', 1:output_width, sep = ''))
 
-pseaac_list <- vector("list",length = length(seq))
+  pseaac_list <- vector("list",length = length(seq))
   for (i in seq_along(seq)){
 
     tseq <- strsplit(seq[i],"")[[1]]
