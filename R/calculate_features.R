@@ -10,7 +10,7 @@
 #'
 #' @return A dataframe containing numerical values related to the protein features of each given protein
 
-calculate_features <- function(df, min_len = 20) {
+calculate_features <- function(df, min_len = 5) {
 
   short_proteins_index <- nchar(df[,2]) < min_len
   df_cut <- df[!short_proteins_index,]

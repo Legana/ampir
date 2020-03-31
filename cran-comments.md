@@ -1,3 +1,9 @@
+# Minor release to **CRAN** for ampir 0.2.0
+## This is new release which contain new features and bug fixes. In this version, we have:
+
+- changed the default minimum length from 20 to 5 in `calculate_features.R` 
+
+
 # Resubmission to **CRAN** for ampir 0.1.0
 
 - Fixed note that specified the author field differed from the derived Authors@R
