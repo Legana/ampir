@@ -31,7 +31,8 @@ Imports:
     Peptides,
     caret (>= 6.0.0),
     kernlab,
-    Rcpp
+    Rcpp,
+    parallel
 RoxygenNote: 7.1.0
 Suggests: 
     testthat,
