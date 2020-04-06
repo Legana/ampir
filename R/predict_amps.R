@@ -3,11 +3,13 @@
 #' This function predicts the probability of a protein to be an antimicrobial peptide
 #'
 #' @importFrom caret predict.train
+#' @importFrom parallel mclapply
 #'
 #' @export predict_amps
 #'
 #' @param faa_df A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)
 #' @param min_len The minimum protein length for which predictions will be generated
+#' @param n_cores On multicore machines split the task across this many processors. This option does not work on Windows
 #'
 #' @return The original input data.frame with a new column added called \code{prob_AMP} with the probability of that sequence to be an antimicrobial peptide. Any sequences that are too short or which contain invalid amin acids will have NA in this column
 #'
@@ -19,9 +21,7 @@
 #' #       seq_name    prob_AMP
 #' # [1] G1P6H5_MYOLU  0.9723796
 
-
-predict_amps <- function(faa_df, min_len = 5) {
-
+predict_amps <- function(faa_df, min_len = 5, n_cores=1) {
   output <- faa_df
 
   valid_seqs <- aaseq_is_valid(faa_df[,2])
@@ -42,13 +42,26 @@ predict_amps <- function(faa_df, min_len = 5) {
     output$prob_AMP <- NA
 
     } else {
+      n_chunks <- n_cores
+      if ( n_cores>1 && nrow(df)>=n_chunks ){
+        starts <- as.integer(seq(1,nrow(df),length.out=n_chunks+1))[-(n_chunks+1)]
+        ends <- as.integer(seq(1,nrow(df)+1,length.out=n_chunks+1))[-1]-1
+        chunk_rows <- lapply(1:n_chunks,function(i){seq(starts[i],ends[i],by=1)})
+      } else {
+        n_chunks <- 1
+        chunk_rows <- list(seq(1,nrow(df),by=1))
+      }
 
-    df_features <- calculate_features(df, min_len)
-
-    p_AMP <- predict.train(svm_Radial, df_features, type = "prob")
-
+    p_AMP_list <- mclapply(chunk_rows,predict_amps_core,df,svm_Radial,min_len, mc.cores = n_cores)
+    p_AMP <- do.call(rbind,p_AMP_list)
     output$prob_AMP[predictable_rows] <- p_AMP$Tg
   }
 
   output
+}
+
+
+predict_amps_core <- function(rows,df,svm_Radial,min_len){
+  df_features <- calculate_features(df[rows,], min_len)
+  predict.train(svm_Radial, df_features, type = "prob")
 }

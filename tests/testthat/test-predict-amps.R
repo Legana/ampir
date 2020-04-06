@@ -94,3 +94,21 @@ test_that("predict_amps works when input contains only invalid sequences", {
     c(1))
 })
 
+
+test_that("predict_amps works with multiple input sequences on multiple cores", {
+  skip_on_os('windows')
+  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,hepseq,hepseq), stringsAsFactors = FALSE)
+
+  result <- predict_amps(test_df, n_cores = 2)
+
+  expect_is(result,"data.frame")
+
+  expect_equal(
+    dim(result),
+    c(3,3))
+
+  expect_equal(
+    rowSums(is.na(result)),
+    c(0,0,0))
+
+})
