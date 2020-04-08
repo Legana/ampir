@@ -23,10 +23,7 @@
 
 predict_amps <- function(faa_df, min_len = 5, n_cores=1) {
 
-  if ( is_tibble(faa_df)){
-    message("Coercing tibble to dataframe")
-    faa_df <- as.data.frame(faa_df)
-  }
+  faa_df <- as.data.frame(faa_df)
 
   output <- faa_df
 
