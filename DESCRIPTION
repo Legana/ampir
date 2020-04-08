@@ -1,7 +1,7 @@
 Package: ampir
 Type: Package
 Title: Predict Antimicrobial Peptides
-Version: 0.2.0
+Version: 0.3.0
 Date: 2020-04-06
 Authors@R: c(person("Legana","Fingerhut",
                      email = "legana.fingerhut@my.jcu.edu.au",
