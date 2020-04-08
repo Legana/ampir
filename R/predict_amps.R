@@ -22,6 +22,9 @@
 #' # [1] G1P6H5_MYOLU  0.9723796
 
 predict_amps <- function(faa_df, min_len = 5, n_cores=1) {
+
+  faa_df <- as.data.frame(faa_df)
+
   output <- faa_df
 
   valid_seqs <- aaseq_is_valid(faa_df[,2])

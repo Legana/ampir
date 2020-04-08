@@ -1,7 +1,10 @@
 # Minor release to **CRAN** for ampir 0.2.0
 ## This is new release which contain new features and bug fixes. In this version, we have:
 
-- changed the default minimum length from 20 to 5 in `calculate_features.R` 
+- added the `remove_non_standardaa.R` function 
+- exported `calculate_features.R` 
+- tidied up code to improve running speed of `calculate_features.R`
+- included the option to parallelise `predict_amps.R`
 
 
 # Resubmission to **CRAN** for ampir 0.1.0
