@@ -10,6 +10,7 @@
 #' @param faa_df A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)
 #' @param min_len The minimum protein length for which predictions will be generated
 #' @param n_cores On multicore machines split the task across this many processors. This option does not work on Windows
+#' @param model A train object suitable for passing to the predict.train function in the caret package. If omitted the default model will be used.
 #'
 #' @return The original input data.frame with a new column added called \code{prob_AMP} with the probability of that sequence to be an antimicrobial peptide. Any sequences that are too short or which contain invalid amin acids will have NA in this column
 #'
@@ -21,7 +22,7 @@
 #' #       seq_name    prob_AMP
 #' # [1] G1P6H5_MYOLU  0.9723796
 
-predict_amps <- function(faa_df, min_len = 5, n_cores=1) {
+predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = NULL) {
 
   faa_df <- as.data.frame(faa_df)
 
@@ -36,7 +37,11 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1) {
     message("Could not run prediction for ",sum(!predictable_rows)," proteins because they were either too short or contained invalid amino acids")
   }
 
-  svm_Radial <- ampir_package_data[["svm_Radial"]]
+  if ( is.null(model) ){
+    model <- ampir_package_data[["svm_Radial"]]
+  } else {
+    # TODO: Check model for validity
+  }
 
   df <- faa_df[predictable_rows,]
 
@@ -55,7 +60,7 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1) {
         chunk_rows <- list(seq(1,nrow(df),by=1))
       }
 
-    p_AMP_list <- mclapply(chunk_rows,predict_amps_core,df,svm_Radial,min_len, mc.cores = n_cores)
+    p_AMP_list <- mclapply(chunk_rows,predict_amps_core,df,model,min_len, mc.cores = n_cores)
     p_AMP <- do.call(rbind,p_AMP_list)
     output$prob_AMP[predictable_rows] <- p_AMP$Tg
   }
@@ -64,7 +69,8 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1) {
 }
 
 
-predict_amps_core <- function(rows,df,svm_Radial,min_len){
-  df_features <- calculate_features(df[rows,], min_len)
-  predict.train(svm_Radial, df_features, type = "prob")
+predict_amps_core <- function(rows,df,model,min_len){
+  predictors <- colnames(model$trainingData)[-1]
+  df_features <- calculate_features(df[rows,], min_len)[,predictors]
+  predict.train(model, df_features, type = "prob")
 }
