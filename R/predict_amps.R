@@ -7,7 +7,7 @@
 #'
 #' @export predict_amps
 #'
-#' @param faa_df A dataframe obtained from \code{read_faa}) containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)
+#' @param faa_df A dataframe obtained from \code{read_faa} containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)
 #' @param min_len The minimum protein length for which predictions will be generated
 #' @param n_cores On multicore machines split the task across this many processors. This option does not work on Windows
 #' @param model A train object suitable for passing to the predict.train function in the caret package. If omitted the default model will be used.
@@ -62,7 +62,7 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = NULL) {
 
     p_AMP_list <- mclapply(chunk_rows,predict_amps_core,df,model,min_len, mc.cores = n_cores)
     p_AMP <- do.call(rbind,p_AMP_list)
-    output$prob_AMP[predictable_rows] <- p_AMP$Tg
+    output$prob_AMP[predictable_rows] <- p_AMP[,2]
   }
 
   output
