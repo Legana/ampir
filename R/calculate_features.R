@@ -40,7 +40,7 @@ calculate_features <- function(df, min_len = 20) {
   Net_charge        <- calc_net_charge(seq)
   Pseudo_composition<- calc_pseudo_comp(seq, lambda_min = (min_len-1))
 
-  cbind(seq_name, Amphiphilicity, Hydrophobicity, Isoelectric_point, Mol_weight, Net_charge, Pseudo_composition)
+  cbind(seq_name, Amphiphilicity, Hydrophobicity, Isoelectric_point, Mol_weight, Net_charge, Pseudo_composition, stringsAsFactors = FALSE)
 }
 
 
