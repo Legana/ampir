@@ -71,6 +71,11 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = NULL) {
 
 predict_amps_core <- function(rows,df,model,min_len){
   predictors <- colnames(model$trainingData)[-1]
-  df_features <- calculate_features(df[rows,], min_len)[,predictors]
-  predict.train(model, df_features, type = "prob")
+  df_features <- calculate_features(df[rows,], min_len)
+
+  if(!all(predictors %in% colnames(df_features))){
+    stop("One or more predictors in specified model does not exist in predictors calculated by ampir")
+  }
+
+  predict.train(model, df_features[,predictors], type = "prob")
 }
