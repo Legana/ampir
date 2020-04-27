@@ -4,7 +4,7 @@
 \alias{predict_amps}
 \title{Predict the antimicrobial peptide probability of a protein}
 \usage{
-predict_amps(faa_df, min_len = 5, n_cores = 1, model = NULL)
+predict_amps(faa_df, min_len = 5, n_cores = 1, model = "mature")
 }
 \arguments{
 \item{faa_df}{A dataframe obtained from \code{read_faa} containing two columns: the sequence name (seq_name) and amino acid sequence (seq_aa)}
@@ -13,7 +13,7 @@ predict_amps(faa_df, min_len = 5, n_cores = 1, model = NULL)
 
 \item{n_cores}{On multicore machines split the task across this many processors. This option does not work on Windows}
 
-\item{model}{A train object suitable for passing to the predict.train function in the caret package. If omitted the default model will be used.}
+\item{model}{Either a string with the name of a built-in model (mature, precursor), OR, A train object suitable for passing to the predict.train function in the caret package. If omitted the default model will be used.}
 }
 \value{
 The original input data.frame with a new column added called \code{prob_AMP} with the probability of that sequence to be an antimicrobial peptide. Any sequences that are too short or which contain invalid amin acids will have NA in this column

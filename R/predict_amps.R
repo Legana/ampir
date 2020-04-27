@@ -49,7 +49,7 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "mature") {
     }
   } else {
     feature_list <- colnames(calculate_features(df[1,], min_len))
-    if(!all(model$coefnames %in% colnames(df_features))){
+    if(!all(model$coefnames %in% feature_list)){
       stop("One or more predictors in specified model does not exist in predictors calculated by ampir")
     }
   }
