@@ -10,7 +10,7 @@ precursor_model$trainingData <- precursor_model$trainingData[1,]
 precursor_model$resampledCM <- NULL
 precursor_model$control <- NULL
 
-mature_model <- readRDS("data-raw/ampir_mature_model.rds")
+mature_model <- readRDS("data-raw/tuned_mature_final.rds")
 mature_model$trainingData <- mature_model$trainingData[1,]
 mature_model$resampledCM <- NULL
 mature_model$control <- NULL
