@@ -35,7 +35,7 @@ tmp <- data.frame(
 AAidx <- rbind(AAidx, tmp)
 
 
-ampir_package_data <- list('mature_model'=mature_model,"precusor_model" = precursor_model,
+ampir_package_data <- list('mature_model'=mature_model,"precursor_model" = precursor_model,
                            'AAidx'=AAidx)
 
 
