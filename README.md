@@ -65,18 +65,18 @@ Read in a FASTA formatted file as a `data.frame` with
 my_protein_df <- read_faa(system.file("extdata/little_test.fasta", package = "ampir"))
 ```
 
-| seq\_name                                                                                | seq\_aa                                        |
-| :--------------------------------------------------------------------------------------- | :--------------------------------------------- |
-| ADV51532.1 preprodamicornin \[Pocillopora damicornis\]                                   | MKVLVILFGAMLVLMEFQKASAATLLEDFDDDDDLLDDGGDFDLE… |
-| sp|C0HKQ8|CECA2\_DROME Cecropin-A2 OS=Drosophila melanogaster OX=7227 GN=CecA2 PE=2 SV=1 | MNFYNIFVFVALILAITIGQSEAGWLKKIGKKIERVGQHTRDATI… |
-| sp|Q0MWV8|AURE\_AURAU Aurelin OS=Aurelia aurita OX=6145 PE=1 SV=1                        | MGCFKVLVLFAAILCMSLLVCAEDEVNLQAQIEEGPMEAIRSRRA… |
-| sp|P36192|DEFI\_DROME Defensin OS=Drosophila melanogaster OX=7227 GN=Def PE=3 SV=1       | MKFFVLVAIAFALLACVAQAQPVSDVDPIPEDHVLVHEDAHQEVL… |
-| sp|B3RFR8|HYDMA\_HYDVU Hydramacin-1 OS=Hydra vulgaris OX=6087 PE=1 SV=1                  | MRTVVFFILVSIFLVALKPTGTQAQIVDCWETWSRCTKWSQGGTG… |
-| sp|Q492F0|UREF\_BLOPB                                                                    | MCADHGISSVLSLMQLVSSNFPVGSFAYSRGLEWAVENNWVNSVE… |
-| sp|C4LIS3|RISB\_CORK4                                                                    | MSGEGSPTITIEPGSAHGLRVAIVVSEWNRDITDELASQAQQAGE… |
-| sp|Q9P7J3|CG121\_SCHPO                                                                   | MILPLFPETQVHVFVYENVSNCAAIHEQLISQNPIYDYAFLDAAT… |
-| sp|P10055|RL11\_PROVU                                                                    | MAKKVQAYIKLQVSAGMANPSPPVGPALGQQGVNIMEFCKAFNAK… |
-| sp|P23938|NG1\_DROME                                                                     | MKITVVLVLLATFLGCVMIHESEASTTTTSTSASATTTTSASATT… |
+| seq\_name                                                                      | seq\_aa                                        |
+| :----------------------------------------------------------------------------- | :--------------------------------------------- |
+| ADV51532.1 preprodamicornin \[Pocillopora damicornis\]                         | MKVLVILFGAMLVLMEFQKASAATLLEDFDDDDDLLDDGGDFDLE… |
+| CECA2\_DROME Cecropin-A2 OS=Drosophila melanogaster OX=7227 GN=CecA2 PE=2 SV=1 | MNFYNIFVFVALILAITIGQSEAGWLKKIGKKIERVGQHTRDATI… |
+| AURE\_AURAU Aurelin OS=Aurelia aurita OX=6145 PE=1 SV=1                        | MGCFKVLVLFAAILCMSLLVCAEDEVNLQAQIEEGPMEAIRSRRA… |
+| DEFI\_DROME Defensin OS=Drosophila melanogaster OX=7227 GN=Def PE=3 SV=1       | MKFFVLVAIAFALLACVAQAQPVSDVDPIPEDHVLVHEDAHQEVL… |
+| HYDMA\_HYDVU Hydramacin-1 OS=Hydra vulgaris OX=6087 PE=1 SV=1                  | MRTVVFFILVSIFLVALKPTGTQAQIVDCWETWSRCTKWSQGGTG… |
+| UREF\_BLOPB                                                                    | MCADHGISSVLSLMQLVSSNFPVGSFAYSRGLEWAVENNWVNSVE… |
+| RISB\_CORK4                                                                    | MSGEGSPTITIEPGSAHGLRVAIVVSEWNRDITDELASQAQQAGE… |
+| CG121\_SCHPO                                                                   | MILPLFPETQVHVFVYENVSNCAAIHEQLISQNPIYDYAFLDAAT… |
+| RL11\_PROVU                                                                    | MAKKVQAYIKLQVSAGMANPSPPVGPALGQQGVNIMEFCKAFNAK… |
+| NG1\_DROME                                                                     | MKITVVLVLLATFLGCVMIHESEASTTTTSTSASATTTTSASATT… |
 
 Calculate the probability that each protein is an antimicrobial peptide
 with `predict_amps()`. Since these proteins are all full length
@@ -113,12 +113,12 @@ file:
 my_predicted_amps <- my_protein_df[my_prediction$prob_AMP >= 0.9,]
 ```
 
-|   | seq\_name                                                                                | seq\_aa                                        |
-| - | :--------------------------------------------------------------------------------------- | :--------------------------------------------- |
-| 2 | sp|C0HKQ8|CECA2\_DROME Cecropin-A2 OS=Drosophila melanogaster OX=7227 GN=CecA2 PE=2 SV=1 | MNFYNIFVFVALILAITIGQSEAGWLKKIGKKIERVGQHTRDATI… |
-| 3 | sp|Q0MWV8|AURE\_AURAU Aurelin OS=Aurelia aurita OX=6145 PE=1 SV=1                        | MGCFKVLVLFAAILCMSLLVCAEDEVNLQAQIEEGPMEAIRSRRA… |
-| 4 | sp|P36192|DEFI\_DROME Defensin OS=Drosophila melanogaster OX=7227 GN=Def PE=3 SV=1       | MKFFVLVAIAFALLACVAQAQPVSDVDPIPEDHVLVHEDAHQEVL… |
-| 5 | sp|B3RFR8|HYDMA\_HYDVU Hydramacin-1 OS=Hydra vulgaris OX=6087 PE=1 SV=1                  | MRTVVFFILVSIFLVALKPTGTQAQIVDCWETWSRCTKWSQGGTG… |
+|   | seq\_name                                                                      | seq\_aa                                        |
+| - | :----------------------------------------------------------------------------- | :--------------------------------------------- |
+| 2 | CECA2\_DROME Cecropin-A2 OS=Drosophila melanogaster OX=7227 GN=CecA2 PE=2 SV=1 | MNFYNIFVFVALILAITIGQSEAGWLKKIGKKIERVGQHTRDATI… |
+| 3 | AURE\_AURAU Aurelin OS=Aurelia aurita OX=6145 PE=1 SV=1                        | MGCFKVLVLFAAILCMSLLVCAEDEVNLQAQIEEGPMEAIRSRRA… |
+| 4 | DEFI\_DROME Defensin OS=Drosophila melanogaster OX=7227 GN=Def PE=3 SV=1       | MKFFVLVAIAFALLACVAQAQPVSDVDPIPEDHVLVHEDAHQEVL… |
+| 5 | HYDMA\_HYDVU Hydramacin-1 OS=Hydra vulgaris OX=6087 PE=1 SV=1                  | MRTVVFFILVSIFLVALKPTGTQAQIVDCWETWSRCTKWSQGGTG… |
 
 Write the `data.frame` with sequence names in the first column and
 protein sequences in the second column to a FASTA formatted file with

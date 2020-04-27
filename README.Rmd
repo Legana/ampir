@@ -60,6 +60,7 @@ my_protein_df <- read_faa(system.file("extdata/little_test.fasta", package = "am
 ```{r, echo=FALSE}
 display_df <- my_protein_df
 display_df$seq_aa <- paste(substring(display_df$seq_aa,1,45),"...",sep="")
+display_df$seq_name <- gsub("sp\\|[^\\|]*\\|","",display_df$seq_name)
 knitr::kable(display_df)
 ```
 
@@ -85,6 +86,7 @@ my_predicted_amps <- my_protein_df[my_prediction$prob_AMP >= 0.9,]
 
 ```{r, echo=FALSE}
 my_predicted_amps$seq_aa <- paste(substring(my_predicted_amps$seq_aa,1,45),"...",sep="")
+my_predicted_amps$seq_name <- gsub("sp\\|[^\\|]*\\|","",my_predicted_amps$seq_name)
 knitr::kable(my_predicted_amps)
 ```
 
