@@ -22,7 +22,7 @@
 #' #       seq_name    prob_AMP
 #' # [1] G1P6H5_MYOLU  0.9723796
 
-predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "mature") {
+predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "precursor") {
 
   faa_df <- as.data.frame(faa_df)
 
