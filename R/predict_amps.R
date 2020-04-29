@@ -43,7 +43,7 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "precursor") {
     stop("No model specified. Value specified for model argument should be a string specifying one of ampirs internal models or a train object")
   }
 
-  if ( class(model)=="character" ){
+  if ( (length(model)==1) && (class(model)=="character") ){
     if ( model == "mature"){
       model <- ampir_package_data[["mature_model"]]
     } else if (model == "precursor") {
@@ -64,19 +64,11 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "precursor") {
     output$prob_AMP <- NA
 
     } else {
-      n_chunks <- n_cores
-      if ( n_cores>1 && nrow(df)>=n_chunks ){
-        starts <- as.integer(seq(1,nrow(df),length.out=n_chunks+1))[-(n_chunks+1)]
-        ends <- as.integer(seq(1,nrow(df)+1,length.out=n_chunks+1))[-1]-1
-        chunk_rows <- lapply(1:n_chunks,function(i){seq(starts[i],ends[i],by=1)})
-      } else {
-        n_chunks <- 1
-        chunk_rows <- list(seq(1,nrow(df),by=1))
-      }
+      chunks <- chunk_rows(nrow(df),n_cores)
 
-    p_AMP_list <- mclapply(chunk_rows,predict_amps_core,df,model,min_len, mc.cores = n_cores)
-    p_AMP <- do.call(rbind,p_AMP_list)
-    output$prob_AMP[predictable_rows] <- p_AMP[,2]
+      p_AMP_list <- mclapply(chunks,predict_amps_core,df,model,min_len, mc.cores = n_cores)
+      p_AMP <- do.call(rbind,p_AMP_list)
+      output$prob_AMP[predictable_rows] <- p_AMP[,2]
   }
 
   output

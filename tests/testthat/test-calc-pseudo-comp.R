@@ -8,7 +8,7 @@ hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCC
 
 test_that("calc_pseudo_comp gives correct result with default lambda", {
 
-  expected_result <- readRDS("../hepcidin_paac.rds")
+  expected_result <- readRDS("../testdata/hepcidin_paac.rds")
 
   result <- calc_pseudo_comp(hepseq)
 
@@ -23,7 +23,7 @@ test_that("calc_pseudo_comp gives correct result with default lambda", {
 
 test_that("calc_pseudo_comp gives correct result with lambda_max set", {
 
-  expected_result <- readRDS("../hepcidin_paac_lambda4.rds")
+  expected_result <- readRDS("../testdata/hepcidin_paac_lambda4.rds")
 
   result <- calc_pseudo_comp(hepseq, lambda_max = 4)
 

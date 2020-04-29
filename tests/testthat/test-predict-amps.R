@@ -94,25 +94,33 @@ test_that("predict_amps works when input contains only invalid sequences", {
     c(1))
 })
 
-
-test_that("predict_amps works with multiple input sequences on multiple cores", {
+test_that("predict_amps works with multiple cores", {
   skip_on_os('windows')
-  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,hepseq,hepseq), stringsAsFactors = FALSE)
+  test_df <- readRDS("../testdata/xbench.rds")
+  result_1core <- predict_amps(test_df, n_cores = 1)
+  expect_equal(
+    dim(result_1core),
+    c(16,3))
 
-  result <- predict_amps(test_df, n_cores = 2)
+  result_2core <- predict_amps(test_df, n_cores = 2)
 
-  expect_is(result,"data.frame")
+  result_3core <- predict_amps(test_df, n_cores = 3)
+
+  result_4core <- predict_amps(test_df, n_cores = 4)
 
   expect_equal(
-    dim(result),
-    c(3,3))
+    result_1core,
+    result_2core)
 
   expect_equal(
-    rowSums(is.na(result)),
-    c(0,0,0))
+    result_1core,
+    result_3core)
+
+  expect_equal(
+    result_1core,
+    result_4core)
 
 })
-
 
 test_that("predict_amps works with explicitly specified precursor model", {
   skip_on_os('windows')
