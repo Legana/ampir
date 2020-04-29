@@ -103,23 +103,9 @@ test_that("predict_amps works with multiple cores", {
     c(16,3))
 
   result_2core <- predict_amps(test_df, n_cores = 2)
-
-  result_3core <- predict_amps(test_df, n_cores = 3)
-
-  result_4core <- predict_amps(test_df, n_cores = 4)
-
   expect_equal(
     result_1core,
     result_2core)
-
-  expect_equal(
-    result_1core,
-    result_3core)
-
-  expect_equal(
-    result_1core,
-    result_4core)
-
 })
 
 test_that("predict_amps works with explicitly specified precursor model", {
