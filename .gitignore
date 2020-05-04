@@ -1,3 +1,5 @@
+profiling
+data-raw/*.rds
 .Rproj.user
 .Rhistory
 .RData

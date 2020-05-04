@@ -1,76 +1,19 @@
 library(usethis)
-library(caret)
 
-# read and prepare data
+# Tuned model for full length precursors
+# Tuned model for mature peptides
+#
+# See https://github.com/legana/amp_pub for details of how this was generated
+#
+precursor_model <- readRDS("data-raw/tuned_precursor_imbal.rds")
+precursor_model$trainingData <- precursor_model$trainingData[1,]
+precursor_model$resampledCM <- NULL
+precursor_model$control <- NULL
 
-set.seed(396)
-#read data
-tg98 <- read_faa("data-raw/tmpdata/amps_sp_ampdbs98.fasta")
-tg98$Label <- "Tg"
-bg98 <- read_faa("data-raw/tmpdata/swissprot_all_MAY98.fasta")
-bg98$Label <- "Bg"
-#remove rows in bg that are in tg
-bg98 <- bg98[!bg98$seq_aa %in% tg98$seq_aa,]
-#remove nonstandard amino acids
-tg98 <- ampir:::remove_nonstandard_aa(tg98)
-bg98 <- ampir:::remove_nonstandard_aa(bg98)
-#select the same number of rows as tg so databases are 1:1
-bg98 <- bg98[sample(nrow(bg98),4981),]
-#bind target and background datasets
-bg_tg98 <- rbind(bg98, tg98)
-#remove rownames
-rownames(bg_tg98) <- NULL
-#calculate features
-features98 <- ampir:::calculate_features(bg_tg98)
-#add Label column for y variable
-features98$Label <- bg_tg98$Label
-#convert to factor
-features98[["Label"]] <- factor(features98[["Label"]])
-
-#split feature set data 80/20 and create train and test set
-trainIndex <-createDataPartition(y=features98$Label, p=.8, list = FALSE)
-features98Train <-features98[trainIndex,]
-features98Test <-features98[-trainIndex,]
-
-#resample method using repeated cross validation and adding in a probability calculation
-trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = TRUE)
-
-# TRAIN MODEL
-
-# The svm radial model was tuned with sigma=seq(0.01,0.07,by=0.003), C=c(1:8)
-# The final values used for the model svm_radial98_tuned were sigma = 0.07 and C = 5.
-# the final values for the rsvm98_full (full model) were sigma = 0.07 and C = 8
-# These values were used to recreate the model to minimise model file size
-
-grid <- expand.grid(sigma=seq(0.01,0.07,by=0.003), C=c(1:8))
-
-grid_for_final_svmradial98 <- expand.grid(sigma=0.07, C=5)
-
-svm_Radial98_final <- train(Label~.,
-                            data = features98Train[,-c(1,27:45)], #without names and lamda values
-                            method="svmRadial",
-                            trControl = trctrl_prob,
-                            preProcess = c("center", "scale"),
-                            tuneGrid = grid_for_final_svmradial98)
-
-rsvm98_final <- train(Label~.,
-                       data = features98Train[,-c(1,27:45)], #without names and lamda values
-                       method="svmRadial",
-                       trControl = trctrl_prob,
-                       preProcess = c("center", "scale"),
-                       tuneLength = 10)
-
-# FULL MODEL
-
-final_values_full_model <- expand.grid(sigma = 0.07, C = 8)
-
-rsvm98_full <- train(Label~.,
-                     data = features98[,-c(1,27:45)], #without names and lamda values
-                     method="svmRadial",
-                     trControl = trctrl_prob,
-                     preProcess = c("center", "scale"),
-                     tuneGrid = final_values_full_model)
-
+mature_model <- readRDS("data-raw/tuned_mature_final.rds")
+mature_model$trainingData <- mature_model$trainingData[1,]
+mature_model$resampledCM <- NULL
+mature_model$control <- NULL
 
 # Data used for calc_pseudo_comp function
 # data obtained from protr package (https://github.com/nanxstats/protr)
@@ -92,7 +35,7 @@ tmp <- data.frame(
 AAidx <- rbind(AAidx, tmp)
 
 
-ampir_package_data <- list('svm_Radial'=rsvm98_full,
+ampir_package_data <- list('mature_model'=mature_model,"precursor_model" = precursor_model,
                            'AAidx'=AAidx)
 
 

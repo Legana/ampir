@@ -94,12 +94,25 @@ test_that("predict_amps works when input contains only invalid sequences", {
     c(1))
 })
 
+test_that("predict_amps works with multiple cores", {
+  skip_on_os('windows')
+  test_df <- readRDS("../testdata/xbench.rds")
+  result_1core <- predict_amps(test_df, n_cores = 1)
+  expect_equal(
+    dim(result_1core),
+    c(16,3))
 
-test_that("predict_amps works with multiple input sequences on multiple cores", {
+  result_2core <- predict_amps(test_df, n_cores = 2)
+  expect_equal(
+    result_1core,
+    result_2core)
+})
+
+test_that("predict_amps works with explicitly specified precursor model", {
   skip_on_os('windows')
   test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,hepseq,hepseq), stringsAsFactors = FALSE)
 
-  result <- predict_amps(test_df, n_cores = 2)
+  result <- predict_amps(test_df, model = "precursor")
 
   expect_is(result,"data.frame")
 
@@ -110,5 +123,51 @@ test_that("predict_amps works with multiple input sequences on multiple cores", 
   expect_equal(
     rowSums(is.na(result)),
     c(0,0,0))
+
+})
+
+
+test_that("predict_amps works with explicitly specified mature model", {
+
+  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,hepseq,hepseq), stringsAsFactors = FALSE)
+
+  result <- predict_amps(test_df, model = "mature")
+
+  expect_is(result,"data.frame")
+
+  expect_equal(
+    dim(result),
+    c(3,3))
+
+  expect_equal(
+    rowSums(is.na(result)),
+    c(0,0,0))
+
+})
+
+
+test_that("predict_amps gives an error when invalid model specified", {
+
+  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,hepseq,hepseq), stringsAsFactors = FALSE)
+
+  expect_error(predict_amps(test_df, model = "invalidxxx"),"Unknown model invalidxxx provided*")
+
+})
+
+test_that("predict_amps gives an error when NULL model specified", {
+
+  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,hepseq,hepseq), stringsAsFactors = FALSE)
+
+  expect_error(predict_amps(test_df, model = NULL),"No model*")
+
+})
+
+test_that("predict_amps gives an error when model includes non-ampir features", {
+
+  test_df <- data.frame(names=c("A","B","C"),seq=c(hepseq,hepseq,hepseq), stringsAsFactors = FALSE)
+
+  fake_model <- list(coefnames = c("blah","blah1"))
+
+  expect_error(predict_amps(test_df, model = fake_model),"One or more*")
 
 })
