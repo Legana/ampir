@@ -5,6 +5,7 @@
 - exported `calculate_features.R` 
 - tidied up code to improve running speed of `calculate_features.R`
 - included the option to parallelise `predict_amps.R`
+- inluded the option to add self-trained models to `predict_amps.R`
 
 
 # Resubmission to **CRAN** for ampir 0.1.0

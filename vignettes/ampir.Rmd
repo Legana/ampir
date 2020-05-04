@@ -67,7 +67,7 @@ knitr::kable(my_predicted_amps)
 Write the `data.frame` with sequence names in the first column and protein sequences in the second column to a FASTA formatted file with `df_to_faa()`
 
 ```{r}
-df_to_faa(my_predicted_amps, tempfile("my_predicted_amps", tempdir()))
+df_to_faa(my_predicted_amps, tempfile("my_predicted_amps.fasta", tempdir()))
 ```
 
 
