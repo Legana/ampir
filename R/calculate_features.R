@@ -22,7 +22,7 @@
 #' # [1] G1P6H5_MYOLU	   0.4145847       0.4373494     8.501312     9013.757   4.53015   ....
 
 
-calculate_features <- function(df, min_len = 20) {
+calculate_features <- function(df, min_len = 10) {
 
   short_proteins_index <- nchar(df[,2]) < min_len
   df_cut <- df[!short_proteins_index,]

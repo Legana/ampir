@@ -4,7 +4,7 @@
 \alias{calculate_features}
 \title{Calculate a set of numerical features from protein sequences}
 \usage{
-calculate_features(df, min_len = 20)
+calculate_features(df, min_len = 10)
 }
 \arguments{
 \item{df}{A dataframe which contains protein sequence names as the first column and amino acid sequence as the second column}
