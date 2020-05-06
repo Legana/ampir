@@ -71,7 +71,7 @@ bats <- rbind(bat_pos, bat_neg)
 
 Calculate features on the combined positive and negative dataset and add the label column
 ```{r}
-bats_features <- calculate_features(bats, 5)
+bats_features <- calculate_features(bats)
 bats_features$Label <- as.factor(bats$Label)
 rownames(bats_features) <- NULL
 ```
