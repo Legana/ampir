@@ -5,10 +5,12 @@ Version: 1.0.0
 Date: 2020-05-11
 Authors@R: c(person("Legana","Fingerhut",
                      email = "legana.fingerhut@my.jcu.edu.au",
-                     role = c("aut", "cre")),
+                     role = c("aut", "cre"),
+                     comment = c(ORCID = "0000-0002-2482-5336")),
              person("Ira","Cooke",
                      email = "ira.cooke@jcu.edu.au",
-                     role = c("aut")),
+                     role = c("aut"),
+                     comment = c(ORCID = "0000-0001-6520-1397")),
              person("Jinlong","Zhang",
                      email = "jinlongzhang01@gmail.com",
                      role = c("ctb"),
@@ -18,10 +20,10 @@ Authors@R: c(person("Legana","Fingerhut",
                      role = c("ctb"),
                      comment = c("R/calc_pseudo_comp.R")))
 Description: A toolkit to predict antimicrobial peptides from protein sequences on a genome-wide scale.
-    It incorporates a support vector machine model trained on publicly available antimicrobial peptide data using calculated
+    It incorporates two support vector machine models ("precursor" and "mature") trained on publicly available antimicrobial peptide data using calculated
     physico-chemical and compositional sequence properties described in Meher et al. (2017) <doi:10.1038/srep42362>.
-    In order to support genome-wide analyses this model is designed to accept any type of protein as input
-    and calculation of compositional properties has been optimised for high-throughput use.
+    In order to support genome-wide analyses, these models are designed to accept any type of protein as input
+    and calculation of compositional properties has been optimised for high-throughput use. For details see Fingerhut et al. 2020 <doi:10.1101/2020.05.07.082412>.
 URL: https://github.com/Legana/ampir
 License: GPL-2
 Encoding: UTF-8
