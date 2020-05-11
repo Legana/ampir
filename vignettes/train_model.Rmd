@@ -97,6 +97,7 @@ trctrl_prob <- trainControl(method = "repeatedcv", number = 10, repeats = 3,
 
 Train model using a support vector machine with radial kernel with `caret`.
 *Note: Other classification models are supported too. For example, to use a [random forest model in `caret`](https://topepo.github.io/caret/train-models-by-tag.html#random-forest), `method` could be changed from "svmRadial" to "ranger".* 
+
 ```{r}
 my_bat_svm_model <- train(Label~.,
                        data = bats_featuresTrain[,-1], # excluding seq_name column

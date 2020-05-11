@@ -83,7 +83,7 @@ not evaluated and will contain an `NA` as their `prob_AMP`
 value.*
 
 ``` r
-my_prediction <- predict_amps(my_protein_df, model="precursor")
+my_prediction <- predict_amps(my_protein_df, model = "precursor")
 ```
 
 | seq\_name         | seq\_aa                                        | prob\_AMP |

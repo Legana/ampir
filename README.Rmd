@@ -61,12 +61,12 @@ display_df$seq_name <- gsub("tr\\|[^\\|]*\\|","",display_df$seq_name)
 knitr::kable(display_df)
 ```
 
-Calculate the probability that each protein is an antimicrobial peptide with `predict_amps()`.  Since these proteins are all full length precursors rather than mature peptides we use `ampir`'s built-in precursor model.
+Calculate the probability that each protein is an antimicrobial peptide with `predict_amps()`. Since these proteins are all full length precursors rather than mature peptides we use `ampir`'s built-in precursor model.
 
 *Note that amino acid sequences that are shorter than 10 amino acids long and/or contain anything other than the standard 20 amino acids are not evaluated and will contain an `NA` as their `prob_AMP` value.*
 
 ```{r}
-my_prediction <- predict_amps(my_protein_df, model="precursor")
+my_prediction <- predict_amps(my_protein_df, model = "precursor")
 ```
 
 ```{r, echo=FALSE}
