@@ -1,11 +1,27 @@
-# Minor release to **CRAN** for ampir 0.2.0
-## This is new release which contain new features and bug fixes. In this version, we have:
+# Major release to **CRAN** for ampir 1.0.0
+This is new release which contain new features and bug fixes. For details see `NEWS.md`.
 
-- added the `remove_non_standardaa.R` function 
-- exported `calculate_features.R` 
-- tidied up code to improve running speed of `calculate_features.R`
-- included the option to parallelise `predict_amps.R`
-- inluded the option to add self-trained models to `predict_amps.R`
+## Build checks
+
+All checks successful (0 errors ✓ | 0 warnings ✓ | 0 notes ✓) for:
+
+* local OS X version 10.15.4 install, R 3.6.1
+* Ubuntu 16.04.6 LTS x86_64-pc-linux-gnu (on travis-ci), R 4.0.0
+* win-builder x86_64-w64-mingw32 (64-bit), R 4.0.0, R 3.6.1, R Under development (unstable)
+* Debian Linux, R-devel, GCC ASAN/UBSAN (R-hub builder)
+* Ubuntu Linux 16.04 LTS, R-release, GCC (R-hub builder)
+* Fedora Linux, R-devel, clang, gfortran (R-hub builder)
+
+Currently failing (1 error x | 0 warnings ✓ | 0 notes ✓) for:
+
+* Windows Server 2008 R2 SP1, R-devel, 32/64 bit (R-hub builder)
+
+with the error:
+
+#> Error in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]) : 
+  there is no package called 'data.table'
+
+* This failure is due to the missing `data.table` package which could be an R-hub issue for the   Windows OS.
 
 
 # Resubmission to **CRAN** for ampir 0.1.0
