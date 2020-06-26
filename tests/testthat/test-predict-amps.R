@@ -179,3 +179,24 @@ test_that("predict_amps gives an error when sequences are not characters", {
   expect_error(predict_amps(test_df),"Sequences are required*")
 
 })
+
+test_that("predict_amps works when sequences contain a stop codon at the end", {
+
+  test_data <- data.frame(name = c("withstop","nostop"),
+                          seq=c("DKLIGSCVWGAVNYTSDCNGECKRRGYKGGHCGSFANVNCWCET*",
+                                "DKLIGSCVWGAVNYTSDCNGECKRRGYKGGHCGSFANVNCWCET"),
+                          stringsAsFactors = FALSE)
+
+  result <- predict_amps(test_data)
+
+  expect_is(result,"data.frame")
+
+  expect_equal(
+    dim(result),
+    c(2,3))
+
+  expect_equal(
+    rowSums(is.na(result)),
+    c(0,0))
+})
+
