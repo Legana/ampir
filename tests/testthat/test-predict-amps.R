@@ -171,3 +171,11 @@ test_that("predict_amps gives an error when model includes non-ampir features", 
   expect_error(predict_amps(test_df, model = fake_model),"One or more*")
 
 })
+
+test_that("predict_amps gives an error when sequences are not characters", {
+
+  test_df <- data.frame(name="Hepcidin",seq="MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT", stringsAsFactors = TRUE)
+
+  expect_error(predict_amps(test_df),"Sequences are required*")
+
+})
