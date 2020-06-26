@@ -25,7 +25,8 @@
 predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "precursor") {
 
   if (!is.character(faa_df[,2])){
-    stop("Sequences are required to be in character format")
+    col2format <- class(faa_df[,2])
+    stop(paste("Sequences are required to be in character format but are provided as ",col2format))
   }
 
   faa_df <- as.data.frame(faa_df)
