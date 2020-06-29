@@ -8,6 +8,8 @@
 #' @return The input dataframe without the stop codons at the end of sequences
 
 remove_stop_codon <- function(faa_df) {
-  data.frame(lapply(faa_df, function(x) gsub("\\*$", "", x)), stringsAsFactors = FALSE)
-}
+  seqs <- gsub("\\*$", "", faa_df[[2]])
+  faa_df[[2]] <- seqs
+  faa_df
 
+}
