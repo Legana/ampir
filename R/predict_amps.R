@@ -24,12 +24,14 @@
 
 predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "precursor") {
 
+  faa_df <- as.data.frame(faa_df)
+
   if (!is.character(faa_df[,2])){
     col2format <- class(faa_df[,2])
     stop(paste("Sequences are required to be in character format but are provided as ",col2format))
   }
 
-  faa_df <- as.data.frame(faa_df)
+  faa_df <- remove_stop_codon(faa_df)
 
   output <- faa_df
 
@@ -85,3 +87,5 @@ predict_amps_core <- function(rows,df,model,min_len){
   df_features <- calculate_features(df[rows,], min_len)
   predict.train(model, df_features[,predictors], type = "prob")
 }
+
+
