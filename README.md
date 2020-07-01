@@ -27,7 +27,9 @@ model, “precursor” is best suited for full length proteins and the
 “mature” model is best suited for small mature proteins (\<60 amino
 acids). **ampir** also accepts custom (user trained) models based on the
 [caret](https://github.com/topepo/caret) package. Please see the
-**ampir** *“How to train your model”* vignette for details.
+**ampir** *“How to train your model”*
+[vignette](https://cran.r-project.org/web/packages/ampir/vignettes/train_model.html)
+for details.
 
 ampir’s associated paper is available as a preprint on
 [bioRxiv](https://doi.org/10.1101/2020.05.07.082412)
