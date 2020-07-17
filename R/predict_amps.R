@@ -24,7 +24,7 @@
 
 predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "precursor") {
 
-  faa_df <- as.data.frame(faa_df)
+  faa_df <- as.data.frame(faa_df, stringsAsFactors = FALSE)
 
   if (!is.character(faa_df[,2])){
     col2format <- class(faa_df[,2])
