@@ -1,7 +1,7 @@
 Package: ampir
 Type: Package
 Title: Predict Antimicrobial Peptides
-Version: 1.0.0
+Version: 1.0.1
 Date: 2020-05-11
 Authors@R: c(person("Legana","Fingerhut",
                      email = "legana.fingerhut@my.jcu.edu.au",
@@ -23,7 +23,7 @@ Description: A toolkit to predict antimicrobial peptides from protein sequences 
     It incorporates two support vector machine models ("precursor" and "mature") trained on publicly available antimicrobial peptide data using calculated
     physico-chemical and compositional sequence properties described in Meher et al. (2017) <doi:10.1038/srep42362>.
     In order to support genome-wide analyses, these models are designed to accept any type of protein as input
-    and calculation of compositional properties has been optimised for high-throughput use. For details see Fingerhut et al. 2020 <doi:10.1101/2020.05.07.082412>.
+    and calculation of compositional properties has been optimised for high-throughput use. For details see Fingerhut et al. 2020 <doi:10.1093/bioinformatics/btaa653>.
 URL: https://github.com/Legana/ampir
 License: GPL-2
 Encoding: UTF-8

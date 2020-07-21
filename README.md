@@ -31,8 +31,8 @@ acids). **ampir** also accepts custom (user trained) models based on the
 [vignette](https://cran.r-project.org/web/packages/ampir/vignettes/train_model.html)
 for details.
 
-ampir’s associated paper is available as a preprint on
-[bioRxiv](https://doi.org/10.1101/2020.05.07.082412)
+ampir’s associated paper is available in the *Bioinformatics* journal as
+[btaa653](https://academic.oup.com/bioinformatics/article-abstract/doi/10.1093/bioinformatics/btaa653/5873588)
 
 ## Installation
 
