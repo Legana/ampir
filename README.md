@@ -106,7 +106,10 @@ Predicted proteins with a specified predicted probability value could
 then be extracted and written to a FASTA file:
 
 ``` r
-my_predicted_amps <- my_protein_df[my_prediction$prob_AMP >= 0.8,]
+library(dplyr)
+my_predicted_amps <- my_prediction %>% 
+  filter(prob_AMP >= 0.8) %>%
+  select(seq_name, seq_aa)
 ```
 
 |   | seq\_name     | seq\_aa                                        |
