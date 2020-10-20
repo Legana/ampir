@@ -1,3 +1,8 @@
+# ampir 1.0.1
+
+- fixed an example in the README which resulted in NAs output (@Ebedthan, #20)
+
+
 # ampir 1.0.0 (11/05/2020)
 
 ## This is new release which contain new features and bug fixes. In this version, we have:

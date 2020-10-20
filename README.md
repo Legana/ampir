@@ -59,8 +59,7 @@ library(ampir)
 Standard input to **ampir** is a `data.frame` with sequence names in the
 first column and protein sequences in the second column.
 
-Read in a FASTA formatted file as a `data.frame` with
-`read_faa()`
+Read in a FASTA formatted file as a `data.frame` with `read_faa()`
 
 ``` r
 my_protein_df <- read_faa(system.file("extdata/little_test.fasta", package = "ampir"))
@@ -84,8 +83,7 @@ precursor model.
 
 *Note that amino acid sequences that are shorter than 10 amino acids
 long and/or contain anything other than the standard 20 amino acids are
-not evaluated and will contain an `NA` as their `prob_AMP`
-value.*
+not evaluated and will contain an `NA` as their `prob_AMP` value.*
 
 ``` r
 my_prediction <- predict_amps(my_protein_df, model = "precursor")
@@ -106,11 +104,11 @@ Predicted proteins with a specified predicted probability value could
 then be extracted and written to a FASTA file:
 
 ``` r
-my_predicted_amps <- my_protein_df[my_prediction$prob_AMP >= 0.8,]
+my_predicted_amps <- my_protein_df[which(my_prediction$prob_AMP >= 0.8),]
 ```
 
 |   | seq\_name     | seq\_aa                                        |
-| - | :------------ | :--------------------------------------------- |
+| :- | :------------ | :--------------------------------------------- |
 | 2 | L5L3D0\_PTEAL | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
 | 4 | Q5F4I1\_DROPS | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |
 
