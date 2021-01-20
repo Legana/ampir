@@ -8,7 +8,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.org/Legana/ampir.svg?branch=master)](https://travis-ci.org/Legana/ampir)
+status](https://travis-ci.com/Legana/ampir.svg?branch=master)](https://travis-ci.com/Legana/ampir)
 [![codecov](https://codecov.io/gh/Legana/ampir/branch/master/graph/badge.svg)](https://codecov.io/gh/Legana/ampir)
 [![License: GPL
 v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
@@ -24,7 +24,7 @@ learning* approach to predict AMPs. It incorporates two support vector
 machine classification models, “precursor” and “mature” that have been
 trained on publicly available antimicrobial peptide data. The default
 model, “precursor” is best suited for full length proteins and the
-“mature” model is best suited for small mature proteins (\<60 amino
+“mature” model is best suited for small mature proteins (&lt;60 amino
 acids). **ampir** also accepts custom (user trained) models based on the
 [caret](https://github.com/topepo/caret) package. Please see the
 **ampir** *“How to train your model”*
@@ -66,7 +66,7 @@ my_protein_df <- read_faa(system.file("extdata/little_test.fasta", package = "am
 ```
 
 | seq\_name         | seq\_aa                                        |
-| :---------------- | :--------------------------------------------- |
+|:------------------|:-----------------------------------------------|
 | G1P6H5\_MYOLU     | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |
 | L5L3D0\_PTEAL     | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
 | A0A183U1F1\_TOXCA | LLRLYSPLVMFATRRVLLCLLVIYLLAQPIHSSWLKKTYKKLENS… |
@@ -90,7 +90,7 @@ my_prediction <- predict_amps(my_protein_df, model = "precursor")
 ```
 
 | seq\_name         | seq\_aa                                        | prob\_AMP |
-| :---------------- | :--------------------------------------------- | --------: |
+|:------------------|:-----------------------------------------------|----------:|
 | G1P6H5\_MYOLU     | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |     0.359 |
 | L5L3D0\_PTEAL     | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |     0.839 |
 | A0A183U1F1\_TOXCA | LLRLYSPLVMFATRRVLLCLLVIYLLAQPIHSSWLKKTYKKLENS… |     0.019 |
@@ -107,10 +107,10 @@ then be extracted and written to a FASTA file:
 my_predicted_amps <- my_protein_df[which(my_prediction$prob_AMP >= 0.8),]
 ```
 
-|   | seq\_name     | seq\_aa                                        |
-| :- | :------------ | :--------------------------------------------- |
-| 2 | L5L3D0\_PTEAL | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
-| 4 | Q5F4I1\_DROPS | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |
+|     | seq\_name     | seq\_aa                                        |
+|:----|:--------------|:-----------------------------------------------|
+| 2   | L5L3D0\_PTEAL | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
+| 4   | Q5F4I1\_DROPS | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |
 
 Write the `data.frame` with sequence names in the first column and
 protein sequences in the second column to a FASTA formatted file with
