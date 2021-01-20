@@ -35,7 +35,7 @@ Imports:
     kernlab,
     Rcpp,
     parallel
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Suggests: 
     testthat,
     knitr,
