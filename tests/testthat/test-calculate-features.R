@@ -33,7 +33,7 @@ test_that("calculate_features results accepts multi-row input", {
 
 })
 
-test_that("calculate_features results thorws an error on sequences less than min_len", {
+test_that("calculate_features results throws an error on sequences less than min_len", {
 
   multirow_test <- data.frame(c("A","B"), c(hepseq,substring(hepseq,1,19)), stringsAsFactors = FALSE)
 
@@ -112,5 +112,14 @@ test_that("Hepcidin gives correct Net charge", {
     result$Charge,
     4.53015, tolerance=1e-5)
 
+})
+
+test_that("Sequence column is character format in a dataframe", {
+
+  my_protein_test <- data.frame(hepseq_name, hepseq, stringsAsFactors = FALSE)
+
+  result <- my_protein_test[[2]]
+
+  expect_type(result, "character")
 })
 

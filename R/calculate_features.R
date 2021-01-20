@@ -24,14 +24,16 @@
 
 calculate_features <- function(df, min_len = 10) {
 
-  short_proteins_index <- nchar(df[,2]) < min_len
+  df <- as.data.frame(df, stringsAsFactors = FALSE)
+
+  short_proteins_index <- nchar(df[[2]]) < min_len
   df_cut <- df[!short_proteins_index,]
   if ( sum(short_proteins_index) > 0){
     stop("calculate_features was called on one or more sequences shorter than the specified min_len ")
   }
 
-  seq <- df_cut[,2]
-  seq_name <- df_cut[,1]
+  seq <- df_cut[[2]]
+  seq_name <- df_cut[[1]]
 
   Amphiphilicity    <- calc_amphiphilicity(seq)
   Hydrophobicity    <- calc_hydrophobicity(seq)

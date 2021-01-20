@@ -1,7 +1,7 @@
 # ampir 1.0.1
 
 - fixed an example in the README which resulted in NAs output (@Ebedthan, #20)
-
+- converted input for `calculate_features.R` to a dataframe, in case it was not a dataframe
 
 # ampir 1.0.0 (11/05/2020)
 
