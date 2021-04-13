@@ -5,15 +5,19 @@ library(usethis)
 #
 # See https://github.com/legana/amp_pub for details of how this was generated
 #
-precursor_model <- readRDS("data-raw/tuned_precursor_imbal.rds")
+precursor_model <- readRDS("data-raw/tuned_precursor_imbal_full.rds")
 precursor_model$trainingData <- precursor_model$trainingData[1,]
 precursor_model$resampledCM <- NULL
 precursor_model$control <- NULL
+precursor_model$results <- NULL
+precursor_model$resample <- NULL
 
-mature_model <- readRDS("data-raw/tuned_mature_final.rds")
+mature_model <- readRDS("data-raw/tuned_mature_full.rds")
 mature_model$trainingData <- mature_model$trainingData[1,]
 mature_model$resampledCM <- NULL
 mature_model$control <- NULL
+mature_model$results <- NULL
+mature_model$resample <- NULL
 
 # Data used for calc_pseudo_comp function
 # data obtained from protr package (https://github.com/nanxstats/protr)
