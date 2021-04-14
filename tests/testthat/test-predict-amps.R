@@ -1,5 +1,3 @@
-context("predict_amps")
-
 hepseq_name <- "Hepcidin"
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
 hepseq_df <- data.frame(hepseq_name, hepseq, stringsAsFactors = FALSE)
@@ -8,7 +6,7 @@ test_that("predict_amps gives a data frame with correct dimensions", {
 
   result <- predict_amps(hepseq_df)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -23,7 +21,7 @@ test_that("predict_amps works when input contains invalid aa sequences", {
 
   result <- predict_amps(test_df)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -42,7 +40,7 @@ test_that("predict_amps works when input contains invalid aa sequences and short
 
   result <- predict_amps(test_df)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -63,7 +61,7 @@ test_that("predict_amps works when input contains sequences exactly equal to min
 
   result <- predict_amps(test_df,min_len)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -83,7 +81,7 @@ test_that("predict_amps works when input contains only invalid sequences", {
 
   result <- predict_amps(test_df,min_len)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -94,19 +92,6 @@ test_that("predict_amps works when input contains only invalid sequences", {
     c(1))
 })
 
-test_that("predict_amps works with multiple cores", {
-  skip_on_os('windows')
-  test_df <- readRDS("../testdata/xbench.rds")
-  result_1core <- predict_amps(test_df, n_cores = 1)
-  expect_equal(
-    dim(result_1core),
-    c(16,3))
-
-  result_2core <- predict_amps(test_df, n_cores = 2)
-  expect_equal(
-    result_1core,
-    result_2core)
-})
 
 test_that("predict_amps works with explicitly specified precursor model", {
   skip_on_os('windows')
@@ -114,7 +99,7 @@ test_that("predict_amps works with explicitly specified precursor model", {
 
   result <- predict_amps(test_df, model = "precursor")
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -133,7 +118,7 @@ test_that("predict_amps works with explicitly specified mature model", {
 
   result <- predict_amps(test_df, model = "mature")
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -189,7 +174,7 @@ test_that("predict_amps works when sequences contain a stop codon at the end", {
 
   result <- predict_amps(test_data)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -199,4 +184,19 @@ test_that("predict_amps works when sequences contain a stop codon at the end", {
     rowSums(is.na(result)),
     c(0,0))
 })
+
+# test_that("predict_amps works with multiple cores", {
+#   skip_on_os('windows')
+#   test_df <- readRDS("../testdata/xbench.rds")
+#   result_1core <- predict_amps(test_df, n_cores = 1)
+#   expect_equal(
+#     dim(result_1core),
+#     c(16,3))
+#
+#   result_2core <- predict_amps(test_df, n_cores = 2)
+#   expect_equal(
+#     result_1core,
+#     result_2core)
+# })
+
 

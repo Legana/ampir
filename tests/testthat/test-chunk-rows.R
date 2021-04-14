@@ -1,12 +1,10 @@
-context("chunk_rows")
-
 test_that("chunk_rows works when ncores is equal to 1", {
 
   result_1 <- chunk_rows(10,1)
   result_2 <- chunk_rows(11,1)
 
-  expect_is(result_1,"list")
-  expect_is(result_2,"list")
+  expect_type(result_1,"list")
+  expect_type(result_2,"list")
 
   expect_equal(length(result_1),1)
   expect_equal(length(result_2),1)
@@ -22,8 +20,8 @@ test_that("chunk_rows works when ncores is equal to 2", {
   result_1 <- chunk_rows(10,2)
   result_2 <- chunk_rows(11,2)
 
-  expect_is(result_1,"list")
-  expect_is(result_2,"list")
+  expect_type(result_1,"list")
+  expect_type(result_2,"list")
 
   expect_equal(length(result_1),2)
   expect_equal(length(result_2),2)
@@ -42,8 +40,8 @@ test_that("chunk_rows works when ncores is equal to 3", {
   result_1 <- chunk_rows(10,3)
   result_2 <- chunk_rows(11,3)
 
-  expect_is(result_1,"list")
-  expect_is(result_2,"list")
+  expect_type(result_1,"list")
+  expect_type(result_2,"list")
 
   expect_equal(length(result_1),3)
   expect_equal(length(result_2),3)

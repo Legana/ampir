@@ -1,5 +1,3 @@
-context("df_to_faa")
-
 hepseq_name <- "Hepcidin"
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
 hepseq_df <- data.frame(hepseq_name, hepseq, stringsAsFactors = FALSE)

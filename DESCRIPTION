@@ -37,10 +37,11 @@ Imports:
     parallel
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat,
+    testthat (>= 3.0.0),
     knitr,
     rmarkdown,
     e1071
 VignetteBuilder: knitr
 LinkingTo: 
     Rcpp
+Config/testthat/edition: 3

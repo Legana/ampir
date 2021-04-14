@@ -1,5 +1,3 @@
-context("calc_pseudo_comp")
-
 # Calculate pseudo amino acid composition from Hepcidin AMP from Myotis lucifugus (UniProt ID G1P6H5)
 
 hepseq_name <- "Hepcidin"
@@ -12,7 +10,7 @@ test_that("calc_pseudo_comp gives correct result with default lambda", {
 
   result <- calc_pseudo_comp(hepseq)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     result,
@@ -27,7 +25,7 @@ test_that("calc_pseudo_comp gives correct result with lambda_max set", {
 
   result <- calc_pseudo_comp(hepseq, lambda_max = 4)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     result,
@@ -41,7 +39,7 @@ test_that("calc_pseudo_comp works with mixed length sequences", {
 
   result <- calc_pseudo_comp(hepseq_pieces)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   # Result should have rows with 0, 9 and 12 NAs respectively
 

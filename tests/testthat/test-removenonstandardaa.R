@@ -1,5 +1,3 @@
-context("remove_nonstandard_aa")
-
 seq_name <- c("Hepcidin", "fake_sequence")
 seq <- c("MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT", "MKVTHEUSYR$GXMBIJIDG*M80-%")
 
@@ -10,7 +8,7 @@ test_that("remove_nonstandard_aa returns a data frame", {
 
   result <- remove_nonstandard_aa(my_messy_protein_test)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 })
 
 test_that("remove_nonstandard_aa removes the fake sequence", {

@@ -1,5 +1,3 @@
-context("calculate_features")
-
 hepseq_name <- "Hepcidin"
 hepseq <- "MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGATAGLMPGLQRRRRRDTHFPICIFCCGCCYPSKCGICCKT"
 
@@ -10,7 +8,7 @@ test_that("calculate_features results in a 45 column data frame", {
 
   result <- calculate_features(my_protein_test)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_length(
     result,
@@ -25,7 +23,7 @@ test_that("calculate_features results accepts multi-row input", {
 
   result <- calculate_features(multirow_test)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     dim(result),
@@ -42,7 +40,6 @@ test_that("calculate_features results throws an error on sequences less than min
 })
 
 
-context("calculate_features for Hepcidin")
 
 # ## Output (showing the first six output columns)
 # #      seq_name     Amphiphilicity  Hydrophobicity     pI          Mw       Charge    ....
@@ -53,11 +50,11 @@ test_that("Hepcidin gives correct Amphiphilicity", {
 
   result <- calc_amphiphilicity(hepseq)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     result$Amphiphilicity,
-    0.4145847)
+    0.4145847, tolerance=1e-5)
 
 })
 
@@ -66,7 +63,7 @@ test_that("Hepcidin gives correct Hydrophobicity", {
 
   result <- calc_hydrophobicity(hepseq)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     result$Hydrophobicity,
@@ -79,7 +76,7 @@ test_that("Hepcidin gives correct Isoelectric point", {
 
   result <- calc_pI(hepseq)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     result$pI,
@@ -93,7 +90,7 @@ test_that("Hepcidin gives correct Molecular weight", {
 
   result <- calc_mw(hepseq)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     result$Mw,
@@ -106,7 +103,7 @@ test_that("Hepcidin gives correct Net charge", {
 
   result <- calc_net_charge(hepseq)
 
-  expect_is(result,"data.frame")
+  expect_s3_class(result,"data.frame")
 
   expect_equal(
     result$Charge,
