@@ -12,8 +12,8 @@ status](https://travis-ci.com/Legana/ampir.svg?branch=master)](https://travis-ci
 [![codecov](https://codecov.io/gh/Legana/ampir/branch/master/graph/badge.svg)](https://codecov.io/gh/Legana/ampir)
 [![License: GPL
 v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![CRAN\_Release\_Badge](http://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
-![CRAN\_Download\_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ampir?color=red)
+[![CRAN_Release_Badge](http://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
+![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ampir?color=red)
 <!-- badges: end -->
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
@@ -24,11 +24,11 @@ learning* approach to predict AMPs. It incorporates two support vector
 machine classification models, “precursor” and “mature” that have been
 trained on publicly available antimicrobial peptide data. The default
 model, “precursor” is best suited for full length proteins and the
-“mature” model is best suited for small mature proteins (&lt;60 amino
+“mature” model is best suited for small mature proteins (\<60 amino
 acids). **ampir** also accepts custom (user trained) models based on the
 [caret](https://github.com/topepo/caret) package. Please see the
 **ampir** *“How to train your model”*
-[vignette](https://cran.r-project.org/web/packages/ampir/vignettes/train_model.html)
+[vignette](https://CRAN.R-project.org/package=ampir/vignettes/train_model.html)
 for details.
 
 ampir’s associated paper is available in the *Bioinformatics* journal as
@@ -65,16 +65,16 @@ Read in a FASTA formatted file as a `data.frame` with `read_faa()`
 my_protein_df <- read_faa(system.file("extdata/little_test.fasta", package = "ampir"))
 ```
 
-| seq\_name         | seq\_aa                                        |
-|:------------------|:-----------------------------------------------|
-| G1P6H5\_MYOLU     | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |
-| L5L3D0\_PTEAL     | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
-| A0A183U1F1\_TOXCA | LLRLYSPLVMFATRRVLLCLLVIYLLAQPIHSSWLKKTYKKLENS… |
-| Q5F4I1\_DROPS     | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |
-| A7S075\_NEMVE     | MFLKVVVVLLAVELSVAQSARQRVRPLDRKAGRKRFAPIFPRQCS… |
-| F1DFM9\_9CNID     | MKVLVILFGAMLVLMEFQKASAATLLEDFDDDDDLLDDGGDFDLE… |
-| Q5XV93\_ARATH     | MSKREYERQLANEEDEQLRNFQAAVAARSAILHEPKEAALPPPAP… |
-| Q2XXN9\_POGBA     | MRFLYLLFAVAFLFSVQAEDAELEQEQQGDPWEGLDEFQDQPPDD… |
+| seq_name         | seq_aa                                         |
+|:-----------------|:-----------------------------------------------|
+| G1P6H5_MYOLU     | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |
+| L5L3D0_PTEAL     | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
+| A0A183U1F1_TOXCA | LLRLYSPLVMFATRRVLLCLLVIYLLAQPIHSSWLKKTYKKLENS… |
+| Q5F4I1_DROPS     | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |
+| A7S075_NEMVE     | MFLKVVVVLLAVELSVAQSARQRVRPLDRKAGRKRFAPIFPRQCS… |
+| F1DFM9_9CNID     | MKVLVILFGAMLVLMEFQKASAATLLEDFDDDDDLLDDGGDFDLE… |
+| Q5XV93_ARATH     | MSKREYERQLANEEDEQLRNFQAAVAARSAILHEPKEAALPPPAP… |
+| Q2XXN9_POGBA     | MRFLYLLFAVAFLFSVQAEDAELEQEQQGDPWEGLDEFQDQPPDD… |
 
 Calculate the probability that each protein is an antimicrobial peptide
 with `predict_amps()`. Since these proteins are all full length
@@ -89,16 +89,16 @@ not evaluated and will contain an `NA` as their `prob_AMP` value.*
 my_prediction <- predict_amps(my_protein_df, model = "precursor")
 ```
 
-| seq\_name         | seq\_aa                                        | prob\_AMP |
-|:------------------|:-----------------------------------------------|----------:|
-| G1P6H5\_MYOLU     | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |     0.359 |
-| L5L3D0\_PTEAL     | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |     0.839 |
-| A0A183U1F1\_TOXCA | LLRLYSPLVMFATRRVLLCLLVIYLLAQPIHSSWLKKTYKKLENS… |     0.019 |
-| Q5F4I1\_DROPS     | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |     0.986 |
-| A7S075\_NEMVE     | MFLKVVVVLLAVELSVAQSARQRVRPLDRKAGRKRFAPIFPRQCS… |     0.023 |
-| F1DFM9\_9CNID     | MKVLVILFGAMLVLMEFQKASAATLLEDFDDDDDLLDDGGDFDLE… |     0.237 |
-| Q5XV93\_ARATH     | MSKREYERQLANEEDEQLRNFQAAVAARSAILHEPKEAALPPPAP… |     0.010 |
-| Q2XXN9\_POGBA     | MRFLYLLFAVAFLFSVQAEDAELEQEQQGDPWEGLDEFQDQPPDD… |     0.650 |
+| seq_name         | seq_aa                                         | prob_AMP |
+|:-----------------|:-----------------------------------------------|---------:|
+| G1P6H5_MYOLU     | MALTVRIQAACLLLLLLASLTSYSLLLSQTTQLADLQTQDTAGAT… |    0.612 |
+| L5L3D0_PTEAL     | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |    0.945 |
+| A0A183U1F1_TOXCA | LLRLYSPLVMFATRRVLLCLLVIYLLAQPIHSSWLKKTYKKLENS… |    0.088 |
+| Q5F4I1_DROPS     | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |    0.998 |
+| A7S075_NEMVE     | MFLKVVVVLLAVELSVAQSARQRVRPLDRKAGRKRFAPIFPRQCS… |    0.032 |
+| F1DFM9_9CNID     | MKVLVILFGAMLVLMEFQKASAATLLEDFDDDDDLLDDGGDFDLE… |    0.223 |
+| Q5XV93_ARATH     | MSKREYERQLANEEDEQLRNFQAAVAARSAILHEPKEAALPPPAP… |    0.009 |
+| Q2XXN9_POGBA     | MRFLYLLFAVAFLFSVQAEDAELEQEQQGDPWEGLDEFQDQPPDD… |    0.733 |
 
 Predicted proteins with a specified predicted probability value could
 then be extracted and written to a FASTA file:
@@ -107,10 +107,10 @@ then be extracted and written to a FASTA file:
 my_predicted_amps <- my_protein_df[which(my_prediction$prob_AMP >= 0.8),]
 ```
 
-|     | seq\_name     | seq\_aa                                        |
-|:----|:--------------|:-----------------------------------------------|
-| 2   | L5L3D0\_PTEAL | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
-| 4   | Q5F4I1\_DROPS | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |
+|     | seq_name     | seq_aa                                         |
+|:----|:-------------|:-----------------------------------------------|
+| 2   | L5L3D0_PTEAL | MKPLLIVFVFLIFWDPALAGLNPISSEMYKKCYGNGICRLECYTS… |
+| 4   | Q5F4I1_DROPS | MNFYKIFIFVALILAISVGQSEAGWLKKLGKRLERVGQHTRDATI… |
 
 Write the `data.frame` with sequence names in the first column and
 protein sequences in the second column to a FASTA formatted file with
