@@ -185,18 +185,18 @@ test_that("predict_amps works when sequences contain a stop codon at the end", {
     c(0,0))
 })
 
-# test_that("predict_amps works with multiple cores", {
-#   skip_on_os('windows')
-#   test_df <- readRDS("../testdata/xbench.rds")
-#   result_1core <- predict_amps(test_df, n_cores = 1)
-#   expect_equal(
-#     dim(result_1core),
-#     c(16,3))
-#
-#   result_2core <- predict_amps(test_df, n_cores = 2)
-#   expect_equal(
-#     result_1core,
-#     result_2core)
-# })
+test_that("predict_amps works with multiple cores", {
+  skip_on_os('windows')
+  test_df <- readRDS("../testdata/xbench.rds")
+  result_1core <- predict_amps(test_df, n_cores = 1)
+  expect_equal(
+    dim(result_1core),
+    c(16,3))
+
+  result_2core <- predict_amps(test_df, n_cores = 2)
+  expect_equal(
+    result_1core,
+    result_2core)
+})
 
 
