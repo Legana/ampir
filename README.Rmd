@@ -20,12 +20,16 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/Legana/ampir.svg?branch=master)](https://travis-ci.com/Legana/ampir) [![codecov](https://codecov.io/gh/Legana/ampir/branch/master/graph/badge.svg)](https://codecov.io/gh/Legana/ampir) [![License: GPL v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html) [![CRAN\_Release\_Badge](http://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow) ![CRAN\_Download\_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ampir?color=red) 
+[![](https://cranlogs.r-pkg.org/badges/ampir )](https://cran.r-project.org/package=ampir)
+[![](https://img.shields.io/badge/Shiny-ampir-blue?style=flat&labelColor=white&logo=RStudio&logoColor=blue)](https://ampir.marine-omics.net/)
 <!-- badges: end -->
 
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction **i**n **r** ) package was designed to be a fast and user-friendly method to predict antimicrobial peptides (AMPs) from any given size protein dataset. **ampir** uses a *supervised statistical machine learning* approach to predict AMPs. It incorporates two support vector machine classification models, "precursor" and "mature" that have been trained on publicly available antimicrobial peptide data. The default model, "precursor" is best suited for full length proteins and the "mature" model is best suited for small mature proteins (<60 amino acids). **ampir**  also accepts custom (user trained) models based on the [caret](https://github.com/topepo/caret) package. Please see the **ampir** *"How to train your model"* [vignette](https://CRAN.R-project.org/package=ampir/vignettes/train_model.html) for details.
 
-ampir's associated paper is available in the *Bioinformatics* journal as [btaa653](https://academic.oup.com/bioinformatics/article-abstract/doi/10.1093/bioinformatics/btaa653/5873588)
+ampir's associated paper is published in the *Bioinformatics* journal as [btaa653](https://academic.oup.com/bioinformatics/article-abstract/doi/10.1093/bioinformatics/btaa653/5873588). Please cite this paper if you use ampir in your research.
+
+ampir is also available via a Shiny based GUI at [https://ampir.marine-omics.net/](https://ampir.marine-omics.net/) where users can submit protein sequences in FASTA file format to be classified by either the "precursor" or "mature" model. The prediction results can then be downloaded as a csv file.
 
 ## Installation
 
@@ -94,7 +98,6 @@ Write the `data.frame` with sequence names in the first column and protein seque
 ```{r, eval=FALSE}
 df_to_faa(my_predicted_amps, "my_predicted_amps.fasta")
 ```
-
 
 
 

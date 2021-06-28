@@ -14,6 +14,8 @@ status](https://travis-ci.com/Legana/ampir.svg?branch=master)](https://travis-ci
 v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![CRAN_Release_Badge](http://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
 ![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ampir?color=red)
+[![](https://cranlogs.r-pkg.org/badges/ampir)](https://cran.r-project.org/package=ampir)
+[![](https://img.shields.io/badge/Shiny-ampir-blue?style=flat&labelColor=white&logo=RStudio&logoColor=blue)](https://ampir.marine-omics.net/)
 <!-- badges: end -->
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
@@ -31,8 +33,15 @@ acids). **ampir** also accepts custom (user trained) models based on the
 [vignette](https://CRAN.R-project.org/package=ampir/vignettes/train_model.html)
 for details.
 
-ampir’s associated paper is available in the *Bioinformatics* journal as
-[btaa653](https://academic.oup.com/bioinformatics/article-abstract/doi/10.1093/bioinformatics/btaa653/5873588)
+ampir’s associated paper is published in the *Bioinformatics* journal as
+[btaa653](https://academic.oup.com/bioinformatics/article-abstract/doi/10.1093/bioinformatics/btaa653/5873588).
+Please cite this paper if you use ampir in your research.
+
+ampir is also available via a Shiny based GUI at
+<https://ampir.marine-omics.net/> where users can submit protein
+sequences in FASTA file format to be classified by either the
+“precursor” or “mature” model. The prediction results can then be
+downloaded as a csv file.
 
 ## Installation
 

@@ -1,4 +1,4 @@
-# ampir 1.1.0 (13/04/2021)
+# ampir 1.1.0 (28/06/2021)
 
 - updated both classification models (ampir_precursor and ampir_mature) with additional AMPs
 - fixed an example in the README which resulted in NAs output (@Ebedthan, #20)
