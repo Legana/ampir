@@ -4,33 +4,27 @@ This is new release to update the built in models, fix minor bugs, and announce 
 
 ## Build checks
 
-All checks successful (0 errors ✓ | 0 warnings ✓ | 0 notes ✓) for:
+All checks (0 errors ✓ | 0 warnings ✓ | 0 notes ✓) successful for:
 
 * local OS X version 11.4, R 4.1.0 (2021-05-18)
-
-Status: OK for:
-
-* win-builder x86_64-w64-mingw32 (64-bit), R 4.1.0 (via `devtools::check_win_release()`)
-* Debian Linux, R-devel, GCC ASAN/UBSAN (R-hub builder)
-* Windows Server 2008 R2 SP1, R-devel, 32/64 bit (R-hub builder)
+* Ubuntu 16.04.6 LTS x86_64-pc-linux-gnu, R 4.0.2 (on travis-ci)
 
 Status: 1 NOTE for:
 
-* Fedora Linux, R-devel, clang, gfortran (R-hub builder)
-* Ubuntu Linux 20.04.1 LTS, R-release, GCC, 4.1.0 (R-hub builder)
+* win-builder x86_64-w64-mingw32 (64-bit), R 4.1.0 (2021-05-18)
+* win-builder x86_64-w64-mingw32 (64-bit), R Under development (unstable) (2021-06-27 r80567) 
 
 with the note being:
 
-#>* checking CRAN incoming feasibility ... NOTE
-#>Maintainer: ‘Legana Fingerhut <legana.fingerhut@my.jcu.edu.au>’
-#>
-#>  Found the following (possibly) invalid DOIs:
-#>    DOI: 10.1093/bioinformatics/btaa653
-#>    From: DESCRIPTION
-#>    Status: Forbidden
-#>    Message: 403
+checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Legana Fingerhut <legana.fingerhut@my.jcu.edu.au>'
 
-This note refers to the following citation in the DESCRIPTION "Fingerhut et al. (2020) <doi:10.1093/bioinformatics/btaa653>". This DOI is valid and it conforms to the formatting specified in the [Checklist for CRAN submissions](https://cran.r-project.org/web/packages/submission_checklist.html) where it states: "DOIs should be enclosed in angle brackets, and formatted as <doi:10.prefix/suffix>. Example: Sugihara (1994) <doi:10.1098/rsta.1994.0106>."
+Possibly mis-spelled words in DESCRIPTION:
+  translational (28:101)
+  
+- The spelling of this word in the DESCRIPTION is correct.
+
+
 
 # Major release to **CRAN** for ampir 1.0.0
 
