@@ -1,5 +1,6 @@
-# ampir 1.1.0 (28/06/2021)
+# ampir 1.1.0 (29/06/2021)
 
+- ampir now has a Shiny based web interface! <https://ampir.marine-omics.net/>
 - updated both classification models (ampir_precursor and ampir_mature) with additional AMPs
 - fixed an example in the README which resulted in NAs output (@Ebedthan, #20)
 - converted input for `calculate_features.R` to a dataframe, in case it was not a dataframe
