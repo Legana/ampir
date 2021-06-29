@@ -26,7 +26,7 @@ Description: A toolkit to predict antimicrobial peptides from protein sequences 
     and calculation of compositional properties has been optimised for high-throughput use. For best results it is important to select the model that accurately 
     represents your sequence type: for full length proteins, it is recommended to use the default "precursor" model. The alternative, "mature", model is best suited
     for mature peptide sequences that represent the final antimicrobial peptide sequence after post-translational processing. For details see Fingerhut et al. (2020) <doi:10.1093/bioinformatics/btaa653>.
-    The `ampir` package is also available via a Shiny based GUI at <https://ampir.marine-omics.net/>.
+    The 'ampir' package is also available via a Shiny based GUI at <https://ampir.marine-omics.net/>.
 URL: https://github.com/Legana/ampir
 License: GPL-2
 Encoding: UTF-8
