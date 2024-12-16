@@ -9,14 +9,13 @@
 
 [![](https://img.shields.io/badge/Shiny-ampir-blue?style=flat&labelColor=white&logo=RStudio&logoColor=blue)](https://ampir.marine-omics.net/)
 [![](https://img.shields.io/badge/doi-10.1093/bioinformatics/btaa653-yellow.svg)](https://doi.org/10.1093/bioinformatics/btaa653)
-[![Travis build
-status](https://travis-ci.com/Legana/ampir.svg?branch=master)](https://travis-ci.com/Legana/ampir)
 [![codecov](https://codecov.io/gh/Legana/ampir/branch/master/graph/badge.svg)](https://codecov.io/gh/Legana/ampir)
 [![License: GPL
 v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![CRAN_Release_Badge](http://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
-![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ampir?color=red)
-[![](http://cranlogs.r-pkg.org/badges/last-month/ampir?color=green)](https://cran.r-project.org/package=ampir)
+[![CRAN Release
+Badge](https://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/ampir?color=yellowgreen)](https://cran.r-project.org/grand-total/package=ampir)
+[![](https://cranlogs.r-pkg.org/badges/ampir?color=yellowgreen)](https://cran.r-project.org/package=ampir)
 <!-- badges: end -->
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction
