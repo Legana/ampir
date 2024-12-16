@@ -50,7 +50,7 @@ predict_amps <- function(faa_df, min_len = 5, n_cores=1, model = "precursor") {
     stop("No model specified. Value specified for model argument should be a string specifying one of ampirs internal models or a train object")
   }
 
-  if ( (length(model)==1) && (class(model)=="character") ){
+  if ( (length(model)==1) && (inherits(model, "character"))){
     if ( model == "mature"){
       model <- ampir_package_data[["mature_model"]]
     } else if (model == "precursor") {
