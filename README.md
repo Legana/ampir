@@ -9,12 +9,10 @@
 
 [![](https://img.shields.io/badge/Shiny-ampir-blue?style=flat&labelColor=white&logo=RStudio&logoColor=blue)](https://ampir.marine-omics.net/)
 [![](https://img.shields.io/badge/doi-10.1093/bioinformatics/btaa653-yellow.svg)](https://doi.org/10.1093/bioinformatics/btaa653)
-[![codecov](https://codecov.io/gh/Legana/ampir/branch/master/graph/badge.svg)](https://codecov.io/gh/Legana/ampir)
-[![License: GPL
-v2](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
-[![CRAN Release
-Badge](https://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
-[![](https://cranlogs.r-pkg.org/badges/grand-total/ampir?color=yellowgreen)](https://cran.r-project.org/grand-total/package=ampir)
+[![](https://codecov.io/gh/Legana/ampir/branch/master/graph/badge.svg)](https://app.codecov.io/gh/Legana/ampir)
+[![](https://img.shields.io/badge/License-GPL%20v2-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![](https://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
+[![](https://cranlogs.r-pkg.org/badges/grand-total/ampir?color=yellowgreen)](https://cran.r-project.org/package=ampir)
 [![](https://cranlogs.r-pkg.org/badges/ampir?color=yellowgreen)](https://cran.r-project.org/package=ampir)
 <!-- badges: end -->
 
