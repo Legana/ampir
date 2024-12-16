@@ -5,6 +5,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // rcpp_paac
 NumericVector rcpp_paac(CharacterVector seq, NumericMatrix H, int lambda, float w);
 RcppExport SEXP _ampir_rcpp_paac(SEXP seqSEXP, SEXP HSEXP, SEXP lambdaSEXP, SEXP wSEXP) {
