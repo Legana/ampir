@@ -21,8 +21,8 @@
 
 df_to_faa <- function(df, file = "") {
 
-  seq_name <- as.character(df[,1])
-  seq_aa <- as.character(df[,2])
+  seq_name <- as.character(df[[1]])
+  seq_aa <- as.character(df[[2]])
 
   writeLines(paste(">", seq_name, "\n", seq_aa, sep = ""), file)
 
