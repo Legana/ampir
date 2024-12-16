@@ -42,6 +42,7 @@ Suggests:
     testthat (>= 3.0.0),
     knitr,
     rmarkdown,
+    kernlab,
     e1071
 VignetteBuilder: knitr
 LinkingTo: 
