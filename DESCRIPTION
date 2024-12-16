@@ -1,8 +1,8 @@
 Package: ampir
 Type: Package
 Title: Predict Antimicrobial Peptides
-Version: 1.1.0
-Date: 2021-06-29
+Version: 1.1.1
+Date: 2024-12-16
 Authors@R: c(person("Legana","Fingerhut",
                      email = "legana.fingerhut@my.jcu.edu.au",
                      role = c("aut", "cre"),
@@ -35,10 +35,9 @@ Depends: R (>= 3.5.0)
 Imports: 
     Peptides,
     caret (>= 6.0.0),
-    kernlab,
     Rcpp,
     parallel
-RoxygenNote: 7.1.1
+RoxygenNote: 7.3.2
 Suggests: 
     testthat (>= 3.0.0),
     knitr,

@@ -2,8 +2,8 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^README\.Rmd$
-^\.travis\.yml$
 tests/tmpdata
 inst/rmd
 cran-comments.md
 ^CRAN-RELEASE$
+^\.github$

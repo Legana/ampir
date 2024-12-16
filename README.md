@@ -14,6 +14,7 @@
 [![](https://www.r-pkg.org/badges/version-ago/ampir)](https://CRAN.R-project.org/package=ampir?color=yellow)
 [![](https://cranlogs.r-pkg.org/badges/grand-total/ampir?color=yellowgreen)](https://cran.r-project.org/package=ampir)
 [![](https://cranlogs.r-pkg.org/badges/ampir?color=yellowgreen)](https://cran.r-project.org/package=ampir)
+[![R-CMD-check](https://github.com/Legana/ampir/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/Legana/ampir/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The **ampir** (short for **a**nti**m**icrobial **p**eptide prediction

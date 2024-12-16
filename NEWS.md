@@ -1,3 +1,8 @@
+# ampir 1.1.1 (16/12/2024)
+
+- Updated `df_to_faa` to be compatible with `tibble` format
+- Removed kernlab from Imports field as it is not used
+
 # ampir 1.1.0 (29/06/2021)
 
 - ampir now has a Shiny based web interface! <https://ampir.marine-omics.net/>
