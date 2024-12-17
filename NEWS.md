@@ -1,7 +1,10 @@
 # ampir 1.1.1 (16/12/2024)
 
 - Updated `df_to_faa` to be compatible with `tibble` format
-- Removed kernlab from Imports field as it is not used
+- Migrated from Travis CI to GitHub Actions
+- Updated README badges
+- Moved `kernlab` from Imports field to Suggests field as it is only used in the vignette
+- Replaced `class()` with `inherits()` to test if an object is a character string to address R CMD check note
 
 # ampir 1.1.0 (29/06/2021)
 
